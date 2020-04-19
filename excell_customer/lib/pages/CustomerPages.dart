@@ -1,4 +1,5 @@
 import 'package:ExcellCustomer/CodeHelpers.dart';
+import 'package:ExcellCustomer/pages/Dashboard.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 
@@ -11,7 +12,7 @@ class CustomerPages extends StatefulWidget {
 
 class _CustomerPagesState extends State<CustomerPages> {
   final CodeHelpers codeHelpers = new CodeHelpers();
-
+  var customerConnections;
   var contentId = 1;
 
   @override
@@ -37,11 +38,11 @@ class _CustomerPagesState extends State<CustomerPages> {
                 leading: FaIcon(
                   FontAwesomeIcons.chartBar,
                   size: 24,
-                  color: Color.fromRGBO(184, 27, 77, 10),
+                  color: Color.fromRGBO(0, 32, 97, 5),
                 ),
                 dense: false,
                 title: Text(
-                  'Connections',
+                  'Dasbhoard',
                   style: TextStyle(
                     fontSize: 24,
                     color: Color.fromRGBO(184, 27, 77, 10),
@@ -50,7 +51,10 @@ class _CustomerPagesState extends State<CustomerPages> {
                 onTap: () {
                   // Update the state of the app.
                   // ...
-                  Navigator.pop(context); // close the drawer
+
+                  // Navigator.pop(context); // close the drawer
+                  // setContentId(1);
+                  Dashboard();
                 },
               ),
               SizedBox(height: 10),
@@ -58,7 +62,7 @@ class _CustomerPagesState extends State<CustomerPages> {
                 leading: FaIcon(
                   FontAwesomeIcons.userCircle,
                   size: 24,
-                  color: Color.fromRGBO(184, 27, 77, 10),
+                  color: Color.fromRGBO(0, 32, 97, 5),
                 ),
                 dense: false,
                 title: Text(
@@ -78,7 +82,7 @@ class _CustomerPagesState extends State<CustomerPages> {
                 leading: FaIcon(
                   FontAwesomeIcons.coins,
                   size: 24,
-                  color: Color.fromRGBO(184, 27, 77, 10),
+                  color: Color.fromRGBO(0, 32, 97, 5),
                 ),
                 dense: false,
                 title: Text(
@@ -98,7 +102,7 @@ class _CustomerPagesState extends State<CustomerPages> {
                 leading: FaIcon(
                   FontAwesomeIcons.headset,
                   size: 24,
-                  color: Color.fromRGBO(184, 27, 77, 10),
+                  color: Color.fromRGBO(0, 32, 97, 5),
                 ),
                 dense: false,
                 title: Text(
@@ -119,7 +123,7 @@ class _CustomerPagesState extends State<CustomerPages> {
                 leading: FaIcon(
                   FontAwesomeIcons.gift,
                   size: 24,
-                  color: Color.fromRGBO(184, 27, 77, 10),
+                  color: Color.fromRGBO(0, 32, 97, 5),
                 ),
                 dense: false,
                 title: Text(
@@ -139,7 +143,7 @@ class _CustomerPagesState extends State<CustomerPages> {
                 leading: FaIcon(
                   FontAwesomeIcons.questionCircle,
                   size: 24,
-                  color: Color.fromRGBO(184, 27, 77, 10),
+                  color: Color.fromRGBO(0, 32, 97, 5),
                 ),
                 dense: false,
                 title: Text(
@@ -160,7 +164,7 @@ class _CustomerPagesState extends State<CustomerPages> {
                 leading: FaIcon(
                   FontAwesomeIcons.signOutAlt,
                   size: 24,
-                  color: Color.fromRGBO(184, 27, 77, 10),
+                  color: Color.fromRGBO(0, 32, 97, 5),
                 ),
                 dense: false,
                 title: Text(
@@ -182,7 +186,7 @@ class _CustomerPagesState extends State<CustomerPages> {
         appBar: AppBar(
             backgroundColor: Color.fromRGBO(184, 27, 77, 10),
             title: Text("Connections")),
-        body: setContent(contentId),
+        body: Dashboard(),
       ),
     );
   }
@@ -193,20 +197,15 @@ class _CustomerPagesState extends State<CustomerPages> {
     });
   }
 
-  setContent(int pageId) {
+  setContent(int pageId) async {
     var content;
+   
 
-    content = Center(
-        child: Text(
-      pageId.toString(),
-      style: TextStyle(fontSize: 48),
-    ));
-
-    // switch(pageId) {
-    //   case 1:
-    //     content = Text(pageId.toString());
-    //     break;
-    // }
+    switch (pageId) {
+      case 1:
+        content = Dashboard();
+        break;
+    }
 
     return content;
   }
@@ -225,28 +224,5 @@ class _CustomerPagesState extends State<CustomerPages> {
     });
   }
 
-  getCustomerDue() {
-    var body = {
-      "name": "getConnectionsList",
-      "param": {"customerId": codeHelpers.getStorageKey('custId')}
-    };
 
-    codeHelpers.httpPost(body, needAuth: true).then((customerDetails) {
-      customerDetails.transform(convert.utf8.decoder).join().then((onValue) {
-        Map<String, dynamic> response = convert.jsonDecode(onValue);
-        print(response.toString());
-        final connection = response["resonse"]["result"]["connections"][0];
-
-        final topup = connection["topup"];
-        final dataLimit = connection["datalimit"];
-        final data = connection["data"];
-        final newLimit = connection["new_limit"];
-
-        print(topup);
-        print(dataLimit);
-        print(data);
-        print(newLimit);
-      });
-    });
-  }
 }

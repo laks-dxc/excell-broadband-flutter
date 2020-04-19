@@ -81,7 +81,7 @@ class _LoginState extends State<Login> {
               codeHelpers.setStorageKey('otp', otp.toString());
             }
 
-            Navigator.push(globalContext,
+            Navigator.pushReplacement(globalContext,
                 MaterialPageRoute(builder: (context) => OTPCheck()));
           } else {
             Fluttertoast.showToast(

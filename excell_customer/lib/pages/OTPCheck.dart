@@ -1,6 +1,7 @@
 import 'package:ExcellCustomer/CodeHelpers.dart';
 import 'package:ExcellCustomer/pages/CustomerPages.dart';
 import 'package:flutter/material.dart';
+
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OTPCheck extends StatefulWidget {
@@ -20,7 +21,7 @@ class _OTPCheckState extends State<OTPCheck> {
       {
         codeHelpers.setStorageKey('otp', '');
 
-        Navigator.push(globalContext,
+        Navigator.pushReplacement(globalContext,
             MaterialPageRoute(builder: (context) => CustomerPages()));
       }
     } else
@@ -33,6 +34,8 @@ class _OTPCheckState extends State<OTPCheck> {
   Widget build(BuildContext context) {
     globalContext = context;
     mobileNum = codeHelpers.getStorageKey("mobileNumber");
+
+      print("OTP is " + codeHelpers.getStorageKey('otp').toString());
 
     return MaterialApp(
       home: Scaffold(
