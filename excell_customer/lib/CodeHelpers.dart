@@ -13,7 +13,11 @@ class CodeHelpers {
     HttpClient httpClient = new HttpClient();
     HttpClientRequest request = await httpClient.postUrl(Uri.parse(_baseUrl));
     request.headers.set('content-type', 'application/json');
-    request.headers.set('Authorization', "Excell " + this.getStorageKey("token"));
+
+    if (needAuth == true)
+      request.headers
+          .set('Authorization', "Excell " + this.getStorageKey("token"));
+
     request.add(utf8.encode(convert.jsonEncode(body)));
     HttpClientResponse response = await request.close();
     httpClient.close();
@@ -25,11 +29,6 @@ class CodeHelpers {
   }
 
   String getStorageKey(key) {
-
     return storage.getItem(key);
-  
-  
   }
-
-  
 }

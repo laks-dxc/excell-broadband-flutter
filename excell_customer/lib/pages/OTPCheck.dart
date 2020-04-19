@@ -1,8 +1,7 @@
 import 'package:ExcellCustomer/CodeHelpers.dart';
-import 'package:ExcellCustomer/pages/dashboard.dart';
+import 'package:ExcellCustomer/pages/CustomerPages.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 class OTPCheck extends StatefulWidget {
   @override
@@ -22,31 +21,14 @@ class _OTPCheckState extends State<OTPCheck> {
         codeHelpers.setStorageKey('otp', '');
 
         Navigator.push(globalContext,
-            MaterialPageRoute(builder: (context) => GaugeChart(_createSampleData())));
+            MaterialPageRoute(builder: (context) => CustomerPages()));
       }
     } else
       print("OTP Not Matched");
   }
 
 
-  static List<charts.Series<GaugeSegment, String>> _createSampleData() {
-    final data = [
-      new GaugeSegment('Low', 599931181121),
-      new GaugeSegment('Acceptable', 707305363521),
-      new GaugeSegment('High', 50),
-      // new GaugeSegment('Highly Unusual', 5),
-    ];
 
-
-    return [
-      new charts.Series<GaugeSegment, String>(
-        id: 'Segments',
-        domainFn: (GaugeSegment segment, _) => segment.segment,
-        measureFn: (GaugeSegment segment, _) => segment.size,
-        data: data,
-      )
-    ];
-  }
   @override
   Widget build(BuildContext context) {
     globalContext = context;

@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
                 child: IconButton(
                   icon: FaIcon(FontAwesomeIcons.signInAlt),
                   onPressed: () {
-                    Navigator.push(context,
+                    Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => Login()));
                   },
                 ),
