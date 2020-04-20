@@ -20,6 +20,8 @@ class _OTPCheckState extends State<OTPCheck> {
     if (otpFromStorage == enteredOTP) {
       {
         codeHelpers.setStorageKey('otp', '');
+        codeHelpers.setStorageKey('loggedIn', '1');
+
 
         Navigator.pushReplacement(globalContext,
             MaterialPageRoute(builder: (context) => CustomerPages()));

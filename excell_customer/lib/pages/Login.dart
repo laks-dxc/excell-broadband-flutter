@@ -36,8 +36,8 @@ class _LoginState extends State<Login> {
     var customerId = customerIdController.text.trim();
     var mobileNumber = mobileNoController.text.trim();
 
-    customerId = "78104";
-    mobileNumber = "9115625853";
+    // customerId = "78104";
+    // mobileNumber = "9115625853";
 
     CodeHelpers codeHelpers = new CodeHelpers();
 
@@ -57,8 +57,6 @@ class _LoginState extends State<Login> {
           "mobilOTP": otpNeeded
         }
       };
-
-  
 
       codeHelpers.httpPost(body).then((response) {
         response.transform(convert.utf8.decoder).join().then((onValue) {
@@ -145,7 +143,6 @@ class _LoginState extends State<Login> {
         );
         break;
     }
-
     return loginButton;
   }
 

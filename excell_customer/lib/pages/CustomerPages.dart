@@ -1,5 +1,6 @@
 import 'package:ExcellCustomer/CodeHelpers.dart';
 import 'package:ExcellCustomer/pages/Dashboard.dart';
+import 'package:ExcellCustomer/pages/Home.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 
@@ -177,7 +178,9 @@ class _CustomerPagesState extends State<CustomerPages> {
                 onTap: () {
                   // Update the state of the app.
                   // ...
-                  setContentId(2);
+                  codeHelpers.setStorageKey('loggedIn', '0');
+                  Navigator.pushReplacement(
+                      context, MaterialPageRoute(builder: (context) => Home()));
                 },
               ),
             ],
@@ -199,7 +202,6 @@ class _CustomerPagesState extends State<CustomerPages> {
 
   setContent(int pageId) async {
     var content;
-   
 
     switch (pageId) {
       case 1:
@@ -223,6 +225,4 @@ class _CustomerPagesState extends State<CustomerPages> {
       });
     });
   }
-
-
 }

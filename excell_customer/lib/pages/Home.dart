@@ -1,3 +1,5 @@
+import 'package:ExcellCustomer/CodeHelpers.dart';
+import 'package:ExcellCustomer/pages/CustomerPages.dart';
 import 'package:ExcellCustomer/pages/Login.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +14,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-
+  CodeHelpers codeHelpers = new CodeHelpers();
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget> _widgetOptions = <Widget>[
@@ -49,8 +51,16 @@ class _HomeState extends State<Home> {
                 child: IconButton(
                   icon: FaIcon(FontAwesomeIcons.signInAlt),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Login()));
+                    // print("codeHelpers.getStorageKey('loggedIn')" + " " + codeHelpers.getStorageKey('loggedIn').toString());
+                    var loggedInKey = codeHelpers.getStorageKey('loggedIn');
+                    if (loggedInKey == null || loggedInKey == '0')
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Login()));
+                    else
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CustomerPages()));
                   },
                 ),
               ),

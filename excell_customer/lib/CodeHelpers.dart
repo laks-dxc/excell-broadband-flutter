@@ -29,6 +29,13 @@ class CodeHelpers {
   }
 
   String getStorageKey(key) {
+    // storage.getItem(key)
+
     return storage.getItem(key);
+  }
+
+  double bytesToGB(double bytes) {
+
+    return bytes / 1073741824;
   }
 }
