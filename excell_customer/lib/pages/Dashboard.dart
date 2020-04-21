@@ -121,10 +121,6 @@ class _DashboardState extends State<Dashboard> {
         dCurrentFinalDataLimitInGB.toStringAsFixed(2) + " GB";
 
     dConsumedPercent = dCurrentConsumed / dCurrentFinalDataLimit;
-    // consumedPercent = dConsumedPercent.round().toString();
-
-    // consumedPercent = ((currentConsumedInGB / currentFinalDataLimitInGB) * 100)
-    //     .toStringAsFixed(0);
   }
 
   getConnectionsList() {
@@ -206,13 +202,13 @@ class _DashboardState extends State<Dashboard> {
               Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
-                  currentPackageName,
+                  "Details",
                   style: TextStyle(fontSize: 20, color: Colors.white70),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.all(10.0),
-                child: Text(currentPackageDetail,
+                child: Text("",
                     style: TextStyle(color: Colors.white70, fontSize: 20)),
               ),
             ],
@@ -223,10 +219,9 @@ class _DashboardState extends State<Dashboard> {
           color: Color.fromRGBO(184, 27, 77, 10),
           child: Column(
             children: <Widget>[
-              // listTileWidget("Package", currentPackageName),
-
-              // listTileWidget("Details", currentPackageDetail),
-              // listTileWidget("IP Address", currentIPAddr, showDivider: false),
+              listTileWidget("Package", currentPackageName),
+              listTileWidget("Details", currentPackageDetail),
+              listTileWidget("IP Address", currentIPAddr, showDivider: false),
             ],
           ),
         ),
@@ -261,23 +256,23 @@ class _DashboardState extends State<Dashboard> {
   consumptionDetail() {
     return Column(
       children: <Widget>[
-        // Card(
-        //   elevation: 2.0,
-        //   color: Color.fromRGBO(95, 32, 97, 10),
-        //   child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     children: <Widget>[
-        //       Padding(
-        //         padding: EdgeInsets.all(10.0),
-        //         child: Text(
-        //           "Consumption",
-        //           style: TextStyle(fontSize: 20, color: Colors.white70),
-        //         ),
-        //       ),
-        //       Text(""),
-        //     ],
-        //   ),
-        // ),
+        Card(
+          elevation: 2.0,
+          color: Color.fromRGBO(95, 32, 97, 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  "Consumption",
+                  style: TextStyle(fontSize: 20, color: Colors.white70),
+                ),
+              ),
+              Text(""),
+            ],
+          ),
+        ),
         Card(
           elevation: 2.0,
           color: Color.fromRGBO(184, 27, 77, 10),
@@ -320,31 +315,13 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-
   dashboardContent() {
     return Padding(
       padding: EdgeInsets.all(5.0),
       child: ListView(
         children: <Widget>[
-          connectioDetail(),
           consumptionDetail(),
-          
-          RaisedButton(
-            child: Text("1"),
-            onPressed: () {
-              setState(() {
-                populateCurrentConnectionVariables(1);
-              });
-            },
-          ),
-          RaisedButton(
-            child: Text("0"),
-            onPressed: () {
-              setState(() {
-                populateCurrentConnectionVariables(0);
-              });
-            },
-          )
+          connectioDetail(),
         ],
       ),
     );

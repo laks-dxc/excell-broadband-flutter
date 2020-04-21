@@ -1,10 +1,13 @@
 import 'package:ExcellCustomer/CodeHelpers.dart';
 import 'package:ExcellCustomer/pages/Dashboard.dart';
 import 'package:ExcellCustomer/pages/Home.dart';
+import 'package:ExcellCustomer/pages/Packages.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'Support.dart';
 
 class CustomerPages extends StatefulWidget {
   @override
@@ -15,11 +18,23 @@ class _CustomerPagesState extends State<CustomerPages> {
   final CodeHelpers codeHelpers = new CodeHelpers();
   var customerConnections;
   var contentId = 1;
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  final appTitles = ['Dashboard', 'Packages', 'Support'];
+
+  toggleDrawer() async {
+    if (_scaffoldKey.currentState.isDrawerOpen) {
+      _scaffoldKey.currentState.openEndDrawer();
+    } else {
+      _scaffoldKey.currentState.openDrawer();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Color.fromRGBO(184, 27, 77, 10),
         drawer: Drawer(
           child: ListView(
@@ -43,19 +58,17 @@ class _CustomerPagesState extends State<CustomerPages> {
                 ),
                 dense: false,
                 title: Text(
-                  'Dasbhoard',
+                  "Dashboard",
                   style: TextStyle(
                     fontSize: 24,
                     color: Color.fromRGBO(184, 27, 77, 10),
                   ),
                 ),
                 onTap: () {
-                  // Update the state of the app.
-                  // ...
-
-                  // Navigator.pop(context); // close the drawer
-                  // setContentId(1);
-                  Dashboard();
+                  toggleDrawer();
+                  setState(() {
+                    contentId = 0;
+                  });
                 },
               ),
               SizedBox(height: 10),
@@ -114,9 +127,10 @@ class _CustomerPagesState extends State<CustomerPages> {
                   ),
                 ),
                 onTap: () {
-                  // Update the state of the app.
-                  // ...
-                  // Navigator.pop(context);
+                  toggleDrawer();
+                  setState(() {
+                    contentId = 2;
+                  });
                 },
               ),
               SizedBox(height: 10),
@@ -135,8 +149,10 @@ class _CustomerPagesState extends State<CustomerPages> {
                   ),
                 ),
                 onTap: () {
-                  // Update the state of the app.
-                  // ...
+                  toggleDrawer();
+                  setState(() {
+                    contentId = 1;
+                  });
                 },
               ),
               SizedBox(height: 10),
@@ -188,8 +204,8 @@ class _CustomerPagesState extends State<CustomerPages> {
         ),
         appBar: AppBar(
             backgroundColor: Color.fromRGBO(184, 27, 77, 10),
-            title: Text("Connections")),
-        body: Dashboard(),
+            title: Text(getAppTitle(contentId))),
+        body: setContent(contentId),
       ),
     );
   }
@@ -200,12 +216,21 @@ class _CustomerPagesState extends State<CustomerPages> {
     });
   }
 
-  setContent(int pageId) async {
-    var content;
+  String getAppTitle(_contentId) {
+    return appTitles[_contentId];
+  }
 
-    switch (pageId) {
-      case 1:
+  setContent(_contentId) {
+    var content;
+    switch (_contentId) {
+      case 0:
         content = Dashboard();
+        break;
+      case 1:
+        content = Packages();
+        break;
+        case 2:
+        content = Support();
         break;
     }
 

@@ -1,6 +1,7 @@
 import 'package:ExcellCustomer/CodeHelpers.dart';
 import 'package:ExcellCustomer/pages/CustomerPages.dart';
 import 'package:ExcellCustomer/pages/Login.dart';
+import 'package:ExcellCustomer/pages/Packages.dart';
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,10 +21,7 @@ class _HomeState extends State<Home> {
   List<Widget> _widgetOptions = <Widget>[
     // BasicDemo(),
     ConnectionsCarousel(),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+    Packages(),
     Text(
       'Index 3: Packages',
       style: optionStyle,
@@ -88,7 +86,7 @@ class _HomeState extends State<Home> {
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
+          selectedItemColor: Color.fromRGBO(184, 27, 77, 10),//Colors.amber[800],
           onTap: _onItemTapped,
         ),
         backgroundColor: Color.fromRGBO(184, 27, 77, 10),
