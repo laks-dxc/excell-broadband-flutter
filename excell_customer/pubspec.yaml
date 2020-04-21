@@ -30,6 +30,7 @@ dependencies:
   font_awesome_flutter: ^8.8.1
   pin_code_fields: ^2.5.1
   percent_indicator: ^2.1.3
+  date_format: ^1.0.8
 
 dev_dependencies:
   flutter_test:

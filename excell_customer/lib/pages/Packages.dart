@@ -1,5 +1,6 @@
 import 'package:ExcellCustomer/CodeHelpers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 
@@ -97,43 +98,39 @@ class _PackagesState extends State<Packages> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      // width: ,
-      child: ListView(
-        children: <Widget>[
-          locationDropdown(),
-          SizedBox(height: 3.0),
-          showPackages(plansLoading),
-        ],
-      ),
+    return Column(
+      children: <Widget>[locationDropdown(), showPackages(plansLoading)],
     );
   }
 
   showPackages(_plansLoading) {
-    if (currentCity == 0) {
+    if (_plansLoading)
       return Center(
-          child: Text(
-        'Please select City',
-        style: TextStyle(fontSize: 16, color: Colors.white),
-      ));
-    } else {
-      if (_plansLoading) {
-        return Center(
-            child: Loading(
+        child: Loading(
           indicator: BallPulseIndicator(),
-          size: 40.0,
+          size: 50.0,
           color: Colors.white60,
-        ));
+        ),
+      );
+    else {
+      if (currentCity == 0) {
+        return Center(
+          child: Text(
+            'No City Selected..!!',
+            style: TextStyle(color: Colors.white70),
+          ),
+        );
       } else {
         if (bbPlans.length == 0) {
           return Center(
-              child: Text(
-            'No Packages Found',
-            style: TextStyle(fontSize: 16, color: Colors.white),
-          ));
-        } else
-          return ListView.builder(
+            child: Text(
+              'No Packages Found',
+              style: TextStyle(color: Colors.white70),
+            ),
+          );
+        } else {
+          return Expanded(
+            child: ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               itemCount: bbPlans.length,
@@ -176,8 +173,8 @@ class _PackagesState extends State<Packages> {
                             ),
                             Text(
                               bbPlans[index].plan_speed,
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white70),
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.white70),
                             )
                           ],
                         ),
@@ -194,8 +191,8 @@ class _PackagesState extends State<Packages> {
                             ),
                             Text(
                               bbPlans[index].data_limit,
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white70),
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.white70),
                             )
                           ],
                         ),
@@ -212,8 +209,8 @@ class _PackagesState extends State<Packages> {
                             ),
                             Text(
                               bbPlans[index].plan_postfup,
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white70),
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.white70),
                             )
                           ],
                         ),
@@ -221,7 +218,10 @@ class _PackagesState extends State<Packages> {
                     ],
                   ),
                 ); //buildBody(ctxt, index)
-              });
+              },
+            ),
+          );
+        }
       }
     }
   }
@@ -229,43 +229,46 @@ class _PackagesState extends State<Packages> {
   locationDropdown() {
     return Card(
       // elevation: 3.0,
-      color: Color.fromRGBO(184, 27, 77, 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            "Select your city",
-            style: TextStyle(color: Colors.white60, fontSize: 18),
-          ),
-          DropdownButton(
-            style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black54,
-                fontSize: 18),
-            icon: Icon(
-              Icons.arrow_drop_down,
-              color: Colors.white,
+      color: Color.fromRGBO(0, 32, 97, 5), //Color.fromRGBO(184, 27, 77, 10),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(10.0, 3.0, 10.0, 0.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              "Select your city",
+              style: TextStyle(color: Colors.white60, fontSize: 18),
             ),
-            items: locationItems,
-            elevation: 5,
-            hint: Text(
-              currentCityName,
-              style: TextStyle(color: Colors.white),
-            ),
-            value: null,
-            onChanged: (value) {
-              setState(() {
-                currentCity = int.parse(value);
-                currentCityName = locationList
-                    .firstWhere(
-                        (Location location) => location.location_id == value)
-                    .location
-                    .toString();
-                getBBPlans();
-              });
-            },
-          )
-        ],
+            DropdownButton(
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black54,
+                  fontSize: 18),
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: Colors.white,
+              ),
+              items: locationItems,
+              elevation: 5,
+              hint: Text(
+                currentCityName,
+                style: TextStyle(color: Colors.white),
+              ),
+              value: null,
+              onChanged: (value) {
+                setState(() {
+                  currentCity = int.parse(value);
+                  currentCityName = locationList
+                      .firstWhere(
+                          (Location location) => location.location_id == value)
+                      .location
+                      .toString();
+                  getBBPlans();
+                });
+              },
+            )
+          ],
+        ),
       ),
     );
   }
