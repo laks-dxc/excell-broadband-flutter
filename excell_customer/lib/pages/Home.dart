@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
     // BasicDemo(),
     ConnectionsCarousel(),
     Packages(),
-    Enquiry(),
+    EnquiryForm(),
   ];
 
   void _onItemTapped(int index) {

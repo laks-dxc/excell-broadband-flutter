@@ -69,7 +69,17 @@ class _ConnectionsCarouselState extends State<ConnectionsCarousel> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Text(
+          "Welcome to Excell Media",
+          style: TextStyle(fontSize: 25, color: Colors.white),
+        ),
+        Image.asset(
+          'assets/logo_round.png',
+          height: 180,
+          width: 180,
+        ),
         CarouselSlider(
           items: imageSliders,
           options: CarouselOptions(
@@ -91,11 +101,11 @@ class _ConnectionsCarouselState extends State<ConnectionsCarousel> {
               height: 8.0,
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _current == index
-                    ? Color.fromRGBO(0, 0, 0, 0.9)
-                    : Color.fromRGBO(0, 0, 0, 0.4),
-              ),
+                  shape: BoxShape.circle,
+                  color: _current == index
+                      ? Colors.white24 // fromRGBO(255, 255, 0, 0.9)
+                      : Colors.white //fromRGBO(0, 0, 0, 0.4),
+                  ),
             );
           }).toList(),
         ),

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 // import 'dart:async';
 import 'package:flutter/services.dart';
 import 'dart:convert' as convert;
-import 'package:ExcellCustomer/widgets/custom_expansiontile.dart' as custom;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 
 import '../CodeHelpers.dart';
 
@@ -76,17 +76,27 @@ class _PaymentState extends State<Payment> {
               width: 200,
             ),
             MaterialButton(
-              child: Text(
-                'Pay ' + (amount == null ? '...' : '₹' + amount.toString()),
-                style: TextStyle(fontSize: 20, letterSpacing: 2.0),
-              ),
+              child: amount == null
+                  ? Loading(
+                      indicator: BallPulseIndicator(),
+                      size: 40.0,
+                      color: Colors.white60,
+                    )
+                  : Text(
+                      '₹' + amount.toString(),
+                      style: TextStyle(fontSize: 20, letterSpacing: 2.0),
+                    ),
               elevation: 5.0,
               height: 48.0,
               minWidth: 250.0,
-              color: Color.fromRGBO(0, 32, 97, 5),
+              color: amount == null || amount != 0
+                  ? Color.fromRGBO(95, 32, 97, 5)
+                  : Color.fromRGBO(0, 32, 97, 5),
               textColor: Colors.white,
               onPressed: () {
-                msg != '' ? _getNewActivity({"MSG": msg}) : doNothing();
+                msg != '' && double.parse(amount) > 0
+                    ? _getNewActivity({"MSG": msg})
+                    : doNothing();
               },
             ),
           ],

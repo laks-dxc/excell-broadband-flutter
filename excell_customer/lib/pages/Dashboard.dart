@@ -1,6 +1,7 @@
 import 'dart:convert' as convert;
 
 import 'package:ExcellCustomer/CodeHelpers.dart';
+import 'package:ExcellCustomer/pages/Payment.dart';
 import 'package:ExcellCustomer/widgets/custom_expansiontile.dart' as custom;
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,12 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final CodeHelpers codeHelpers = new CodeHelpers();
 
-  _DashboardState() {
+  _DashboardState() {}
+
+  @override
+  void initState() {
     getConnectionsList();
+    super.initState();
   }
 
   bool dataLoaded = false;
@@ -41,6 +46,7 @@ class _DashboardState extends State<Dashboard> {
       currentFinalDataLimitInGB,
       dueDate,
       invoiceDate;
+  String amount;
   // String consumedPercent = "0";
 
   double dCurrentConsumed,
@@ -144,7 +150,28 @@ class _DashboardState extends State<Dashboard> {
     });
   }
 
+  getBillDetails() {
+    var body = {
+      "name": "getCustomerDue",
+      "param": {"customerId": codeHelpers.getStorageKey('custId')}
+    };
+
+    codeHelpers.httpPost(body, needAuth: true).then((paymentResponse) {
+      paymentResponse
+          .transform(convert.utf8.decoder)
+          .join()
+          .then((paymentsRaw) {
+        final paymentDetail = convert.jsonDecode(paymentsRaw);
+        setState(() {
+          amount = paymentDetail["resonse"]["result"]["amount"];
+        });
+      });
+    });
+  }
+
   getConnectionsList() {
+    getBillDetails();
+
     var body = {
       "name": "getConnectionsList",
       "param": {"customerId": codeHelpers.getStorageKey('custId')}
@@ -201,11 +228,11 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  loader() {
+  loader({size: 50.0}) {
     return Center(
       child: Loading(
         indicator: BallPulseIndicator(),
-        size: 50.0,
+        size: size,
         color: Colors.white60,
       ),
     );
@@ -213,7 +240,6 @@ class _DashboardState extends State<Dashboard> {
 
   connectioDetail() {
     return custom.ExpansionTile(
-      
       initiallyExpanded: true,
       headerBackgroundColor: Color.fromRGBO(0, 32, 97, 5),
       // backgroundColor: Colors.white60,
@@ -224,9 +250,7 @@ class _DashboardState extends State<Dashboard> {
       children: <Widget>[
         listTileWidget("Plan", currentPackageName),
         listTileWidget("Speed / Data Limit", currentPackageDetail),
-        listTileWidget("IP Address", currentIPAddr),
-        listTileWidget("Invoice Date", invoiceDate),
-        listTileWidget("Due Date", dueDate, showDivider: false),
+        listTileWidget("IP Address", currentIPAddr, showDivider: false),
       ],
     );
   }
@@ -260,7 +284,7 @@ class _DashboardState extends State<Dashboard> {
       headerBackgroundColor: Color.fromRGBO(0, 32, 97, 5),
       // backgroundColor: Colors.white60,
       initiallyExpanded: true,
-      
+
       title: Text(
         "Consumption",
         style: TextStyle(fontSize: 20, color: Colors.white70),
@@ -305,61 +329,93 @@ class _DashboardState extends State<Dashboard> {
     // return ;
   }
 
+  paymentDetails() {
+    return custom.ExpansionTile(
+      initiallyExpanded: true,
+      headerBackgroundColor: Color.fromRGBO(0, 32, 97, 5),
+      // backgroundColor: Colors.white60,
+      title: Text(
+        "Payment Details",
+        style: TextStyle(fontSize: 20, color: Colors.white70),
+      ),
+      children: <Widget>[
+        listTileWidget("Invoice Date", invoiceDate),
+        listTileWidget("Due Date", dueDate),
+        SizedBox(
+          height: 5.0,
+        ),
+        listTileWidget("Amount Due", amount == null ? "" : '₹ ' + amount,
+            showDivider: false),
+      ],
+    );
+  }
+
   dashboardContent() {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.more_horiz),
-        backgroundColor: Color.fromRGBO(0, 32, 97, 5),
-        onPressed: () {
-          _controller.isOpened ? _controller.hide() : _controller.show();
-        },
-      ),
-      backgroundColor: Color.fromRGBO(184, 27, 77, 10),
-      bottomSheet: SolidBottomSheet(
-        controller: _controller,
-        maxHeight: noOfConnections * 75.0,
-        headerBar: Container(
-          color: Color.fromRGBO(184, 27, 77, 10),
-          height: 20,
-          child: Center(
-            child: Text(
-              // "View more connections",
-              "", style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
-        body: Container(
-            color: Colors.white,
-            height: 30,
-            child: ListView.separated(
-              separatorBuilder: (context, index) => Divider(
-                color: Colors.black,
-              ),
-              itemCount: noOfConnections,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  onTap: () {
-                    // print(index);
-                    populateCurrentConnectionVariables(index);
+      floatingActionButton: noOfConnections > 1
+          ? Container(
+              // padding: EdgeInsets.only(bottom: 100.0),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: FloatingActionButton(
+                  child: Icon(Icons.more_horiz),
+                  backgroundColor: Color.fromRGBO(0, 32, 97, 5),
+                  onPressed: () {
+                    _controller.isOpened
+                        ? _controller.hide()
+                        : _controller.show();
                   },
-                  leading: 
-                  
-                  selectedConnectionIndex == index ?
-                  Icon(
-                    Icons.check_circle,
-                    color: Color.fromRGBO(184, 27, 77, 10),
-                  ): Icon(
-                    Icons.radio_button_unchecked,
-                    color: Colors.grey,
+                ),
+              ),
+            )
+          : null,
+      backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+      bottomSheet: noOfConnections > 1
+          ? SolidBottomSheet(
+              controller: _controller,
+              maxHeight: noOfConnections * 75.0,
+              headerBar: Container(
+                color: Color.fromRGBO(184, 27, 77, 10),
+                height: 20,
+                child: Center(
+                  child: Text(
+                    // "View more connections",
+                    "", style: TextStyle(color: Colors.white),
                   ),
-                  title: Text(connectionsList["resonse"]["result"]
-                      ["connections"][index]["pkgname"]),
-                  trailing: Text(connectionsList["resonse"]["result"]
-                      ["connections"][index]["ip_addr"]),
-                );
-              },
-            )),
-      ),
+                ),
+              ),
+              body: Container(
+                  color: Colors.white,
+                  height: 30,
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => Divider(
+                      color: Colors.black,
+                    ),
+                    itemCount: noOfConnections,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        onTap: () {
+                          // print(index);
+                          populateCurrentConnectionVariables(index);
+                        },
+                        leading: selectedConnectionIndex == index
+                            ? Icon(
+                                Icons.check_circle,
+                                color: Color.fromRGBO(184, 27, 77, 10),
+                              )
+                            : Icon(
+                                Icons.radio_button_unchecked,
+                                color: Colors.grey,
+                              ),
+                        title: Text(connectionsList["resonse"]["result"]
+                            ["connections"][index]["pkgname"]),
+                        trailing: Text(connectionsList["resonse"]["result"]
+                            ["connections"][index]["ip_addr"]),
+                      );
+                    },
+                  )),
+            )
+          : null,
       body: Padding(
         padding: EdgeInsets.all(5.0),
         child: ListView(
@@ -368,7 +424,16 @@ class _DashboardState extends State<Dashboard> {
             SizedBox(
               height: 5.0,
             ),
+            paymentDetails(),
+            SizedBox(
+              height: 5.0,
+            ),
             connectioDetail(),
+
+            // ListTile(
+            //   leading: Text('Payment'),
+            //   trailing: Text('Pay Now!!'),
+            // )
           ],
         ),
       ),

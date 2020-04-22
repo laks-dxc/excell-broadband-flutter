@@ -2,6 +2,7 @@ import 'package:ExcellCustomer/CodeHelpers.dart';
 import 'package:ExcellCustomer/pages/Dashboard.dart';
 import 'package:ExcellCustomer/pages/Home.dart';
 import 'package:ExcellCustomer/pages/Packages.dart';
+import 'package:ExcellCustomer/pages/Profile.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 
@@ -19,10 +20,17 @@ class CustomerPages extends StatefulWidget {
 class _CustomerPagesState extends State<CustomerPages> {
   final CodeHelpers codeHelpers = new CodeHelpers();
   var customerConnections;
-  var contentId = 1;
+  var contentId = 0;
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  final appTitles = ['Dashboard', 'Packages', 'Support', 'Payment', 'Enquiry'];
+  final appTitles = [
+    'Dashboard',
+    'Packages',
+    'Support',
+    'Payment',
+    'Enquiry',
+    'My Profile'
+  ];
 
   toggleDrawer() async {
     if (_scaffoldKey.currentState.isDrawerOpen) {
@@ -89,8 +97,10 @@ class _CustomerPagesState extends State<CustomerPages> {
                   ),
                 ),
                 onTap: () {
-                  // Update the state of the app.
-                  // ...
+                  toggleDrawer();
+                  setState(() {
+                    contentId = 5;
+                  });
                 },
               ),
               SizedBox(height: 10),
@@ -241,7 +251,10 @@ class _CustomerPagesState extends State<CustomerPages> {
         content = Payment();
         break;
       case 4:
-        content = Enquiry();
+        content = EnquiryForm();
+        break;
+      case 5:
+        content = Profile();
         break;
     }
 

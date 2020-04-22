@@ -1,17 +1,32 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class Enquiry extends StatefulWidget {
+import 'package:ExcellCustomer/CodeHelpers.dart';
+import 'package:flutter/material.dart';
+import 'dart:convert' as convert;
+
+import 'package:fluttertoast/fluttertoast.dart';
+
+class EnquiryForm extends StatefulWidget {
   @override
-  EnquiryState createState() {
-    return EnquiryState();
+  EnquiryFormState createState() {
+    return EnquiryFormState();
   }
 }
 
-class EnquiryState extends State<Enquiry> {
+class Enquiry {
+  String name;
+  String email;
+  String mobile;
+  String address;
+  String city;
+  String purpose;
+}
+
+class EnquiryFormState extends State<EnquiryForm> {
   final _formKey = GlobalKey<FormState>();
-
   final focusedErrorBorder = BorderSide(color: Colors.white, width: 1.0);
-
+  Enquiry enquiryData = new Enquiry();
+  CodeHelpers codeHelpers = new CodeHelpers();
   final errorStyle = TextStyle(
     color: Color.fromRGBO(0, 32, 97, 5),
   );
@@ -24,6 +39,37 @@ class EnquiryState extends State<Enquiry> {
   final enabledBorder = OutlineInputBorder(
     borderSide: BorderSide(color: Color.fromRGBO(0, 32, 97, 5), width: 1.0),
   );
+
+  void submit() {
+    // First validate form.
+    if (this._formKey.currentState.validate()) {
+      _formKey.currentState.save();
+
+      var body = {
+        "name": "addEnquiry",
+        "param": {
+          "name": enquiryData.name,
+          "email": enquiryData.email,
+          "mobile": enquiryData.mobile,
+          "address": enquiryData.address,
+          "city": enquiryData.city,
+          "purpose": enquiryData.purpose
+        }
+      };
+
+      codeHelpers.httpPost(body).then((onValue) {
+        Fluttertoast.showToast(
+            msg: "Enquiry Saved Succesfully",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Color.fromRGBO(0, 32, 97, 5),
+            textColor: Colors.white,
+            fontSize: 16.0);
+        _formKey.currentState.reset();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +84,8 @@ class EnquiryState extends State<Enquiry> {
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                "Create New Enquiry",
-                style: TextStyle(color: Colors.white,fontSize:25 ),
+                "New Enquiry",
+                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),
               ),
               SizedBox(
                 height: 20,
@@ -48,13 +94,19 @@ class EnquiryState extends State<Enquiry> {
                 cursorColor: Colors.white,
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
-                    focusedErrorBorder: focusedBorder,
-                    errorStyle: errorStyle,
-                    errorBorder: errorBorder,
-                    focusedBorder: focusedBorder,
-                    enabledBorder: enabledBorder,
-                    labelText: 'Full Name',
-                    labelStyle: TextStyle(color: Colors.white)),
+                  focusedErrorBorder: focusedBorder,
+                  errorStyle: errorStyle,
+                  errorBorder: errorBorder,
+                  focusedBorder: focusedBorder,
+                  enabledBorder: enabledBorder,
+                  labelText: 'Full Name',
+                  labelStyle: TextStyle(color: Colors.white),
+                ),
+                onSaved: (value) {
+                  setState(() {
+                    enquiryData.name = value;
+                  });
+                },
                 validator: (value) {
                   if (value.trim().isEmpty) {
                     return 'Please enter your name';
@@ -64,6 +116,11 @@ class EnquiryState extends State<Enquiry> {
               ),
               SizedBox(height: 10),
               TextFormField(
+                onSaved: (value) {
+                  setState(() {
+                    enquiryData.email = value;
+                  });
+                },
                 cursorColor: Colors.white,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
@@ -85,6 +142,11 @@ class EnquiryState extends State<Enquiry> {
                 height: 10,
               ),
               TextFormField(
+                onSaved: (value) {
+                  setState(() {
+                    enquiryData.mobile = value;
+                  });
+                },
                 keyboardType: TextInputType.number,
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
@@ -106,6 +168,11 @@ class EnquiryState extends State<Enquiry> {
                 height: 10,
               ),
               TextFormField(
+                onSaved: (value) {
+                  setState(() {
+                    enquiryData.address = value;
+                  });
+                },
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
                     focusedErrorBorder: focusedBorder,
@@ -126,6 +193,11 @@ class EnquiryState extends State<Enquiry> {
                 height: 10,
               ),
               TextFormField(
+                onSaved: (value) {
+                  setState(() {
+                    enquiryData.city = value;
+                  });
+                },
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
                   focusedErrorBorder: focusedBorder,
@@ -147,6 +219,11 @@ class EnquiryState extends State<Enquiry> {
                 height: 10,
               ),
               TextFormField(
+                onSaved: (value) {
+                  setState(() {
+                    enquiryData.purpose = value;
+                  });
+                },
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
                     focusedErrorBorder: focusedBorder,
@@ -168,9 +245,7 @@ class EnquiryState extends State<Enquiry> {
                 child: RaisedButton(
                   color: Color.fromRGBO(0, 32, 97, 5),
                   onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.reset();
-                    }
+                    submit();
                   },
                   child: Text(
                     'Create Enquiry',
