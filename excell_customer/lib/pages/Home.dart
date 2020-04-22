@@ -1,5 +1,6 @@
 import 'package:ExcellCustomer/CodeHelpers.dart';
 import 'package:ExcellCustomer/pages/CustomerPages.dart';
+import 'package:ExcellCustomer/pages/Enquiry.dart';
 import 'package:ExcellCustomer/pages/Login.dart';
 import 'package:ExcellCustomer/pages/Packages.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +23,7 @@ class _HomeState extends State<Home> {
     // BasicDemo(),
     ConnectionsCarousel(),
     Packages(),
-    Text(
-      'Index 3: Packages',
-      style: optionStyle,
-    ),
+    Enquiry(),
   ];
 
   void _onItemTapped(int index) {
@@ -81,12 +79,13 @@ class _HomeState extends State<Home> {
               title: Text('Packages'),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.question_answer),
-              title: Text('FAQ'),
+              icon: Icon(Icons.help),
+              title: Text('Enquiry'),
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Color.fromRGBO(184, 27, 77, 10),//Colors.amber[800],
+          selectedItemColor:
+              Color.fromRGBO(184, 27, 77, 10), //Colors.amber[800],
           onTap: _onItemTapped,
         ),
         backgroundColor: Color.fromRGBO(184, 27, 77, 10),

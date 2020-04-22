@@ -7,6 +7,8 @@ import 'dart:convert' as convert;
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'Enquiry.dart';
+import 'Payment.dart';
 import 'Support.dart';
 
 class CustomerPages extends StatefulWidget {
@@ -20,7 +22,7 @@ class _CustomerPagesState extends State<CustomerPages> {
   var contentId = 1;
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  final appTitles = ['Dashboard', 'Packages', 'Support'];
+  final appTitles = ['Dashboard', 'Packages', 'Support', 'Payment', 'Enquiry'];
 
   toggleDrawer() async {
     if (_scaffoldKey.currentState.isDrawerOpen) {
@@ -107,8 +109,10 @@ class _CustomerPagesState extends State<CustomerPages> {
                   ),
                 ),
                 onTap: () {
-                  // Update the state of the app.
-                  // ...
+                  toggleDrawer();
+                  setState(() {
+                    contentId = 3;
+                  });
                 },
               ),
               SizedBox(height: 10),
@@ -164,7 +168,7 @@ class _CustomerPagesState extends State<CustomerPages> {
                 ),
                 dense: false,
                 title: Text(
-                  'FAQs',
+                  'Enquiry',
                   style: TextStyle(
                     fontSize: 24,
                     color: Color.fromRGBO(184, 27, 77, 10),
@@ -173,6 +177,7 @@ class _CustomerPagesState extends State<CustomerPages> {
                 onTap: () {
                   // Update the state of the app.
                   // ...
+                  toggleDrawer();
                   setContentId(4);
                 },
               ),
@@ -229,8 +234,14 @@ class _CustomerPagesState extends State<CustomerPages> {
       case 1:
         content = Packages();
         break;
-        case 2:
+      case 2:
         content = Support();
+        break;
+      case 3:
+        content = Payment();
+        break;
+      case 4:
+        content = Enquiry();
         break;
     }
 

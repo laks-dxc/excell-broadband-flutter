@@ -1,11 +1,14 @@
 import 'dart:convert' as convert;
 
 import 'package:ExcellCustomer/CodeHelpers.dart';
+import 'package:ExcellCustomer/widgets/custom_expansiontile.dart' as custom;
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -35,7 +38,9 @@ class _DashboardState extends State<Dashboard> {
       currentDataNewLimit,
       currentPayBonus,
       currentConsumedInGB,
-      currentFinalDataLimitInGB;
+      currentFinalDataLimitInGB,
+      dueDate,
+      invoiceDate;
   // String consumedPercent = "0";
 
   double dCurrentConsumed,
@@ -50,6 +55,9 @@ class _DashboardState extends State<Dashboard> {
   double dCurrentNewLimit;
   double dCurrentPayBonus;
   double dConsumedPercent;
+
+  int selectedConnectionIndex = 0;
+  SolidController _controller = SolidController();
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +90,8 @@ class _DashboardState extends State<Dashboard> {
     //   "due_bill_date": "2020-04-06"
     // };
 
+    selectedConnectionIndex = index;
+
     var lCurrentConnection =
         connectionsList["resonse"]["result"]["connections"][index];
 
@@ -92,6 +102,13 @@ class _DashboardState extends State<Dashboard> {
     currentDataLimit = lCurrentConnection["datalimit"];
     currentData = lCurrentConnection["data"];
     currentNewLimit = lCurrentConnection["new_limit"];
+
+    dueDate = formatDate(DateTime.parse(lCurrentConnection["due_bill_date"]),
+        [dd, '-', M, '-', yyyy]);
+
+    invoiceDate = formatDate(
+        DateTime.parse(lCurrentConnection["last_bill_date"]),
+        [dd, '-', M, '-', yyyy]);
 
     if (currentData == null) {
       dCurrentData = 0;
@@ -110,17 +127,21 @@ class _DashboardState extends State<Dashboard> {
         dCurrentData = dCurrentDataLimit;
       }
     }
+    setState(() {
+      dCurrentConsumed = dCurrentData;
 
-    dCurrentConsumed = dCurrentData;
+      dCurrentConsumedInGB = codeHelpers.bytesToGB(dCurrentConsumed);
+      dCurrentFinalDataLimitInGB =
+          codeHelpers.bytesToGB(dCurrentFinalDataLimit);
 
-    dCurrentConsumedInGB = codeHelpers.bytesToGB(dCurrentConsumed);
-    dCurrentFinalDataLimitInGB = codeHelpers.bytesToGB(dCurrentFinalDataLimit);
+      currentConsumedInGB = dCurrentConsumedInGB.toStringAsFixed(2) + " GB";
+      currentFinalDataLimitInGB =
+          dCurrentFinalDataLimitInGB.toStringAsFixed(2) + " GB";
 
-    currentConsumedInGB = dCurrentConsumedInGB.toStringAsFixed(2) + " GB";
-    currentFinalDataLimitInGB =
-        dCurrentFinalDataLimitInGB.toStringAsFixed(2) + " GB";
+      dConsumedPercent = dCurrentConsumed / dCurrentFinalDataLimit;
 
-    dConsumedPercent = dCurrentConsumed / dCurrentFinalDataLimit;
+      dConsumedPercent = dCurrentConsumed / dCurrentFinalDataLimit;
+    });
   }
 
   getConnectionsList() {
@@ -143,7 +164,7 @@ class _DashboardState extends State<Dashboard> {
           if (noOfConnections >= 0) {
             currentConnection = connectionsList["resonse"]["result"]
                 ["connections"][currentConnectionIndex];
-
+            selectedConnectionIndex = 0;
             populateCurrentConnectionVariables(0);
           }
 
@@ -191,40 +212,21 @@ class _DashboardState extends State<Dashboard> {
   }
 
   connectioDetail() {
-    return Column(
+    return custom.ExpansionTile(
+      
+      initiallyExpanded: true,
+      headerBackgroundColor: Color.fromRGBO(0, 32, 97, 5),
+      // backgroundColor: Colors.white60,
+      title: Text(
+        "Plan Details",
+        style: TextStyle(fontSize: 20, color: Colors.white70),
+      ),
       children: <Widget>[
-        Card(
-          elevation: 2.0,
-          color: Color.fromRGBO(95, 32, 97, 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  "Details",
-                  style: TextStyle(fontSize: 20, color: Colors.white70),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text("",
-                    style: TextStyle(color: Colors.white70, fontSize: 20)),
-              ),
-            ],
-          ),
-        ),
-        Card(
-          elevation: 2.0,
-          color: Color.fromRGBO(184, 27, 77, 10),
-          child: Column(
-            children: <Widget>[
-              listTileWidget("Package", currentPackageName),
-              listTileWidget("Details", currentPackageDetail),
-              listTileWidget("IP Address", currentIPAddr, showDivider: false),
-            ],
-          ),
-        ),
+        listTileWidget("Plan", currentPackageName),
+        listTileWidget("Speed / Data Limit", currentPackageDetail),
+        listTileWidget("IP Address", currentIPAddr),
+        listTileWidget("Invoice Date", invoiceDate),
+        listTileWidget("Due Date", dueDate, showDivider: false),
       ],
     );
   }
@@ -254,75 +256,121 @@ class _DashboardState extends State<Dashboard> {
   }
 
   consumptionDetail() {
-    return Column(
+    return custom.ExpansionTile(
+      headerBackgroundColor: Color.fromRGBO(0, 32, 97, 5),
+      // backgroundColor: Colors.white60,
+      initiallyExpanded: true,
+      
+      title: Text(
+        "Consumption",
+        style: TextStyle(fontSize: 20, color: Colors.white70),
+      ),
       children: <Widget>[
-        Card(
-          elevation: 2.0,
-          color: Color.fromRGBO(95, 32, 97, 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  "Consumption",
-                  style: TextStyle(fontSize: 20, color: Colors.white70),
-                ),
-              ),
-              Text(""),
-            ],
-          ),
-        ),
-        Card(
-          elevation: 2.0,
-          color: Color.fromRGBO(184, 27, 77, 10),
-          child: Center(
-            child: CircularPercentIndicator(
-              radius: 200.0,
-              lineWidth: 25.0,
-              arcType: ArcType.FULL,
-              animation: true,
-              percent: dConsumedPercent,
-              arcBackgroundColor: Colors.white38,
-              footer: Text(
-                currentConsumedInGB + " / " + currentFinalDataLimitInGB,
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              center: Text(
-                (dConsumedPercent * 100).toStringAsFixed(0) + "%",
-                style: TextStyle(
-                    fontSize: 38,
-                    letterSpacing: 2.0,
-                    color: Color.fromRGBO(0, 32, 97, 5),
-                    fontWeight: FontWeight.w500),
-              ),
-              circularStrokeCap: CircularStrokeCap.round,
-              backgroundColor: Color.fromRGBO(184, 27, 77, 0),
-              maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
-              linearGradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.orange, Colors.yellow],
+        Center(
+          child: CircularPercentIndicator(
+            radius: 200.0,
+            lineWidth: 25.0,
+            arcType: ArcType.FULL,
+            animation: true,
+            percent: dConsumedPercent,
+            arcBackgroundColor: Colors.white38,
+            footer: Text(
+              currentConsumedInGB + " / " + currentFinalDataLimitInGB,
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
               ),
             ),
+            center: Text(
+              (dConsumedPercent * 100).toStringAsFixed(0) + "%",
+              style: TextStyle(
+                  fontSize: 38,
+                  letterSpacing: 2.0,
+                  color: Color.fromRGBO(0, 32, 97, 5),
+                  fontWeight: FontWeight.w500),
+            ),
+            circularStrokeCap: CircularStrokeCap.round,
+            backgroundColor: Color.fromRGBO(184, 27, 77, 0),
+            maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
+            linearGradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.orange, Colors.yellow],
+            ),
           ),
-        ),
+        )
       ],
     );
+    // return ;
   }
 
   dashboardContent() {
-    return Padding(
-      padding: EdgeInsets.all(5.0),
-      child: ListView(
-        children: <Widget>[
-          consumptionDetail(),
-          connectioDetail(),
-        ],
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.more_horiz),
+        backgroundColor: Color.fromRGBO(0, 32, 97, 5),
+        onPressed: () {
+          _controller.isOpened ? _controller.hide() : _controller.show();
+        },
+      ),
+      backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+      bottomSheet: SolidBottomSheet(
+        controller: _controller,
+        maxHeight: noOfConnections * 75.0,
+        headerBar: Container(
+          color: Color.fromRGBO(184, 27, 77, 10),
+          height: 20,
+          child: Center(
+            child: Text(
+              // "View more connections",
+              "", style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        body: Container(
+            color: Colors.white,
+            height: 30,
+            child: ListView.separated(
+              separatorBuilder: (context, index) => Divider(
+                color: Colors.black,
+              ),
+              itemCount: noOfConnections,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () {
+                    // print(index);
+                    populateCurrentConnectionVariables(index);
+                  },
+                  leading: 
+                  
+                  selectedConnectionIndex == index ?
+                  Icon(
+                    Icons.check_circle,
+                    color: Color.fromRGBO(184, 27, 77, 10),
+                  ): Icon(
+                    Icons.radio_button_unchecked,
+                    color: Colors.grey,
+                  ),
+                  title: Text(connectionsList["resonse"]["result"]
+                      ["connections"][index]["pkgname"]),
+                  trailing: Text(connectionsList["resonse"]["result"]
+                      ["connections"][index]["ip_addr"]),
+                );
+              },
+            )),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(5.0),
+        child: ListView(
+          children: <Widget>[
+            consumptionDetail(),
+            SizedBox(
+              height: 5.0,
+            ),
+            connectioDetail(),
+          ],
+        ),
       ),
     );
   }
