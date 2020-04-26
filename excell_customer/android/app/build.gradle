@@ -65,6 +65,7 @@ dependencies {
     implementation "androidx.core:core-ktx:+"
     // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation project(path: ':BillDeskSDK_v2.0.2')
+    apply plugin: 'com.google.gms.google-services'
 }
 repositories {
     mavenCentral()

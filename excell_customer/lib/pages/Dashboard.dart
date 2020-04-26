@@ -1,7 +1,7 @@
 import 'dart:convert' as convert;
 
 import 'package:ExcellCustomer/CodeHelpers.dart';
-import 'package:ExcellCustomer/pages/Payment.dart';
+import 'package:ExcellCustomer/pages/ConnectionsCarousel.dart';
 import 'package:ExcellCustomer/widgets/custom_expansiontile.dart' as custom;
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -420,6 +420,10 @@ class _DashboardState extends State<Dashboard> {
         padding: EdgeInsets.all(5.0),
         child: ListView(
           children: <Widget>[
+            ConnectionsCarousel(),
+            SizedBox(
+              height: 5.0,
+            ),
             consumptionDetail(),
             SizedBox(
               height: 5.0,

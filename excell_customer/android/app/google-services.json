@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "651142371681",
+    "firebase_url": "https://excell-customer.firebaseio.com",
+    "project_id": "excell-customer",
+    "storage_bucket": "excell-customer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651142371681:android:7eef58c923d18246044d20",
+        "android_client_info": {
+          "package_name": "com.excell.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "651142371681-72b866cf79fc2r5nsntqmf4dl0km0gb8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFCQ6N7rC2ePmGgOAnWG7j-Qwj4Tx4DBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651142371681-72b866cf79fc2r5nsntqmf4dl0km0gb8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
