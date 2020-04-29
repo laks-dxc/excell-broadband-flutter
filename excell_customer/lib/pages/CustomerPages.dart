@@ -1,6 +1,7 @@
 import 'package:ExcellCustomer/CodeHelpers.dart';
 import 'package:ExcellCustomer/pages/Dashboard.dart';
 import 'package:ExcellCustomer/pages/Home.dart';
+import 'package:ExcellCustomer/pages/MyPackages.dart';
 import 'package:ExcellCustomer/pages/Packages.dart';
 import 'package:ExcellCustomer/pages/Profile.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'dart:convert' as convert;
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../main.dart';
 import 'Enquiry.dart';
 import 'Payment.dart';
 import 'Support.dart';
@@ -25,7 +27,7 @@ class _CustomerPagesState extends State<CustomerPages> {
 
   final appTitles = [
     'Dashboard',
-    'Packages',
+    'My Packages',
     'Support',
     'Payment',
     'Enquiry',
@@ -156,7 +158,7 @@ class _CustomerPagesState extends State<CustomerPages> {
                 ),
                 dense: false,
                 title: Text(
-                  'Packages',
+                  'My Packages',
                   style: TextStyle(
                     fontSize: 24,
                     color: Color.fromRGBO(184, 27, 77, 10),
@@ -170,28 +172,28 @@ class _CustomerPagesState extends State<CustomerPages> {
                 },
               ),
               SizedBox(height: 10),
-              ListTile(
-                leading: FaIcon(
-                  FontAwesomeIcons.questionCircle,
-                  size: 24,
-                  color: Color.fromRGBO(0, 32, 97, 5),
-                ),
-                dense: false,
-                title: Text(
-                  'Enquiry',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Color.fromRGBO(184, 27, 77, 10),
-                  ),
-                ),
-                onTap: () {
-                  // Update the state of the app.
-                  // ...
-                  toggleDrawer();
-                  setContentId(4);
-                },
-              ),
-              SizedBox(height: 10),
+              // ListTile(
+              //   leading: FaIcon(
+              //     FontAwesomeIcons.questionCircle,
+              //     size: 24,
+              //     color: Color.fromRGBO(0, 32, 97, 5),
+              //   ),
+              //   dense: false,
+              //   title: Text(
+              //     'Enquiry',
+              //     style: TextStyle(
+              //       fontSize: 24,
+              //       color: Color.fromRGBO(184, 27, 77, 10),
+              //     ),
+              //   ),
+              //   onTap: () {
+              //     // Update the state of the app.
+              //     // ...
+              //     toggleDrawer();
+              //     setContentId(4);
+              //   },
+              // ),
+              // SizedBox(height: 10),
               ListTile(
                 leading: FaIcon(
                   FontAwesomeIcons.signOutAlt,
@@ -211,7 +213,7 @@ class _CustomerPagesState extends State<CustomerPages> {
                   // ...
                   codeHelpers.setStorageKey('loggedIn', '0');
                   Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => Home()));
+                      context, MaterialPageRoute(builder: (context) => MyApp()));
                 },
               ),
             ],
@@ -242,7 +244,7 @@ class _CustomerPagesState extends State<CustomerPages> {
         content = Dashboard();
         break;
       case 1:
-        content = Packages();
+        content = MyPackages();
         break;
       case 2:
         content = Support();

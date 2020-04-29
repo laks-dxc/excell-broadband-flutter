@@ -99,8 +99,15 @@ class _PackagesState extends State<Packages> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[locationDropdown(), showPackages(plansLoading)],
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+        title: Text('Excell Broadband - Packages'),
+      ),
+      body: Column(
+        children: <Widget>[locationDropdown(), showPackages(plansLoading)],
+      ),
     );
   }
 

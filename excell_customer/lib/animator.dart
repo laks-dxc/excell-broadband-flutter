@@ -40,8 +40,13 @@ class _AnimatorState extends State<Animator>
       builder: (BuildContext context, Widget child) {
         return Opacity(
           opacity: animation.value,
+          // child: Transform.scale(
+          //   scale: 0.9,
+          //   origin: Offset(0.0,(1 - animation.value) * 200),
+          //   child: child,
+          // ),
           child: Transform.translate(
-            offset: Offset(0.0, (1 - animation.value) * 20),
+            offset: Offset(0.0,(1 - animation.value) * 20),
             child: child,
           ),
         );

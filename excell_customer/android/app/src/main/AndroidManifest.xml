@@ -9,7 +9,7 @@
         android:name="io.flutter.app.FlutterApplication"
         android:icon="@mipmap/ic_launcher"
         tools:replace="android:label"
-        android:label="customer">
+        android:label="Excell Customer">
         <activity android:name=".StatusActivity"></activity>
         <activity
             android:name=".Payment"

@@ -402,7 +402,7 @@ class _DashboardState extends State<Dashboard> {
             ),
             Text(
               value,
-              style: TextStyle(color: Colors.white70, fontSize: 18),
+              style: TextStyle(color: Colors.white, fontSize: 18),
             ),
           ],
         ),

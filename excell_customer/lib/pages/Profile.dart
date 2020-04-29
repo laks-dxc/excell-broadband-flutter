@@ -15,7 +15,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   CodeHelpers codeHelpers = new CodeHelpers();
   var profileData;
-  String customerName, daytime, night, mobile, address, city, state;
+  String customerName, daytime, night, mobile, address, city, state, email;
 
   @override
   void initState() {
@@ -35,6 +35,7 @@ class _ProfileState extends State<Profile> {
           address = profileData["address"];
           city = profileData["city"];
           state = profileData["state"];
+          email = profileData["email"];
         });
       });
     });
@@ -69,7 +70,9 @@ class _ProfileState extends State<Profile> {
     final List<Card> profileTiles = [
       detailsListValue("Name", customerName ?? ""),
       detailsListValue("Mobile No.", daytime ?? ""),
-      detailsListValue("Contact No.", night ?? ""),
+      detailsListValue("Phone No.", night ?? ""),
+      detailsListValue("Contact No.", mobile ?? ""),
+      detailsListValue("Email", email ?? ""),
       detailsListValue("City", city ?? ""),
       detailsListValue("State", state ?? ""),
     ];
@@ -111,7 +114,7 @@ class _ProfileState extends State<Profile> {
             ),
             Text(
               value,
-              style: TextStyle(color: Colors.white70, fontSize: 18),
+              style: TextStyle(color: Colors.white, fontSize: 18),
             ),
           ],
         ),

@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import 'pages/Login.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -115,6 +117,12 @@ class _MyAppState extends State<MyApp> {
     //   );
     // }
 
-    return Home();
+    return MaterialApp(
+        initialRoute: '/',
+        routes: {
+          '/login': (BuildContext context) => Login(),
+          '/customerPages': (BuildContext context) => new CustomerPages(),
+        },
+        home: Home());
   }
 }
