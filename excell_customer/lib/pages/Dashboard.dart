@@ -2,6 +2,7 @@ import 'dart:convert' as convert;
 
 import 'package:ExcellCustomer/CodeHelpers.dart';
 import 'package:ExcellCustomer/pages/ConnectionsCarousel.dart';
+import 'package:ExcellCustomer/widgets/WidgetAnimator.dart';
 import 'package:ExcellCustomer/widgets/custom_expansiontile.dart' as custom;
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,9 @@ import 'package:loading/loading.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
+import 'Payment.dart';
+import 'Profile.dart';
+
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
@@ -19,11 +23,12 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final CodeHelpers codeHelpers = new CodeHelpers();
 
-  _DashboardState() {}
+  // _DashboardState() {}
 
   @override
   void initState() {
     getConnectionsList();
+
     super.initState();
   }
 
@@ -45,7 +50,8 @@ class _DashboardState extends State<Dashboard> {
       currentConsumedInGB,
       currentFinalDataLimitInGB,
       dueDate,
-      invoiceDate;
+      invoiceDate,
+      pgMsg;
   String amount;
   // String consumedPercent = "0";
 
@@ -64,18 +70,6 @@ class _DashboardState extends State<Dashboard> {
 
   int selectedConnectionIndex = 0;
   SolidController _controller = SolidController();
-
-  @override
-  Widget build(BuildContext context) {
-    if (dataLoaded) {
-      if (noOfConnections >= 0)
-        return dashboardContent();
-      else
-        return noDataView();
-    } else {
-      return loader();
-    }
-  }
 
   populateCurrentConnectionVariables(index) {
     // lCurrentConnection = {
@@ -108,13 +102,15 @@ class _DashboardState extends State<Dashboard> {
     currentDataLimit = lCurrentConnection["datalimit"];
     currentData = lCurrentConnection["data"];
     currentNewLimit = lCurrentConnection["new_limit"];
+    dueDate = lCurrentConnection["due_bill_date"] == null
+        ? ""
+        : formatDate(DateTime.parse(lCurrentConnection["due_bill_date"]),
+            [dd, '-', M, '-', yyyy]);
 
-    dueDate = formatDate(DateTime.parse(lCurrentConnection["due_bill_date"]),
-        [dd, '-', M, '-', yyyy]);
-
-    invoiceDate = formatDate(
-        DateTime.parse(lCurrentConnection["last_bill_date"]),
-        [dd, '-', M, '-', yyyy]);
+    invoiceDate = lCurrentConnection["last_bill_date"] == null
+        ? ""
+        : formatDate(DateTime.parse(lCurrentConnection["last_bill_date"]),
+            [dd, '-', M, '-', yyyy]);
 
     if (currentData == null) {
       dCurrentData = 0;
@@ -133,6 +129,7 @@ class _DashboardState extends State<Dashboard> {
         dCurrentData = dCurrentDataLimit;
       }
     }
+
     setState(() {
       dCurrentConsumed = dCurrentData;
 
@@ -144,9 +141,11 @@ class _DashboardState extends State<Dashboard> {
       currentFinalDataLimitInGB =
           dCurrentFinalDataLimitInGB.toStringAsFixed(2) + " GB";
 
-      dConsumedPercent = dCurrentConsumed / dCurrentFinalDataLimit;
+      // dConsumedPercent = dCurrentConsumed / dCurrentFinalDataLimit;
 
       dConsumedPercent = dCurrentConsumed / dCurrentFinalDataLimit;
+
+      // dConsumedPercent = 0.72;
     });
   }
 
@@ -164,18 +163,19 @@ class _DashboardState extends State<Dashboard> {
         final paymentDetail = convert.jsonDecode(paymentsRaw);
         setState(() {
           amount = paymentDetail["resonse"]["result"]["amount"];
+          pgMsg = paymentDetail["resonse"]["result"]["msg"];
         });
       });
     });
   }
 
   getConnectionsList() {
-    getBillDetails();
-
     var body = {
       "name": "getConnectionsList",
       "param": {"customerId": codeHelpers.getStorageKey('custId')}
     };
+
+    getBillDetails();
 
     codeHelpers.httpPost(body, needAuth: true).then((customerDetails) {
       customerDetails
@@ -183,6 +183,7 @@ class _DashboardState extends State<Dashboard> {
           .join()
           .then((customerConnectionsRaw) {
         setState(() {
+          dataLoaded = true;
           connectionsList = convert.jsonDecode(customerConnectionsRaw);
 
           noOfConnections =
@@ -195,9 +196,8 @@ class _DashboardState extends State<Dashboard> {
             populateCurrentConnectionVariables(0);
           }
 
-          dataLoaded = true;
           // new Future.delayed(
-          //     const Duration(seconds: 100), () => dataLoaded = true);
+          //     const Duration(milliseconds: 2000), () => dataLoaded = true);
         });
       });
     });
@@ -279,26 +279,47 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  consumptionDetail() {
-    return custom.ExpansionTile(
-      headerBackgroundColor: Color.fromRGBO(0, 32, 97, 5),
-      // backgroundColor: Colors.white60,
-      initiallyExpanded: true,
+  LinearGradient circularPercentIndicatorColor(double ldConsumedPercent) {
+    List<Color> _colors = [];
+    if (ldConsumedPercent >= 0.0 && ldConsumedPercent < 0.33) {
+      _colors = [
+        Color.fromRGBO(155, 201, 34, 10),
+        Color.fromRGBO(155, 201, 34, 10)
+      ];
+    } else if (ldConsumedPercent >= 0.33 && ldConsumedPercent < 0.66) {
+      _colors = [
+        Color.fromRGBO(255, 204, 42, 10),
+        Color.fromRGBO(255, 204, 42, 10)
+      ];
+    } else {
+      _colors = [
+        Color.fromRGBO(236, 50, 55, 10),
+        Color.fromRGBO(236, 50, 55, 10)
+      ];
+    }
 
-      title: Text(
-        "Consumption",
-        style: TextStyle(fontSize: 20, color: Colors.white70),
-      ),
-      children: <Widget>[
-        Center(
-          child: CircularPercentIndicator(
-            radius: 200.0,
-            lineWidth: 25.0,
-            arcType: ArcType.FULL,
-            animation: true,
-            percent: dConsumedPercent,
-            arcBackgroundColor: Colors.white38,
-            footer: Text(
+    return LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: _colors,
+    );
+  }
+
+  consumptionDetail() {
+    return Card(
+      color: Color.fromRGBO(184, 27, 77, 10),
+      // elevation: 3.0,
+      child: Center(
+        child: CircularPercentIndicator(
+          radius: 200.0,
+          lineWidth: 25.0,
+          arcType: ArcType.FULL,
+          animation: true,
+          percent: dConsumedPercent,
+          arcBackgroundColor: Colors.white,
+          footer: Padding(
+            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+            child: Text(
               currentConsumedInGB + " / " + currentFinalDataLimitInGB,
               style: TextStyle(
                 color: Colors.white70,
@@ -306,27 +327,22 @@ class _DashboardState extends State<Dashboard> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            center: Text(
-              (dConsumedPercent * 100).toStringAsFixed(0) + "%",
-              style: TextStyle(
-                  fontSize: 38,
-                  letterSpacing: 2.0,
-                  color: Color.fromRGBO(0, 32, 97, 5),
-                  fontWeight: FontWeight.w500),
-            ),
-            circularStrokeCap: CircularStrokeCap.round,
-            backgroundColor: Color.fromRGBO(184, 27, 77, 0),
-            maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
-            linearGradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Colors.orange, Colors.yellow],
-            ),
           ),
-        )
-      ],
+          center: Text(
+            (dConsumedPercent * 100).toStringAsFixed(0) + "%",
+            style: TextStyle(
+                fontSize: 38,
+                letterSpacing: 2.0,
+                color: Colors.white, //Color.fromRGBO(0, 32, 97, 5),
+                fontWeight: FontWeight.w500),
+          ),
+          circularStrokeCap: CircularStrokeCap.round,
+          backgroundColor: Color.fromRGBO(184, 27, 77, 0),
+          maskFilter: MaskFilter.blur(BlurStyle.inner, 3),
+          linearGradient: circularPercentIndicatorColor(dConsumedPercent),
+        ),
+      ),
     );
-    // return ;
   }
 
   paymentDetails() {
@@ -350,13 +366,95 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
+  detailsHeader(String headerText) {
+    return Center(
+      child: Card(
+        elevation: 3.0,
+        color: Color.fromRGBO(0, 32, 97, 10), //Color.fromRGBO(184, 27, 77, 10),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                headerText,
+                style: TextStyle(color: Colors.white70, fontSize: 18),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  detailsListValue(label, value) {
+    return Card(
+      elevation: 1.0,
+      color: Color.fromRGBO(184, 27, 77, 10),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              label,
+              style: TextStyle(color: Colors.white70, fontSize: 18),
+            ),
+            Text(
+              value,
+              style: TextStyle(color: Colors.white70, fontSize: 18),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Column payNowButton() {
+    return Column(
+      children: <Widget>[
+        Container(
+          height: 75.0,
+          child: ButtonTheme(
+            // height: 75.0,
+            minWidth: 200.0,
+            height: 50.0,
+            child: Center(
+              child: RaisedButton(
+                textColor: Colors.white,
+                color: Color.fromRGBO(0, 32, 97, 5),
+                child: amount != '0'
+                    ? Text(
+                        "PAY NOW",
+                        style: TextStyle(fontSize: 20, letterSpacing: 2.0),
+                      )
+                    : Text(
+                        "No Dues",
+                        style: TextStyle(fontSize: 20, letterSpacing: 2.0),
+                      ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Payment(pgMsg)));
+                },
+                shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(30.0),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   dashboardContent() {
     return Scaffold(
+      resizeToAvoidBottomPadding: true,
       floatingActionButton: noOfConnections > 1
           ? Container(
               // padding: EdgeInsets.only(bottom: 100.0),
               child: Align(
-                alignment: Alignment.bottomCenter,
+                alignment: Alignment.bottomRight,
                 child: FloatingActionButton(
                   child: Icon(Icons.more_horiz),
                   backgroundColor: Color.fromRGBO(0, 32, 97, 5),
@@ -370,77 +468,111 @@ class _DashboardState extends State<Dashboard> {
             )
           : null,
       backgroundColor: Color.fromRGBO(184, 27, 77, 10),
-      bottomSheet: noOfConnections > 1
-          ? SolidBottomSheet(
-              controller: _controller,
-              maxHeight: noOfConnections * 75.0,
-              headerBar: Container(
-                color: Color.fromRGBO(184, 27, 77, 10),
-                height: 20,
-                child: Center(
-                  child: Text(
-                    // "View more connections",
-                    "", style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              body: Container(
-                  color: Colors.white,
-                  height: 30,
-                  child: ListView.separated(
-                    separatorBuilder: (context, index) => Divider(
-                      color: Colors.black,
-                    ),
-                    itemCount: noOfConnections,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {
-                          // print(index);
-                          populateCurrentConnectionVariables(index);
-                        },
-                        leading: selectedConnectionIndex == index
-                            ? Icon(
-                                Icons.check_circle,
-                                color: Color.fromRGBO(184, 27, 77, 10),
-                              )
-                            : Icon(
-                                Icons.radio_button_unchecked,
-                                color: Colors.grey,
-                              ),
-                        title: Text(connectionsList["resonse"]["result"]
-                            ["connections"][index]["pkgname"]),
-                        trailing: Text(connectionsList["resonse"]["result"]
-                            ["connections"][index]["ip_addr"]),
-                      );
-                    },
-                  )),
-            )
-          : null,
-      body: Padding(
-        padding: EdgeInsets.all(5.0),
-        child: ListView(
-          children: <Widget>[
-            ConnectionsCarousel(),
-            SizedBox(
-              height: 5.0,
-            ),
-            consumptionDetail(),
-            SizedBox(
-              height: 5.0,
-            ),
-            paymentDetails(),
-            SizedBox(
-              height: 5.0,
-            ),
-            connectioDetail(),
+      bottomSheet: noOfConnections > 1 ? bottomSheet() : null,
+      body: ListView(
+        children: [
+          WidgetAnimator(carousel()),
+          WidgetAnimator(consumption()),
+          WidgetAnimator(details()),
+          WidgetAnimator(amountButton()),
+        ],
+      ),
+    );
+  }
 
-            // ListTile(
-            //   leading: Text('Payment'),
-            //   trailing: Text('Pay Now!!'),
-            // )
-          ],
+  bottomSheet() {
+    return SolidBottomSheet(
+      controller: _controller,
+      maxHeight: noOfConnections * 75.0,
+      headerBar: Container(
+        color: Color.fromRGBO(184, 27, 77, 10),
+        height: 20,
+        child: Center(
+          child: Text(
+            // "View more connections",
+            "", style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
+      body: Container(
+        color: Colors.white,
+        height: 30,
+        child: ListView.separated(
+          separatorBuilder: (context, index) => Divider(
+            color: Colors.black,
+          ),
+          itemCount: noOfConnections,
+          itemBuilder: (context, index) {
+            return ListTile(
+              onTap: () {
+                populateCurrentConnectionVariables(index);
+              },
+              leading: selectedConnectionIndex == index
+                  ? Icon(
+                      Icons.check_circle,
+                      color: Color.fromRGBO(184, 27, 77, 10),
+                    )
+                  : Icon(
+                      Icons.radio_button_unchecked,
+                      color: Colors.grey,
+                    ),
+              title: Text(connectionsList["resonse"]["result"]["connections"]
+                  [index]["pkgname"]),
+              trailing: Text(connectionsList["resonse"]["result"]["connections"]
+                  [index]["ip_addr"]),
+            );
+          },
         ),
       ),
     );
+  }
+
+  Widget amountButton() {
+    return (dataLoaded && amount != '0') ? payNowButton() : Text("");
+  }
+
+  static Column carousel() {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: 3.0,
+        ),
+        ConnectionsCarousel(),
+        SizedBox(
+          height: 5.0,
+        )
+      ],
+    );
+  }
+
+  consumption() {
+    return Column(
+      children: <Widget>[
+        detailsHeader("Consumption Details"),
+        consumptionDetail(),
+        SizedBox(
+          height: 5.0,
+        )
+      ],
+    );
+  }
+
+  details() {
+    return Column(
+      children: <Widget>[
+        detailsHeader("Invoice Details"),
+        detailsListValue("Date", invoiceDate),
+        detailsListValue("Due Date", dueDate),
+        detailsListValue("Payable Amount", amount == null ? "" : '₹ ' + amount),
+        SizedBox(
+          height: 5.0,
+        )
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return dataLoaded ? dashboardContent() : loader();
   }
 }

@@ -103,28 +103,28 @@ class _CustomerPagesState extends State<CustomerPages> {
                   });
                 },
               ),
-              SizedBox(height: 10),
-              ListTile(
-                leading: FaIcon(
-                  FontAwesomeIcons.coins,
-                  size: 24,
-                  color: Color.fromRGBO(0, 32, 97, 5),
-                ),
-                dense: false,
-                title: Text(
-                  'Payment',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Color.fromRGBO(184, 27, 77, 10),
-                  ),
-                ),
-                onTap: () {
-                  toggleDrawer();
-                  setState(() {
-                    contentId = 3;
-                  });
-                },
-              ),
+              // SizedBox(height: 10),
+              // ListTile(
+              //   leading: FaIcon(
+              //     FontAwesomeIcons.coins,
+              //     size: 24,
+              //     color: Color.fromRGBO(0, 32, 97, 5),
+              //   ),
+              //   dense: false,
+              //   title: Text(
+              //     'Payment',
+              //     style: TextStyle(
+              //       fontSize: 24,
+              //       color: Color.fromRGBO(184, 27, 77, 10),
+              //     ),
+              //   ),
+              //   onTap: () {
+              //     toggleDrawer();
+              //     setState(() {
+              //       contentId = 3;
+              //     });
+              //   },
+              // ),
               SizedBox(height: 10),
               ListTile(
                 leading: FaIcon(
@@ -247,8 +247,8 @@ class _CustomerPagesState extends State<CustomerPages> {
       case 2:
         content = Support();
         break;
-      case 3:
-        content = Payment();
+      // case 3:
+      //   content = Payment('');
         break;
       case 4:
         content = EnquiryForm();

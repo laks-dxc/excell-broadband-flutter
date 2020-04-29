@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:ExcellCustomer/CodeHelpers.dart';
+import 'package:ExcellCustomer/widgets/WidgetAnimator.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
+
+import '../animator.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -30,7 +35,6 @@ class _ProfileState extends State<Profile> {
           address = profileData["address"];
           city = profileData["city"];
           state = profileData["state"];
-
         });
       });
     });
@@ -62,20 +66,58 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Card> profileTiles = [
+      detailsListValue("Name", customerName ?? ""),
+      detailsListValue("Mobile No.", daytime ?? ""),
+      detailsListValue("Contact No.", night ?? ""),
+      detailsListValue("City", city ?? ""),
+      detailsListValue("State", state ?? ""),
+    ];
+
     return Padding(
       padding: EdgeInsets.all(5.0),
-      child: ListView(
-        // , , , , , ,
-        children: <Widget>[
-          listTileWidget("Name", customerName ?? "", showDivider: true),
-          listTileWidget("Mobile No.", daytime ?? "", showDivider: true),
-          listTileWidget("Contact No.", night ?? "", showDivider: true),
-          // listTileWidget("mobile", mobile ?? "", showDivider: true),
-          // listTileWidget("address", address ?? "", showDivider: true),
-          listTileWidget("city", city ?? "", showDivider: true),
-          listTileWidget("State", state ?? "", showDivider: true)
-        ],
+      child: ListView.builder(
+          itemCount: profileTiles.length,
+          itemBuilder: (BuildContext context, int index) {
+            return WidgetAnimator(profileTiles[index]);
+          }),
+    );
+  }
+
+  Timer timer;
+  Duration duration = Duration();
+  wait() {
+    if (timer == null || !timer.isActive) {
+      timer = Timer(Duration(microseconds: 120), () {
+        duration = Duration();
+      });
+    }
+    duration += Duration(milliseconds: 100);
+    return duration;
+  }
+
+  Card detailsListValue(label, value) {
+    return Card(
+      elevation: 1.0,
+      color: Color.fromRGBO(184, 27, 77, 10),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              label,
+              style: TextStyle(color: Colors.white70, fontSize: 18),
+            ),
+            Text(
+              value,
+              style: TextStyle(color: Colors.white70, fontSize: 18),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
+

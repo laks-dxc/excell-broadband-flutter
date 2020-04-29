@@ -4,6 +4,7 @@ import 'package:ExcellCustomer/models/Tikcet.dart';
 import 'package:ExcellCustomer/pages/NewTicket.dart';
 import 'package:ExcellCustomer/popup/popup.dart';
 import 'package:ExcellCustomer/popup/popup_content.dart';
+import 'package:ExcellCustomer/widgets/WidgetAnimator.dart';
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 
@@ -103,34 +104,36 @@ class _SupportState extends State<Support> {
               ),
               itemCount: sTiketsList.length,
               itemBuilder: (BuildContext ctxt, int index) {
-                return ListTile(
-                  contentPadding: EdgeInsets.all(5.0),
-                  dense: true,
-                  leading: sTiketsList[index].status == 'closed'
-                      ? Icon(
-                          Icons.error,
-                          size: 30,
-                          color: Color.fromRGBO(0, 32, 97, 5),
-                        )
-                      : Icon(
-                          Icons.check_circle,
-                          size: 30,
-                          color: Color.fromRGBO(0, 32, 97, 5),
-                        ),
-                  title: Text(
-                    sTiketsList[index].problem,
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    sTiketsList[index]
-                        .tickettype, // + " - " + sTiketsList[index].id,
-                    style: TextStyle(fontSize: 14, color: Colors.white60),
-                  ),
-                  trailing: Text(
-                    formatDate(DateTime.parse(sTiketsList[index].created),
-                        [dd, '-', M, '-', yyyy]),
-                    style: TextStyle(
-                        color: Color.fromRGBO(0, 32, 97, 5), fontSize: 18),
+                return WidgetAnimator(
+                                  ListTile(
+                    contentPadding: EdgeInsets.all(5.0),
+                    dense: true,
+                    leading: sTiketsList[index].status == 'closed'
+                        ? Icon(
+                            Icons.error,
+                            size: 30,
+                            color: Color.fromRGBO(0, 32, 97, 5),
+                          )
+                        : Icon(
+                            Icons.check_circle,
+                            size: 30,
+                            color: Color.fromRGBO(0, 32, 97, 5),
+                          ),
+                    title: Text(
+                      sTiketsList[index].problem,
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                    subtitle: Text(
+                      sTiketsList[index]
+                          .tickettype, // + " - " + sTiketsList[index].id,
+                      style: TextStyle(fontSize: 14, color: Colors.white60),
+                    ),
+                    trailing: Text(
+                      formatDate(DateTime.parse(sTiketsList[index].created),
+                          [dd, '-', M, '-', yyyy]),
+                      style: TextStyle(
+                          color: Color.fromRGBO(0, 32, 97, 5), fontSize: 18),
+                    ),
                   ),
                 );
               },

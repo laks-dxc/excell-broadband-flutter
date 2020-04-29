@@ -7,19 +7,26 @@ import 'package:loading/loading.dart';
 
 import '../CodeHelpers.dart';
 
-void main() => runApp(Payment());
+void main() => runApp(Payment(''));
 
 class Payment extends StatefulWidget {
   static const platform = const MethodChannel("test_activity");
+  final String msg;
+  Payment(this.msg);
 
   @override
-  _PaymentState createState() => _PaymentState();
+  _PaymentState createState() => _PaymentState(this.msg);
 }
 
 class _PaymentState extends State<Payment> {
   CodeHelpers codeHelpers = new CodeHelpers();
   String msg = '';
   var amount;
+
+  _PaymentState(msg) {
+    print('msg ' + msg);
+    if (msg != '') _getNewActivity({"MSG": msg});
+  }
 
   @override
   void initState() {

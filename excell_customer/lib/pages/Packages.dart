@@ -1,4 +1,5 @@
 import 'package:ExcellCustomer/CodeHelpers.dart';
+import 'package:ExcellCustomer/widgets/WidgetAnimator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
@@ -116,7 +117,7 @@ class _PackagesState extends State<Packages> {
       if (currentCity == 0) {
         return Center(
           child: Text(
-            'No City Selected..!!',
+            'Select a city!!',
             style: TextStyle(color: Colors.white70),
           ),
         );
@@ -135,87 +136,89 @@ class _PackagesState extends State<Packages> {
               shrinkWrap: true,
               itemCount: bbPlans.length,
               itemBuilder: (BuildContext ctxt, int index) {
-                return Card(
-                  color: Colors.transparent,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              bbPlans[index].plan_name,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
-                            ),
-                            Text(
-                              "₹ " + bbPlans[index].plan_amount,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
-                            )
-                          ],
+                return WidgetAnimator(
+                  Card(
+                    color: Colors.transparent,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                bbPlans[index].plan_name,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ),
+                              Text(
+                                "₹ " + bbPlans[index].plan_amount,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      Divider(
-                        thickness: 2.0,
-                        color: Colors.white30,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "Speed",
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.white60),
-                            ),
-                            Text(
-                              bbPlans[index].plan_speed,
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.white70),
-                            )
-                          ],
+                        Divider(
+                          thickness: 2.0,
+                          color: Colors.white30,
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "FUP Limit",
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.white60),
-                            ),
-                            Text(
-                              bbPlans[index].data_limit,
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.white70),
-                            )
-                          ],
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "Speed",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white60),
+                              ),
+                              Text(
+                                bbPlans[index].plan_speed,
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white70),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "Speed - Post FUP",
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.white60),
-                            ),
-                            Text(
-                              bbPlans[index].plan_postfup,
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.white70),
-                            )
-                          ],
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "FUP Limit",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white60),
+                              ),
+                              Text(
+                                bbPlans[index].data_limit,
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white70),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "Speed - Post FUP",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white60),
+                              ),
+                              Text(
+                                bbPlans[index].plan_postfup,
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white70),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ); //buildBody(ctxt, index)
               },

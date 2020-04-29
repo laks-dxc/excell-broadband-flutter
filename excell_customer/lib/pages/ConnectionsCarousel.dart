@@ -4,86 +4,46 @@ import 'package:flutter/material.dart';
 
 final List<String> imgList = [
   'assets/slide1.png',
+  'https://images.unsplash.com/photo-1586882829491-b81178aa622e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80',
+  'https://images.unsplash.com/photo-1586871608370-4adee64d1794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2862&q=80',
+  'https://images.unsplash.com/photo-1586901533048-0e856dff2c0d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80',
+  'https://images.unsplash.com/photo-1586902279476-3244d8d18285?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80',
 ];
 
-final List<Widget> imageSliders = imgList
-    .map((item) => Container(
-          child: Container(
-            margin: EdgeInsets.all(5.0),
-            child: carouselItem(item),
-          ),
-        ))
-    .toList();
-
-class ConnectionsCarousel extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _ConnectionsCarouselState();
-  }
-}
-
-imageItem(String item) {
-  return item.startsWith('assets')
-      ? Image.asset(item,fit: BoxFit.fill,)
-      : Image.network(item, fit: BoxFit.cover, width: 1000.0);
-}
-
-carouselItem(item) {
-  return ClipRRect(
-    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-    child: imageItem(item),
-  );
-}
-
-class _ConnectionsCarouselState extends State<ConnectionsCarousel> {
-  int _current = 0;
-  CodeHelpers codeHelpers = new CodeHelpers();
-
-  @override
-  void initState() {
-    codeHelpers.getURLs().forEach((url) {
-      setState(() {
-        imgList.add(url);
-      });
-    });
-    super.initState();
+class ConnectionsCarousel extends StatelessWidget {
+  Widget carouselItem(litem, width) {
+    return litem.toString().startsWith("assets")
+        ? Image.asset(
+            litem,
+            fit: BoxFit.fill,
+            width: width,
+          )
+        : Image.network(
+            litem,
+            fit: BoxFit.fill,
+            width: width,
+          );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CarouselSlider(
-          items: imageSliders,
-          options: CarouselOptions(
-              autoPlay: true,
-              enlargeCenterPage: true,
-              aspectRatio: 2.0,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _current = index;
-                });
-              }),
+    return Center(
+      child: CarouselSlider(
+        options: CarouselOptions(
+          autoPlay: true,
+          enlargeCenterPage: false,
+          viewportFraction: 1.0,
+          aspectRatio: 2.0,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: imgList.map((url) {
-            int index = imgList.indexOf(url);
-            return Container(
-              width: 8.0,
-              height: 8.0,
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _current == index
-                      ? Colors.white24 // fromRGBO(255, 255, 0, 0.9)
-                      : Colors.white //fromRGBO(0, 0, 0, 0.4),
+        items: imgList
+            .map((item) => Container(
+                  child: Center(
+                    child:
+                        carouselItem(item, MediaQuery.of(context).size.width),
                   ),
-            );
-          }).toList(),
-        ),
-      ],
+                ))
+            .toList(),
+      ),
     );
   }
 }
