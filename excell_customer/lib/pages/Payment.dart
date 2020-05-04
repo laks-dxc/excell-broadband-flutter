@@ -6,6 +6,7 @@ import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 
 import '../CodeHelpers.dart';
+import '../LifecycleEventHandler.dart';
 
 void main() => runApp(Payment(''));
 
@@ -30,23 +31,29 @@ class _PaymentState extends State<Payment> {
 
   @override
   void initState() {
-    var body = {
-      "name": "getCustomerDue",
-      "param": {"customerId": codeHelpers.getStorageKey('custId')}
-    };
+    SystemChannels.lifecycle.setMessageHandler((msg) {
+      // debugPrint('SystemChannels> $msg');
+      if (msg == AppLifecycleState.resumed.toString()) {
+        var body = {
+          "name": "getCustomerDue",
+          "param": {"customerId": codeHelpers.getStorageKey('custId')}
+        };
 
-    codeHelpers.httpPost(body, needAuth: true).then((paymentResponse) {
-      paymentResponse
-          .transform(convert.utf8.decoder)
-          .join()
-          .then((paymentsRaw) {
-        final paymentDetail = convert.jsonDecode(paymentsRaw);
-        setState(() {
-          msg = paymentDetail["resonse"]["result"]["msg"];
-          amount = paymentDetail["resonse"]["result"]["amount"];
-          // print(paymentDetail["resonse"]["result"]);
+        codeHelpers.httpPost(body, needAuth: true).then((paymentResponse) {
+          paymentResponse
+              .transform(convert.utf8.decoder)
+              .join()
+              .then((paymentsRaw) {
+            final paymentDetail = convert.jsonDecode(paymentsRaw);
+            setState(() {
+              msg = paymentDetail["resonse"]["result"]["msg"];
+              amount = paymentDetail["resonse"]["result"]["amount"];
+              // print(paymentDetail["resonse"]["result"]);
+            });
+          });
         });
-      });
+      }
+      // return
     });
 
     super.initState();
@@ -62,53 +69,47 @@ class _PaymentState extends State<Payment> {
 
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    //   title: 'Welcome to Flutter',
-    //   home: Scaffold(
-    //     appBar: AppBar(
-    //       title: Text('Welcome to Flutters'),
-    //     ),
-    //     body:
-    //   ),
-    // );
-    return Stack(
-      children: <Widget>[
-        Image.asset('assets/login_bg.png'),
-        Center(
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          Image.asset('assets/login_bg.png'),
+          Center(
             child: Column(
-          children: <Widget>[
-            Image.asset(
-              'assets/logo_white.png',
-              height: 200,
-              width: 200,
+              children: <Widget>[
+                Image.asset(
+                  'assets/logo_white.png',
+                  height: 200,
+                  width: 200,
+                ),
+                MaterialButton(
+                  child: amount == null
+                      ? Loading(
+                          indicator: BallPulseIndicator(),
+                          size: 40.0,
+                          color: Colors.white60,
+                        )
+                      : Text(
+                          '₹ ' + amount.toString(),
+                          style: TextStyle(fontSize: 20, letterSpacing: 2.0),
+                        ),
+                  elevation: 5.0,
+                  height: 48.0,
+                  minWidth: 250.0,
+                  color: amount == null || amount != 0
+                      ? Color.fromRGBO(95, 32, 97, 5)
+                      : Color.fromRGBO(0, 32, 97, 5),
+                  textColor: Colors.white,
+                  onPressed: () {
+                    msg != '' && double.parse(amount) > 0
+                        ? _getNewActivity({"MSG": msg})
+                        : doNothing();
+                  },
+                ),
+              ],
             ),
-            MaterialButton(
-              child: amount == null
-                  ? Loading(
-                      indicator: BallPulseIndicator(),
-                      size: 40.0,
-                      color: Colors.white60,
-                    )
-                  : Text(
-                      '₹' + amount.toString(),
-                      style: TextStyle(fontSize: 20, letterSpacing: 2.0),
-                    ),
-              elevation: 5.0,
-              height: 48.0,
-              minWidth: 250.0,
-              color: amount == null || amount != 0
-                  ? Color.fromRGBO(95, 32, 97, 5)
-                  : Color.fromRGBO(0, 32, 97, 5),
-              textColor: Colors.white,
-              onPressed: () {
-                msg != '' && double.parse(amount) > 0
-                    ? _getNewActivity({"MSG": msg})
-                    : doNothing();
-              },
-            ),
-          ],
-        )),
-      ],
+          ),
+        ],
+      ),
     );
   }
 

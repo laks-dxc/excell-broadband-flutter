@@ -5,7 +5,7 @@ import 'package:ExcellCustomer/widgets/WidgetAnimator.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 
-import '../animator.dart';
+// import '../animator.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -15,7 +15,15 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   CodeHelpers codeHelpers = new CodeHelpers();
   var profileData;
-  String customerName, daytime, night, mobile, address, city, state, email;
+  String customerName,
+      daytime,
+      night,
+      mobile,
+      address,
+      city,
+      state,
+      email,
+      fullAddress;
 
   @override
   void initState() {
@@ -29,13 +37,15 @@ class _ProfileState extends State<Profile> {
         profileData = convert.jsonDecode(profileRaw)["resonse"]["result"];
         setState(() {
           customerName = profileData["cutomerName"];
-          daytime = profileData["daytime"];
-          night = profileData["daytime"];
-          mobile = profileData["mobile"];
+          daytime = profileData["contactno"];
+          night = profileData["altcontactno"];
+
           address = profileData["address"];
           city = profileData["city"];
           state = profileData["state"];
-          email = profileData["email"];
+
+          fullAddress = address + ', ' + (city ?? "") + ', ' + (state ?? "");
+          email = profileData["emailid"];
         });
       });
     });
@@ -69,12 +79,12 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     final List<Card> profileTiles = [
       detailsListValue("Name", customerName ?? ""),
-      detailsListValue("Mobile No.", daytime ?? ""),
-      detailsListValue("Phone No.", night ?? ""),
-      detailsListValue("Contact No.", mobile ?? ""),
+      detailsListValue("Contact No.", daytime ?? ""),
+      detailsListValue("Alt. Contact No.", night ?? ""),
       detailsListValue("Email", email ?? ""),
-      detailsListValue("City", city ?? ""),
-      detailsListValue("State", state ?? ""),
+      detailsListValue("Address", fullAddress),
+      // detailsListValue("State", state ?? ""),
+      // detailsListValue("Address", state ?? ""),
     ];
 
     return Padding(
@@ -122,5 +132,3 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
-
-

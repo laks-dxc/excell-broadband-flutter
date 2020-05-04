@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ExcellCustomer/CodeHelpers.dart';
 import 'package:ExcellCustomer/pages/CustomerPages.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,12 @@ class _OTPCheckState extends State<OTPCheck> {
   var globalContext, mobileNum;
   CodeHelpers codeHelpers = new CodeHelpers();
 
+  @override
+  void initState() {
+    startTimer();
+    super.initState();
+  }
+
   checkOTP(String enteredOTP) {
     String otpFromStorage = codeHelpers.getStorageKey('otp').toString();
 
@@ -22,7 +30,6 @@ class _OTPCheckState extends State<OTPCheck> {
         codeHelpers.setStorageKey('otp', '');
         codeHelpers.setStorageKey('loggedIn', '1');
 
-
         Navigator.pushReplacement(globalContext,
             MaterialPageRoute(builder: (context) => CustomerPages()));
       }
@@ -30,15 +37,31 @@ class _OTPCheckState extends State<OTPCheck> {
       print("OTP Not Matched");
   }
 
+  Timer timer;
+  int _start = 60;
 
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    timer = new Timer.periodic(
+      oneSec,
+      (Timer _timer) => setState(
+        () {
+          if (_start < 1) {
+            _timer.cancel();
+          } else {
+            _start = _start - 1;
+          }
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     globalContext = context;
     mobileNum = codeHelpers.getStorageKey("mobileNumber");
 
-      print("OTP is " + codeHelpers.getStorageKey('otp').toString());
-
+    print("OTP is " + codeHelpers.getStorageKey('otp').toString());
     return MaterialApp(
       home: Scaffold(
           backgroundColor: Color.fromRGBO(184, 27, 77, 10),
@@ -49,23 +72,19 @@ class _OTPCheckState extends State<OTPCheck> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-              Image.asset('assets/logo_white.png', width: 180, height: 180,),
-
+                  Image.asset(
+                    'assets/logo_white.png',
+                    width: 180,
+                    height: 180,
+                  ),
                   Text(
                     "Verify OTP",
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 25,
                       color: Colors.white,
                     ),
                   ),
-                  Text(
-                    "OTP sent to " + mobileNum,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 20),
                   PinCodeTextField(
                     backgroundColor: Color.fromRGBO(0, 27, 77, 0),
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -97,12 +116,25 @@ class _OTPCheckState extends State<OTPCheck> {
                         checkOTP(value.toString());
                     },
                   ),
+                  SizedBox(height: 20),
+                  Text(
+                    "OTP sent to " + mobileNum,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  _start > 0
+                      ? Text(
+                          "Resend in " + _start.toString() + " seconds",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        )
+                      : Text(""),
                 ],
               ),
             ],
           )),
     );
   }
-
-  
 }

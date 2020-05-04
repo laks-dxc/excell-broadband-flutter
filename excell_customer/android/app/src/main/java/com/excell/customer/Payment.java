@@ -50,8 +50,8 @@ public class Payment extends AppCompatActivity {
         sdkIntent.putExtra("user-email","test@bd.com");
         sdkIntent.putExtra("user-mobile","9800000000");
         sdkIntent.putExtra("callback",objSampleCallBack);
-
         startActivity(sdkIntent);
+     
         
     }
 }

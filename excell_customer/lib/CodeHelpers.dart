@@ -9,14 +9,16 @@ final _baseUrl = "http://app.excellbroadband.com/api/index.php";
 class CodeHelpers {
   final LocalStorage storage = new LocalStorage('excell_customer_app');
 
-  Future<HttpClientResponse> httpPost(body, {needAuth: false}) async {
+  Future<HttpClientResponse> httpPost(body,
+      {needAuth: false, useTempToken: false, token: ''}) async {
     HttpClient httpClient = new HttpClient();
     HttpClientRequest request = await httpClient.postUrl(Uri.parse(_baseUrl));
     request.headers.set('content-type', 'application/json');
 
-    if (needAuth == true)
-      request.headers
-          .set('Authorization', "Excell " + this.getStorageKey("token"));
+    var lToken = token == '' ? this.getStorageKey("token") : token;
+
+    if (needAuth == true || useTempToken == true)
+      request.headers.set('Authorization', "Excell " + lToken);
 
     request.add(utf8.encode(convert.jsonEncode(body)));
     HttpClientResponse response = await request.close();

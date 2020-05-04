@@ -13,7 +13,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 import 'Payment.dart';
-import 'Profile.dart';
+// import 'Profile.dart';
 
 class Dashboard extends StatefulWidget {
   @override

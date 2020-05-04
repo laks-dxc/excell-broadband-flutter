@@ -1,12 +1,9 @@
 import 'dart:convert' as convert;
 
 import 'package:ExcellCustomer/CodeHelpers.dart';
-import 'package:ExcellCustomer/pages/ConnectionsCarousel.dart';
 import 'package:ExcellCustomer/widgets/WidgetAnimator.dart';
-import 'package:ExcellCustomer/widgets/custom_expansiontile.dart' as custom;
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
