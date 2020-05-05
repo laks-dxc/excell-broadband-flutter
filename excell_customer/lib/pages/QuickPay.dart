@@ -270,6 +270,7 @@ class _QuickPayState extends State<QuickPay> {
           final int status = response["resonse"]["status"];
 
           print(status);
+          
           if (status == 200) {
             final qpToken = response["resonse"]["result"]["token"];
 
@@ -279,7 +280,7 @@ class _QuickPayState extends State<QuickPay> {
             };
 
             codeHelpers
-                .httpPost(customerDueBody, token: qpToken, useTempToken: true)
+                .httpPost(customerDueBody, tempToken: qpToken, useTempToken: true)
                 .then((onValue) {
               onValue.transform(convert.utf8.decoder).join().then((payments) {
                 Map<String, dynamic> paymentDetail =

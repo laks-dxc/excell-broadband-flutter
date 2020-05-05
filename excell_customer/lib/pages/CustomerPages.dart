@@ -11,7 +11,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../main.dart';
 import 'Enquiry.dart';
-import 'Payment.dart';
+// import 'Payment.dart';
 import 'Support.dart';
 
 class CustomerPages extends StatefulWidget {
@@ -212,6 +212,7 @@ class _CustomerPagesState extends State<CustomerPages> {
                   // Update the state of the app.
                   // ...
                   codeHelpers.setStorageKey('loggedIn', '0');
+                  print('loggedIn after logout press ' + codeHelpers.getStorageKey('loggedIn'));
                   Navigator.pushReplacement(
                       context, MaterialPageRoute(builder: (context) => MyApp()));
                 },

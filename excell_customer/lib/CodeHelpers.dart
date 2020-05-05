@@ -10,17 +10,19 @@ class CodeHelpers {
   final LocalStorage storage = new LocalStorage('excell_customer_app');
 
   Future<HttpClientResponse> httpPost(body,
-      {needAuth: false, useTempToken: false, token: ''}) async {
+      {needAuth: false, useTempToken: false, tempToken: ''}) async {
     HttpClient httpClient = new HttpClient();
     HttpClientRequest request = await httpClient.postUrl(Uri.parse(_baseUrl));
+
     request.headers.set('content-type', 'application/json');
 
-    var lToken = token == '' ? this.getStorageKey("token") : token;
+    var lToken = useTempToken == true ? tempToken : this.getStorageKey("token");
 
     if (needAuth == true || useTempToken == true)
       request.headers.set('Authorization', "Excell " + lToken);
 
     request.add(utf8.encode(convert.jsonEncode(body)));
+
     HttpClientResponse response = await request.close();
     httpClient.close();
     return response;

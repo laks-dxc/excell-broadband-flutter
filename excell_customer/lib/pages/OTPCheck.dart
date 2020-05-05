@@ -1,3 +1,4 @@
+import 'dart:convert' as convert;
 import 'dart:async';
 
 import 'package:ExcellCustomer/CodeHelpers.dart';
@@ -27,11 +28,38 @@ class _OTPCheckState extends State<OTPCheck> {
 
     if (otpFromStorage == enteredOTP) {
       {
+        
         codeHelpers.setStorageKey('otp', '');
         codeHelpers.setStorageKey('loggedIn', '1');
 
-        Navigator.pushReplacement(globalContext,
-            MaterialPageRoute(builder: (context) => CustomerPages()));
+        var body = {
+          "name": "saveFBToken",
+          "param": {
+            "customerId": codeHelpers.getStorageKey('custId'),
+            "fbToken": codeHelpers.getStorageKey('fbToken'),
+            "appVersion": "1.0",
+            "mobileNo": codeHelpers.getStorageKey('mobileNumber'),
+            "mobileOs": "Android"
+          }
+        };
+
+        print("fbTokenBody" + " " + body.toString());
+
+        codeHelpers.httpPost(body, needAuth: true).then((onValue) {
+          onValue
+              .transform(convert.utf8.decoder)
+              .join()
+              .then((tokenSavedResponse) {
+                
+            // Map<String, dynamic> fbTokenSaved =
+            //     convert.jsonDecode(tokenSavedResponse);
+
+            // print("fbTokenSaved " + " " + fbTokenSaved.toString());
+            
+            Navigator.pushReplacement(globalContext,
+                MaterialPageRoute(builder: (context) => CustomerPages()));
+          });
+        });
       }
     } else
       print("OTP Not Matched");
@@ -39,6 +67,12 @@ class _OTPCheckState extends State<OTPCheck> {
 
   Timer timer;
   int _start = 60;
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);

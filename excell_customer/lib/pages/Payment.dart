@@ -6,7 +6,7 @@ import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 
 import '../CodeHelpers.dart';
-import '../LifecycleEventHandler.dart';
+// import '../LifecycleEventHandler.dart';
 
 void main() => runApp(Payment(''));
 

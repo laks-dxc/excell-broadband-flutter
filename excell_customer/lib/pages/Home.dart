@@ -27,14 +27,25 @@ class _HomeState extends State<Home> {
       buttonDimension,
       buttonFontSize,
       interButtonVerticalGap;
-
+  var loggedInKey;
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
-     
     ]);
+
+    // codeHelpers.getStorageKey('loggedIn');
+
+    if (codeHelpers.getStorageKey('loggedIn') == null ||
+        codeHelpers.getStorageKey('loggedIn') == '0')
+        {
+loggedInKey = '0';
+        } else {
+loggedInKey = '1';
+
+        }
+
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
 
@@ -42,6 +53,7 @@ class _HomeState extends State<Home> {
     logoDimensions = windowHeight * 0.2;
 
     logoButtonRowGap = windowHeight * 0.1;
+
 
     buttonDimension = windowHeight * 0.10;
     buttonFontSize = buttonDimension * 0.45;
@@ -56,8 +68,11 @@ class _HomeState extends State<Home> {
       //   backgroundColor: Color.fromRGBO(184, 27, 77, 10),
       //   title: Center(child: Text('Welcome to Excell Broadband')),
       // ),
+      
+
       body: homeComponents(),
-      backgroundColor:  Color.fromRGBO(184, 27, 77, 10),//Colors.white, //Color.fromRGBO(184, 27, 77, 10),
+      backgroundColor: Color.fromRGBO(
+          184, 27, 77, 10), //Colors.white, //Color.fromRGBO(184, 27, 77, 10),
     );
   }
 
@@ -75,7 +90,7 @@ class _HomeState extends State<Home> {
                 children: <Widget>[
                   WidgetAnimator(
                     Image.asset(
-                      'assets/logo_white.png',
+                      'assets/logo_pink.png',
                       height: logoDimensions,
                       width: logoDimensions,
                     ),
@@ -86,7 +101,8 @@ class _HomeState extends State<Home> {
                         child: Center(
                             child: Text(
                       'Welcome to Excell Broadband',
-                      style: TextStyle(fontSize: 25, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: windowWidth * 0.06, color: Colors.white),
                     ))),
                   ),
                   SizedBox(height: logoButtonRowGap),
@@ -96,19 +112,12 @@ class _HomeState extends State<Home> {
                       children: <Widget>[
                         homeScreenButton("My Account", FontAwesomeIcons.user,
                             onPressed: () {
-                          var loggedInKey =
-                              codeHelpers.getStorageKey('loggedIn');
-                          if (loggedInKey == null || loggedInKey == '0')
-                            Navigator.push(
-                                myContext,
-                                MaterialPageRoute(
-                                    builder: (myContext) => Login()));
-                          else
-                            Navigator.push(
-                                myContext,
-                                MaterialPageRoute(
-                                    builder: (myContext) => CustomerPages()));
-                          // );
+                          var nextActivity =
+                              loggedInKey == '0' ? Login() : CustomerPages();
+                          Navigator.push(
+                              myContext,
+                              MaterialPageRoute(
+                                  builder: (myContext) => nextActivity));
                         }),
                         homeScreenButton(
                             "Quick Pay", FontAwesomeIcons.rupeeSign,

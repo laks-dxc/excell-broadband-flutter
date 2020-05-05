@@ -63,7 +63,7 @@ class _MyAppState extends State<MyApp> {
     _firebaseMessaging.getToken().then((token) {
       print('Token ' + token);
 
-      // codeHelpers.setStorageKey('FCM_Token', token);
+      codeHelpers.setStorageKey('fbToken', token);
     });
 
     super.initState();

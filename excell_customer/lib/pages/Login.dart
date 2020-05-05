@@ -68,6 +68,7 @@ class _LoginState extends State<Login> {
           print(status);
           if (status == 200) {
             token = response["resonse"]["result"]["token"];
+            print('authToken ' + token);
             codeHelpers.setStorageKey('token', token);
             codeHelpers.setStorageKey('custId', customerId);
             codeHelpers.setStorageKey('mobileNumber', mobileNumber);
@@ -75,12 +76,14 @@ class _LoginState extends State<Login> {
             codeHelpers.setStorageKey('loggedInTime', now.toIso8601String());
 
             var otp = response["resonse"]["result"]["otp"];
+
             if (otpNeeded == "1") {
               codeHelpers.setStorageKey('otp', otp.toString());
             }
 
             Navigator.pushReplacement(globalContext,
                 MaterialPageRoute(builder: (context) => OTPCheck()));
+
           } else {
             Fluttertoast.showToast(
                 msg: response["resonse"]["result"]["message"],

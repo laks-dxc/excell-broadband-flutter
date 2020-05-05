@@ -1,6 +1,8 @@
 import 'dart:convert' as convert;
+import 'package:charts_flutter/flutter.dart' as charts;
 
 import 'package:ExcellCustomer/CodeHelpers.dart';
+import 'package:ExcellCustomer/widgets/TimeSeriesBar.dart';
 import 'package:ExcellCustomer/widgets/WidgetAnimator.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +17,6 @@ class MyPackages extends StatefulWidget {
 
 class _MyPackagesState extends State<MyPackages> {
   final CodeHelpers codeHelpers = new CodeHelpers();
-
-  // _DashboardState() {}
 
   @override
   void initState() {
@@ -86,13 +86,16 @@ class _MyPackagesState extends State<MyPackages> {
     //   "last_bill_date": "2020-04-01",
     //   "due_bill_date": "2020-04-06"
     // };
+    setState(() {
+      barChart = loader(size: 20.0);
+    });
 
     selectedConnectionIndex = index;
 
     var lCurrentConnection =
         connectionsList["resonse"]["result"]["connections"][index];
 
-    print(lCurrentConnection);
+    // print(lCurrentConnection);
 
     currentPackageName = lCurrentConnection["pkgname"] ?? "Error";
     currentIPAddr = lCurrentConnection["ip_addr"] ?? "Error";
@@ -132,6 +135,94 @@ class _MyPackagesState extends State<MyPackages> {
         dCurrentData = dCurrentDataLimit;
       }
     }
+
+    var utilzationBody = {
+      "name": "getUsageReport",
+      "param": {
+        "customerId": codeHelpers.getStorageKey('custId'),
+        "ip": currentIPAddr
+      }
+    };
+
+    codeHelpers
+        .httpPost(utilzationBody, needAuth: true)
+        .then((utilzationDetails) {
+      utilzationDetails
+          .transform(convert.utf8.decoder)
+          .join()
+          .then((utilizationRaw) {
+        var usageList = convert.jsonDecode(utilizationRaw)["resonse"]["result"]
+            ["usagereport"];
+        // print("utilization " + .toString());
+        var i = 0;
+        var j = 0;
+        final List<MonthlyUtilization> usageUpload = new List(usageList.length);
+        final List<MonthlyUtilization> usageDownload =
+            new List(usageList.length);
+
+        usageList = List.from(usageList.reversed);
+
+        usageList.forEach((usageDay) {
+          setState(() {
+            usageUpload[i] = new MonthlyUtilization(
+                formatDate(DateTime.parse(usageDay["date"]), [dd, '-', M]),
+                double.parse(usageDay["upload"]) / 1024);
+            usageDownload[j] = new MonthlyUtilization(
+                formatDate(DateTime.parse(usageDay["date"]), [dd, '-', M]),
+                double.parse(usageDay["download"]) / 1024);
+            i++;
+            j++;
+          });
+
+          var seriesList = [
+            new charts.Series<MonthlyUtilization, String>(
+              id: 'Upload',
+              displayName: "Upload in GB",
+              seriesColor: charts.MaterialPalette.purple.shadeDefault,
+              domainFn: (MonthlyUtilization utilization, _) => utilization.day,
+              measureFn: (MonthlyUtilization utilization, _) =>
+                  utilization.dataInMB,
+              data: usageUpload,
+            ),
+            new charts.Series<MonthlyUtilization, String>(
+              id: 'Download',
+              displayName: "Download in GB",
+              domainFn: (MonthlyUtilization utilization, _) => utilization.day,
+              measureFn: (MonthlyUtilization utilization, _) =>
+                  utilization.dataInMB,
+              data: usageDownload,
+            ),
+          ];
+
+          setState(() {
+            barChart = charts.BarChart(
+              seriesList,
+              // defaultRenderer: new charts.BarRendererConfig<String>( strokeWidthPx: 0.3, barRendererDecorator: CustomBarLabelDecorator<String>(labelAnchor: CustomBarLabelAnchor.middle), ),
+
+              defaultInteractions: true,
+              animate: true,
+              barGroupingType: charts.BarGroupingType.groupedStacked,
+              behaviors: [
+                new charts.ChartTitle('Daily Utilization',
+                    behaviorPosition: charts.BehaviorPosition.top,
+                    titleOutsideJustification:
+                        charts.OutsideJustification.start,
+                    // Set a larger inner padding than the default (10) to avoid
+                    // rendering the text too close to the top measure axis tick label.
+                    // The top tick label may extend upwards into the top margin region
+                    // if it is located at the top of the draw area.
+                    innerPadding: 18),
+                new charts.SeriesLegend(position: charts.BehaviorPosition.bottom),
+
+              ],
+            );
+          });
+        });
+
+        // noOfConnections =
+        // connectionsList["resonse"]["result"]["connections"].length;
+      });
+    });
 
     setState(() {
       dCurrentConsumed = dCurrentData;
@@ -187,7 +278,7 @@ class _MyPackagesState extends State<MyPackages> {
     });
   }
 
-  loader({size: 50.0}) {
+  static Widget loader({size: 50.0}) {
     return Center(
       child: Loading(
         indicator: BallPulseIndicator(),
@@ -242,7 +333,7 @@ class _MyPackagesState extends State<MyPackages> {
               ),
             )
           : null,
-      backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+      backgroundColor: Colors.white, //Color.fromRGBO(184, 27, 77, 10),
       bottomSheet: noOfConnections > 1 ? bottomSheet() : null,
       body: ListView(
         children: [
@@ -271,14 +362,26 @@ class _MyPackagesState extends State<MyPackages> {
                       " GB"),
 
           detailsListValue("Current Limit", currentFinalDataLimitInGB ?? ""),
-
           detailsListValue("Consumed Data", currentConsumedInGB ?? ""),
 
-          SizedBox(height: 0.0),
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(border: Border.all(width: 1.0)),
+              height: 400,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: barChart,
+              ),
+            ),
+          )
         ],
       ),
     );
   }
+
+  Widget barChart = loader(size: 20.0);
 
   bottomSheet() {
     return SolidBottomSheet(
