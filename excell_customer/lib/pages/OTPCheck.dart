@@ -50,7 +50,7 @@ class _OTPCheckState extends State<OTPCheck> {
               .transform(convert.utf8.decoder)
               .join()
               .then((tokenSavedResponse) {
-                
+
             // Map<String, dynamic> fbTokenSaved =
             //     convert.jsonDecode(tokenSavedResponse);
 
@@ -98,7 +98,7 @@ class _OTPCheckState extends State<OTPCheck> {
     print("OTP is " + codeHelpers.getStorageKey('otp').toString());
     return MaterialApp(
       home: Scaffold(
-          backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+          backgroundColor: Colors.white,//Color.fromRGBO(184, 27, 77, 10),
           body: Stack(
             children: <Widget>[
               Image.asset('assets/login_bg.png', fit: BoxFit.fill),
@@ -107,7 +107,7 @@ class _OTPCheckState extends State<OTPCheck> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Image.asset(
-                    'assets/logo_white.png',
+                    'assets/logo_pink.png',
                     width: 180,
                     height: 180,
                   ),
@@ -115,7 +115,7 @@ class _OTPCheckState extends State<OTPCheck> {
                     "Verify OTP",
                     style: TextStyle(
                       fontSize: 25,
-                      color: Colors.white,
+                      color: Color.fromRGBO(0, 32, 97, 5),//Colors.white,
                     ),
                   ),
                   SizedBox(height: 20),
@@ -155,14 +155,14 @@ class _OTPCheckState extends State<OTPCheck> {
                     "OTP sent to " + mobileNum,
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.white,
+                      color: Color.fromRGBO(0, 32, 97, 5),
                     ),
                   ),
                   SizedBox(height: 10),
                   _start > 0
                       ? Text(
                           "Resend in " + _start.toString() + " seconds",
-                          style: TextStyle(fontSize: 18, color: Colors.white),
+                          style: TextStyle(fontSize: 18, color: Color.fromRGBO(0, 32, 97, 5)),
                         )
                       : Text(""),
                 ],

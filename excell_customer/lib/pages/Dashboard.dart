@@ -307,7 +307,7 @@ class _DashboardState extends State<Dashboard> {
 
   consumptionDetail() {
     return Card(
-      color: Color.fromRGBO(184, 27, 77, 10),
+      // color: Color.fromRGBO(184, 27, 77, 10),
       // elevation: 3.0,
       child: Center(
         child: CircularPercentIndicator(
@@ -316,13 +316,13 @@ class _DashboardState extends State<Dashboard> {
           arcType: ArcType.FULL,
           animation: true,
           percent: dConsumedPercent,
-          arcBackgroundColor: Colors.white,
+          arcBackgroundColor: Color.fromRGBO(0, 32, 97, 5),//Colors.white,
           footer: Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
             child: Text(
               currentConsumedInGB + " / " + currentFinalDataLimitInGB,
               style: TextStyle(
-                color: Colors.white70,
+                color: Color.fromRGBO(0, 32, 97, 5),
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
@@ -333,7 +333,7 @@ class _DashboardState extends State<Dashboard> {
             style: TextStyle(
                 fontSize: 38,
                 letterSpacing: 2.0,
-                color: Colors.white, //Color.fromRGBO(0, 32, 97, 5),
+                color: Color.fromRGBO(0, 32, 97, 5),
                 fontWeight: FontWeight.w500),
           ),
           circularStrokeCap: CircularStrokeCap.round,
@@ -370,7 +370,7 @@ class _DashboardState extends State<Dashboard> {
     return Center(
       child: Card(
         elevation: 3.0,
-        color: Color.fromRGBO(0, 32, 97, 10), //Color.fromRGBO(184, 27, 77, 10),
+        color: Color.fromRGBO(184, 27, 77, 10),
         child: Padding(
           padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
           child: Row(
@@ -378,7 +378,7 @@ class _DashboardState extends State<Dashboard> {
             children: <Widget>[
               Text(
                 headerText,
-                style: TextStyle(color: Colors.white70, fontSize: 18),
+                style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             ],
           ),
@@ -390,7 +390,7 @@ class _DashboardState extends State<Dashboard> {
   detailsListValue(label, value) {
     return Card(
       elevation: 1.0,
-      color: Color.fromRGBO(184, 27, 77, 10),
+      color: Colors.white,//Color.fromRGBO(184, 27, 77, 10),
       child: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
         child: Row(
@@ -398,11 +398,11 @@ class _DashboardState extends State<Dashboard> {
           children: <Widget>[
             Text(
               label,
-              style: TextStyle(color: Colors.white70, fontSize: 18),
+              style: TextStyle(color: Colors.black87, fontSize: 18),
             ),
             Text(
               value,
-              style: TextStyle(color: Colors.white, fontSize: 18),
+              style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -467,7 +467,7 @@ class _DashboardState extends State<Dashboard> {
               ),
             )
           : null,
-      backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+      backgroundColor: Colors.white,// Color.fromRGBO(184, 27, 77, 10),
       bottomSheet: noOfConnections > 1 ? bottomSheet() : null,
       body: ListView(
         children: [

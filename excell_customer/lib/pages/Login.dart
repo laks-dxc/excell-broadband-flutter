@@ -26,7 +26,7 @@ class _LoginState extends State<Login> {
     globalContext = context;
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+        backgroundColor:Colors.white,// Color.fromRGBO(184, 27, 77, 10),
         body: loginWidget(),
       ),
     );
@@ -158,7 +158,8 @@ class _LoginState extends State<Login> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'assets/logo_white.png',
+              'assets/logo_pink.png',
+
               height: 180,
               width: 180,
             ),

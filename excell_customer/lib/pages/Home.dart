@@ -38,13 +38,11 @@ class _HomeState extends State<Home> {
     // codeHelpers.getStorageKey('loggedIn');
 
     if (codeHelpers.getStorageKey('loggedIn') == null ||
-        codeHelpers.getStorageKey('loggedIn') == '0')
-        {
-loggedInKey = '0';
-        } else {
-loggedInKey = '1';
-
-        }
+        codeHelpers.getStorageKey('loggedIn') == '0') {
+      loggedInKey = '0';
+    } else {
+      loggedInKey = '1';
+    }
 
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
@@ -53,7 +51,6 @@ loggedInKey = '1';
     logoDimensions = windowHeight * 0.2;
 
     logoButtonRowGap = windowHeight * 0.1;
-
 
     buttonDimension = windowHeight * 0.10;
     buttonFontSize = buttonDimension * 0.45;
@@ -64,16 +61,15 @@ loggedInKey = '1';
     });
 
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Color.fromRGBO(184, 27, 77, 10),
-      //   title: Center(child: Text('Welcome to Excell Broadband')),
-      // ),
-      
+        // appBar: AppBar(
+        //   backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+        //   title: Center(child: Text('Welcome to Excell Broadband')),
+        // ),
 
-      body: homeComponents(),
-      backgroundColor: Color.fromRGBO(
-          184, 27, 77, 10), //Colors.white, //Color.fromRGBO(184, 27, 77, 10),
-    );
+        body: homeComponents(),
+        backgroundColor: Colors.white
+        // Color.fromRGBO(184, 27, 77, 10), //Colors.white, //Color.fromRGBO(184, 27, 77, 10),
+        );
   }
 
   homeComponents() {
@@ -102,7 +98,8 @@ loggedInKey = '1';
                             child: Text(
                       'Welcome to Excell Broadband',
                       style: TextStyle(
-                          fontSize: windowWidth * 0.06, color: Colors.white),
+                          fontSize: windowWidth * 0.06,
+                          color: Color.fromRGBO(0, 32, 97, 10)),
                     ))),
                   ),
                   SizedBox(height: logoButtonRowGap),
@@ -110,7 +107,7 @@ loggedInKey = '1';
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        homeScreenButton("My Account", FontAwesomeIcons.user,
+                        homeScreenButton("MY ACCOUNT", FontAwesomeIcons.user,
                             onPressed: () {
                           var nextActivity =
                               loggedInKey == '0' ? Login() : CustomerPages();
@@ -120,7 +117,7 @@ loggedInKey = '1';
                                   builder: (myContext) => nextActivity));
                         }),
                         homeScreenButton(
-                            "Quick Pay", FontAwesomeIcons.rupeeSign,
+                            "QUICK PAY", FontAwesomeIcons.rupeeSign,
                             onPressed: () => {
                                   Navigator.push(
                                       myContext,
@@ -138,7 +135,7 @@ loggedInKey = '1';
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         homeScreenButton(
-                          "Packages",
+                          "PACKAGES",
                           FontAwesomeIcons.wifi,
                           onPressed: () {
                             Navigator.push(
@@ -148,7 +145,7 @@ loggedInKey = '1';
                           },
                         ),
                         homeScreenButton(
-                          "Enquiry",
+                          "ENQUIRY",
                           FontAwesomeIcons.questionCircle,
                           onPressed: () {
                             Navigator.push(
@@ -203,7 +200,10 @@ loggedInKey = '1';
           Text(
             label,
             style: TextStyle(
-                color: Colors.white, fontSize: 20, letterSpacing: 1.5),
+                
+                color: Colors.black,
+                fontSize: 20,
+                letterSpacing: 1.5),
           ),
         ],
       ),

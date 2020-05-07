@@ -4,11 +4,14 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:ExcellCustomer/CodeHelpers.dart';
 import 'package:ExcellCustomer/widgets/TimeSeriesBar.dart';
 import 'package:ExcellCustomer/widgets/WidgetAnimator.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
+
+
 
 class MyPackages extends StatefulWidget {
   @override
@@ -160,9 +163,10 @@ class _MyPackagesState extends State<MyPackages> {
         final List<MonthlyUtilization> usageDownload =
             new List(usageList.length);
 
-        usageList = List.from(usageList.reversed);
+        // usageList = List.from(usageList.reversed);
 
         usageList.forEach((usageDay) {
+          print(usageDay);
           setState(() {
             usageUpload[i] = new MonthlyUtilization(
                 formatDate(DateTime.parse(usageDay["date"]), [dd, '-', M]),
@@ -176,21 +180,21 @@ class _MyPackagesState extends State<MyPackages> {
 
           var seriesList = [
             new charts.Series<MonthlyUtilization, String>(
-              id: 'Upload',
-              displayName: "Upload in GB",
-              seriesColor: charts.MaterialPalette.purple.shadeDefault,
-              domainFn: (MonthlyUtilization utilization, _) => utilization.day,
-              measureFn: (MonthlyUtilization utilization, _) =>
-                  utilization.dataInMB,
-              data: usageUpload,
-            ),
-            new charts.Series<MonthlyUtilization, String>(
               id: 'Download',
               displayName: "Download in GB",
+              seriesColor: charts.MaterialPalette.indigo.shadeDefault,
+              domainFn: (MonthlyUtilization utilization, _) => utilization.day,
+              measureFn: (MonthlyUtilization utilization, _) => utilization.dataInMB,
+              data: usageDownload,
+            ),
+            new charts.Series<MonthlyUtilization, String>(
+              id: 'Upload',
+              displayName: "Upload in GB",
+              seriesColor: charts.MaterialPalette.pink.shadeDefault,
               domainFn: (MonthlyUtilization utilization, _) => utilization.day,
               measureFn: (MonthlyUtilization utilization, _) =>
-                  utilization.dataInMB,
-              data: usageDownload,
+                  utilization.dataInMB ,//* 15.3,
+              data: usageUpload,
             ),
           ];
 
@@ -203,17 +207,17 @@ class _MyPackagesState extends State<MyPackages> {
               animate: true,
               barGroupingType: charts.BarGroupingType.groupedStacked,
               behaviors: [
-                new charts.ChartTitle('Daily Utilization',
-                    behaviorPosition: charts.BehaviorPosition.top,
-                    titleOutsideJustification:
-                        charts.OutsideJustification.start,
-                    // Set a larger inner padding than the default (10) to avoid
-                    // rendering the text too close to the top measure axis tick label.
-                    // The top tick label may extend upwards into the top margin region
-                    // if it is located at the top of the draw area.
-                    innerPadding: 18),
-                new charts.SeriesLegend(position: charts.BehaviorPosition.bottom),
-
+                // new charts.ChartTitle('Daily Utilization',
+                //     behaviorPosition: charts.BehaviorPosition.top,
+                //     titleOutsideJustification:
+                //         charts.OutsideJustification.start,
+                //     // Set a larger inner padding than the default (10) to avoid
+                //     // rendering the text too close to the top measure axis tick label.
+                //     // The top tick label may extend upwards into the top margin region
+                //     // if it is located at the top of the draw area.
+                //     innerPadding: 18),
+                new charts.SeriesLegend(
+                    position: charts.BehaviorPosition.bottom),
               ],
             );
           });
@@ -283,7 +287,7 @@ class _MyPackagesState extends State<MyPackages> {
       child: Loading(
         indicator: BallPulseIndicator(),
         size: size,
-        color: Colors.white60,
+        color: Colors.black45,
       ),
     );
   }
@@ -292,7 +296,7 @@ class _MyPackagesState extends State<MyPackages> {
     return WidgetAnimator(
       Card(
         elevation: 1.0,
-        color: Color.fromRGBO(184, 27, 77, 10),
+        color: Colors.white, //Color.fromRGBO(184, 27, 77, 10),
         child: Padding(
           padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
           child: Row(
@@ -300,11 +304,14 @@ class _MyPackagesState extends State<MyPackages> {
             children: <Widget>[
               Text(
                 label,
-                style: TextStyle(color: Colors.white70, fontSize: 18),
+                style: TextStyle(color: Colors.black87, fontSize: 18),
               ),
               Text(
                 value,
-                style: TextStyle(color: Colors.white, fontSize: 18),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -363,12 +370,16 @@ class _MyPackagesState extends State<MyPackages> {
 
           detailsListValue("Current Limit", currentFinalDataLimitInGB ?? ""),
           detailsListValue("Consumed Data", currentConsumedInGB ?? ""),
-
+          detailsListValue("Daily Utlization", ""),
 
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              decoration: BoxDecoration(border: Border.all(width: 1.0)),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.blueGrey, width: 1.0),
+                ),
+              ),
               height: 400,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -435,3 +446,4 @@ class _MyPackagesState extends State<MyPackages> {
     return dataLoaded ? packageDetails() : loader();
   }
 }
+
