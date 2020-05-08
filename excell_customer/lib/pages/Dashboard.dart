@@ -52,7 +52,7 @@ class _DashboardState extends State<Dashboard> {
       dueDate,
       invoiceDate,
       pgMsg;
-  String amount;
+  String amount = '0';
   // String consumedPercent = "0";
 
   double dCurrentConsumed,
@@ -316,7 +316,7 @@ class _DashboardState extends State<Dashboard> {
           arcType: ArcType.FULL,
           animation: true,
           percent: dConsumedPercent,
-          arcBackgroundColor: Color.fromRGBO(0, 32, 97, 5),//Colors.white,
+          arcBackgroundColor: Color.fromRGBO(0, 32, 97, 5), //Colors.white,
           footer: Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
             child: Text(
@@ -366,7 +366,7 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  detailsHeader(String headerText) {
+  detailsHeader(String headerText, {viewMore: false}) {
     return Center(
       child: Card(
         elevation: 3.0,
@@ -380,6 +380,19 @@ class _DashboardState extends State<Dashboard> {
                 headerText,
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
+              viewMore
+                  ? GestureDetector(
+                      child: Text(
+                        "View More",
+                        style: TextStyle(color: Colors.white70, fontSize: 18),
+                      ),
+                      onTap: () {
+                        _controller.isOpened
+                            ? _controller.hide()
+                            : _controller.show();
+                      },
+                    )
+                  : Text("")
             ],
           ),
         ),
@@ -390,7 +403,7 @@ class _DashboardState extends State<Dashboard> {
   detailsListValue(label, value) {
     return Card(
       elevation: 1.0,
-      color: Colors.white,//Color.fromRGBO(184, 27, 77, 10),
+      color: Colors.white, //Color.fromRGBO(184, 27, 77, 10),
       child: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
         child: Row(
@@ -402,7 +415,10 @@ class _DashboardState extends State<Dashboard> {
             ),
             Text(
               value,
-              style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -450,7 +466,7 @@ class _DashboardState extends State<Dashboard> {
   dashboardContent() {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
-      floatingActionButton: noOfConnections > 1
+      floatingActionButton: noOfConnections > 1000
           ? Container(
               // padding: EdgeInsets.only(bottom: 100.0),
               child: Align(
@@ -467,7 +483,7 @@ class _DashboardState extends State<Dashboard> {
               ),
             )
           : null,
-      backgroundColor: Colors.white,// Color.fromRGBO(184, 27, 77, 10),
+      backgroundColor: Colors.white, // Color.fromRGBO(184, 27, 77, 10),
       bottomSheet: noOfConnections > 1 ? bottomSheet() : null,
       body: ListView(
         children: [
@@ -486,7 +502,7 @@ class _DashboardState extends State<Dashboard> {
       maxHeight: noOfConnections * 75.0,
       headerBar: Container(
         color: Color.fromRGBO(184, 27, 77, 10),
-        height: 20,
+        height: 10,
         child: Center(
           child: Text(
             // "View more connections",
@@ -495,7 +511,8 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       body: Container(
-        color: Colors.white,
+        color: Color.fromRGBO(229, 255, 255, 10),
+
         height: 30,
         child: ListView.separated(
           separatorBuilder: (context, index) => Divider(
@@ -548,7 +565,7 @@ class _DashboardState extends State<Dashboard> {
   consumption() {
     return Column(
       children: <Widget>[
-        detailsHeader("Consumption Details"),
+        detailsHeader("Consumption Details", viewMore: noOfConnections > 1),
         consumptionDetail(),
         SizedBox(
           height: 5.0,

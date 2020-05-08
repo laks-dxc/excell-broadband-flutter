@@ -55,13 +55,20 @@ class _CustomerPagesState extends State<CustomerPages> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                child: Text('Drawer Header'),
+                child: Center(
+                    child: Text(
+                  'Customer Name',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                )),
                 decoration: BoxDecoration(
-                    color: Color.fromRGBO(184, 27, 77, 10),
-                    backgroundBlendMode: BlendMode.darken,
-                    image: DecorationImage(
-                        image: AssetImage("assets/menu_bg.jpg"),
-                        fit: BoxFit.cover)),
+                  color: Color.fromRGBO(184, 27, 77, 10),
+                  backgroundBlendMode: BlendMode.darken,
+                  image: DecorationImage(
+                      image: AssetImage("assets/menu_bg.jpg"),
+                      fit: BoxFit.fill),
+                ),
               ),
               ListTile(
                 leading: FaIcon(

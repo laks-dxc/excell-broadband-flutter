@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
 
     logoButtonRowGap = windowHeight * 0.1;
 
-    buttonDimension = windowHeight * 0.10;
+    buttonDimension = windowHeight * 0.08;
     buttonFontSize = buttonDimension * 0.45;
     interButtonVerticalGap = windowHeight * 0.05;
 
@@ -98,7 +98,7 @@ class _HomeState extends State<Home> {
                             child: Text(
                       'Welcome to Excell Broadband',
                       style: TextStyle(
-                          fontSize: windowWidth * 0.06,
+                          fontSize: windowWidth * 0.05,
                           color: Color.fromRGBO(0, 32, 97, 10)),
                     ))),
                   ),
@@ -202,7 +202,7 @@ class _HomeState extends State<Home> {
             style: TextStyle(
                 
                 color: Colors.black,
-                fontSize: 20,
+                fontSize: 16,
                 letterSpacing: 1.5),
           ),
         ],

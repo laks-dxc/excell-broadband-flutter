@@ -25,6 +25,23 @@ class _ProfileState extends State<Profile> {
       email,
       fullAddress;
 
+  final customerNameController = TextEditingController();
+  final daytimeController = TextEditingController();
+  final nightController = TextEditingController();
+  final mobileController = TextEditingController();
+  final addressController = TextEditingController();
+  final cityController = TextEditingController();
+  final stateController = TextEditingController();
+  final emailController = TextEditingController();
+  final fullAddressController = TextEditingController();
+
+  final focusedBorder = OutlineInputBorder(
+      borderSide:
+          BorderSide(color: Color.fromRGBO(184, 27, 77, 10), width: 1.0));
+  final disabledBorder = OutlineInputBorder(
+    borderSide: BorderSide(color: Color.fromRGBO(0, 32, 97, 5), width: 1.0),
+  );
+
   @override
   void initState() {
     var body = {
@@ -39,13 +56,21 @@ class _ProfileState extends State<Profile> {
           customerName = profileData["cutomerName"];
           daytime = profileData["contactno"];
           night = profileData["altcontactno"];
-
           address = profileData["address"];
           city = profileData["city"];
           state = profileData["state"];
-
           fullAddress = address + ', ' + (city ?? "") + ', ' + (state ?? "");
           email = profileData["emailid"];
+
+          customerNameController.text = customerName;
+          daytimeController.text = daytime;
+          nightController.text = night;
+          mobileController.text = mobile;
+          addressController.text = address;
+          cityController.text = city;
+          stateController.text = state;
+          emailController.text = email;
+          fullAddressController.text = fullAddress;
         });
       });
     });
@@ -77,14 +102,14 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Card> profileTiles = [
-      detailsListValue("Name", customerName ?? ""),
-      detailsListValue("Contact No.", daytime ?? ""),
-      detailsListValue("Alt. Contact No.", night ?? ""),
-      detailsListValue("Email", email ?? ""),
-      detailsListValue("Address", fullAddress),
-      // detailsListValue("State", state ?? ""),
-      // detailsListValue("Address", state ?? ""),
+    final List<Widget> profileTiles = [
+      labelField("Name", customerName ?? " ",
+          tfController: customerNameController),
+      labelField("Contact No.", daytime ?? " ", tfController: daytimeController),
+      labelField("Alternate Contact No.", night ?? " ",
+          tfController: nightController),
+      labelField("Email", email ?? "", tfController: emailController),
+      labelField("Address", fullAddress, tfController: fullAddressController),
     ];
 
     return Padding(
@@ -92,7 +117,10 @@ class _ProfileState extends State<Profile> {
       child: ListView.builder(
           itemCount: profileTiles.length,
           itemBuilder: (BuildContext context, int index) {
-            return WidgetAnimator(profileTiles[index]);
+            return WidgetAnimator(Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: profileTiles[index],
+            ));
           }),
     );
   }
@@ -109,6 +137,23 @@ class _ProfileState extends State<Profile> {
     return duration;
   }
 
+  labelField(_label, _value, {tfController}) {
+    print(_value);
+    return TextField(
+      controller: tfController,
+      enabled: false,
+      maxLines: 3,
+      minLines: 1,
+      // initialValue: _value,
+      decoration: InputDecoration(
+        disabledBorder: disabledBorder,
+        focusedBorder: focusedBorder,
+        labelText: _label,
+        labelStyle: TextStyle(color: Color.fromRGBO(0, 32, 97, 5)),
+      ),
+    );
+  }
+
   Card detailsListValue(label, value) {
     return Card(
       elevation: 1.0,
@@ -120,11 +165,11 @@ class _ProfileState extends State<Profile> {
           children: <Widget>[
             Text(
               label,
-              style: TextStyle(color: Colors.white70, fontSize: 18),
+              style: TextStyle(color: Colors.black38, fontSize: 18),
             ),
             Text(
               value,
-              style: TextStyle(color: Colors.white, fontSize: 18),
+              style: TextStyle(color: Colors.black, fontSize: 18),
             ),
           ],
         ),

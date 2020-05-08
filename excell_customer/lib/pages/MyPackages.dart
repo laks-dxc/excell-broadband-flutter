@@ -169,7 +169,12 @@ class _MyPackagesState extends State<MyPackages> {
 
         if (usageList.length == 0) {
           setState(() {
-            barChart = Center(child: Text("No Data", style: TextStyle(fontSize:25),),);
+            barChart = Center(
+              child: Text(
+                "No Data",
+                style: TextStyle(fontSize: 25),
+              ),
+            );
           });
         } else {
           usageList.forEach((usageDay) {
@@ -366,9 +371,9 @@ class _MyPackagesState extends State<MyPackages> {
                       child: Text(
                         value,
                         style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 18,
-                            ),
+                          color: Colors.white70,
+                          fontSize: 18,
+                        ),
                       ),
                     )
                   : Text(""),
@@ -466,19 +471,8 @@ class _MyPackagesState extends State<MyPackages> {
       controller: _controller,
       maxHeight: noOfConnections * 75.0,
       headerBar: Container(
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(184, 27, 77, 10),
-// Border.all(),
-        ),
-
-        // color:
+        color: Color.fromRGBO(184, 27, 77, 10),
         height: 10,
-        // child: Center(
-        //   child: Text(
-        //     // "View more connections",
-        //     "", style: TextStyle(color: Colors.white),
-        //   ),
-        // ),
       ),
       body: Container(
         color: Color.fromRGBO(229, 255, 255, 10),

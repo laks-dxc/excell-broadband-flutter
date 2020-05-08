@@ -100,7 +100,7 @@ class _PackagesState extends State<Packages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+      backgroundColor: Colors.white,//fromRGBO(184, 27, 77, 10),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(184, 27, 77, 10),
         title: Text('Excell Broadband - Packages'),
@@ -132,8 +132,8 @@ class _PackagesState extends State<Packages> {
         if (bbPlans.length == 0) {
           return Center(
             child: Text(
-              'No Packages Found',
-              style: TextStyle(color: Colors.white70),
+              'No Packages Found !',
+              style: TextStyle(color: Colors.black),
             ),
           );
         } else {
@@ -145,7 +145,8 @@ class _PackagesState extends State<Packages> {
               itemBuilder: (BuildContext ctxt, int index) {
                 return WidgetAnimator(
                   Card(
-                    color: Colors.transparent,
+                    // color: Colors.transparent,
+                    elevation: 5.0,
                     child: Column(
                       children: <Widget>[
                         Padding(
@@ -156,19 +157,20 @@ class _PackagesState extends State<Packages> {
                               Text(
                                 bbPlans[index].plan_name,
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
+                                    color: Colors.black, fontSize: 18),
                               ),
                               Text(
                                 "₹ " + bbPlans[index].plan_amount,
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
+                                    color: Colors.black, fontSize: 18),
                               )
+                              ,
                             ],
                           ),
                         ),
                         Divider(
-                          thickness: 2.0,
-                          color: Colors.white30,
+                          thickness: 1.0,
+                          color: Colors.black45,
                         ),
                         Padding(
                           padding: EdgeInsets.all(10.0),
@@ -178,12 +180,12 @@ class _PackagesState extends State<Packages> {
                               Text(
                                 "Speed",
                                 style: TextStyle(
-                                    fontSize: 16, color: Colors.white60),
+                                    fontSize: 16, color: Colors.black87),
                               ),
                               Text(
                                 bbPlans[index].plan_speed,
                                 style: TextStyle(
-                                    fontSize: 16, color: Colors.white70),
+                                    fontSize: 16, color: Colors.black87),
                               )
                             ],
                           ),
@@ -196,12 +198,12 @@ class _PackagesState extends State<Packages> {
                               Text(
                                 "FUP Limit",
                                 style: TextStyle(
-                                    fontSize: 16, color: Colors.white60),
+                                    fontSize: 16, color: Colors.black87),
                               ),
                               Text(
                                 bbPlans[index].data_limit,
                                 style: TextStyle(
-                                    fontSize: 16, color: Colors.white70),
+                                    fontSize: 16, color: Colors.black87),
                               )
                             ],
                           ),
@@ -214,12 +216,12 @@ class _PackagesState extends State<Packages> {
                               Text(
                                 "Speed - Post FUP",
                                 style: TextStyle(
-                                    fontSize: 16, color: Colors.white60),
+                                    fontSize: 16, color: Colors.black87),
                               ),
                               Text(
                                 bbPlans[index].plan_postfup,
                                 style: TextStyle(
-                                    fontSize: 16, color: Colors.white70),
+                                    fontSize: 16, color: Colors.black87),
                               )
                             ],
                           ),
@@ -238,7 +240,8 @@ class _PackagesState extends State<Packages> {
 
   locationDropdown() {
     return Card(
-      // elevation: 3.0,
+      // elevation: 15.0,
+      
       color: Color.fromRGBO(0, 32, 97, 5), //Color.fromRGBO(184, 27, 77, 10),
       child: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 3.0, 10.0, 0.0),
