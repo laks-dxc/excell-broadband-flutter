@@ -47,7 +47,8 @@ class _CustomerPagesState extends State<CustomerPages> {
     return MaterialApp(
       home: Scaffold(
         key: _scaffoldKey,
-        backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+        // backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+        backgroundColor: Colors.white,
         drawer: Drawer(
           child: ListView(
             // Important: Remove any padding from the ListView.

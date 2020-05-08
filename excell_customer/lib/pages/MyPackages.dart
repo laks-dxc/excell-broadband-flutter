@@ -11,8 +11,6 @@ import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
-
-
 class MyPackages extends StatefulWidget {
   @override
   _MyPackagesState createState() => _MyPackagesState();
@@ -184,7 +182,10 @@ class _MyPackagesState extends State<MyPackages> {
               displayName: "Download in GB",
               seriesColor: charts.MaterialPalette.indigo.shadeDefault,
               domainFn: (MonthlyUtilization utilization, _) => utilization.day,
-              measureFn: (MonthlyUtilization utilization, _) => utilization.dataInMB,
+              measureFn: (MonthlyUtilization utilization, _) =>
+                  utilization.dataInMB,
+              colorFn: (_, __) => charts.ColorUtil.fromDartColor(
+                  Color.fromRGBO(0, 185, 251, 10)),
               data: usageDownload,
             ),
             new charts.Series<MonthlyUtilization, String>(
@@ -193,8 +194,10 @@ class _MyPackagesState extends State<MyPackages> {
               seriesColor: charts.MaterialPalette.pink.shadeDefault,
               domainFn: (MonthlyUtilization utilization, _) => utilization.day,
               measureFn: (MonthlyUtilization utilization, _) =>
-                  utilization.dataInMB ,//* 15.3,
+                  utilization.dataInMB, //* 15.3,
               data: usageUpload,
+              colorFn: (_, __) => charts.ColorUtil.fromDartColor(
+                  Color.fromRGBO(255, 67, 30, 10)),
             ),
           ];
 
@@ -202,7 +205,13 @@ class _MyPackagesState extends State<MyPackages> {
             barChart = charts.BarChart(
               seriesList,
               // defaultRenderer: new charts.BarRendererConfig<String>( strokeWidthPx: 0.3, barRendererDecorator: CustomBarLabelDecorator<String>(labelAnchor: CustomBarLabelAnchor.middle), ),
-
+              selectionModels: [
+                new charts.SelectionModelConfig(
+                  type: charts.SelectionModelType.info,
+                  changedListener: chartSelectionChanged,
+                  // listener: ,
+                )
+              ],
               defaultInteractions: true,
               animate: true,
               barGroupingType: charts.BarGroupingType.groupedStacked,
@@ -248,6 +257,16 @@ class _MyPackagesState extends State<MyPackages> {
 
       // dConsumedPercent = 0.72;
     });
+  }
+
+  void chartSelectionChanged(charts.SelectionModel<String> a) {
+    print(a.selectedDatum[0].datum.day);
+    print('Download');
+    print(a.selectedDatum[0].datum.dataInMB*1024);
+    print('Upload');
+    
+    print(a.selectedDatum[1].datum.dataInMB*1024);
+
   }
 
   getConnectionsList() {
@@ -446,4 +465,3 @@ class _MyPackagesState extends State<MyPackages> {
     return dataLoaded ? packageDetails() : loader();
   }
 }
-

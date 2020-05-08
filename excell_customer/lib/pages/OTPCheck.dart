@@ -28,7 +28,6 @@ class _OTPCheckState extends State<OTPCheck> {
 
     if (otpFromStorage == enteredOTP) {
       {
-        
         codeHelpers.setStorageKey('otp', '');
         codeHelpers.setStorageKey('loggedIn', '1');
 
@@ -50,12 +49,11 @@ class _OTPCheckState extends State<OTPCheck> {
               .transform(convert.utf8.decoder)
               .join()
               .then((tokenSavedResponse) {
-
             // Map<String, dynamic> fbTokenSaved =
             //     convert.jsonDecode(tokenSavedResponse);
 
             // print("fbTokenSaved " + " " + fbTokenSaved.toString());
-            
+
             Navigator.pushReplacement(globalContext,
                 MaterialPageRoute(builder: (context) => CustomerPages()));
           });
@@ -98,77 +96,113 @@ class _OTPCheckState extends State<OTPCheck> {
     print("OTP is " + codeHelpers.getStorageKey('otp').toString());
     return MaterialApp(
       home: Scaffold(
-          backgroundColor: Colors.white,//Color.fromRGBO(184, 27, 77, 10),
-          body: Stack(
-            children: <Widget>[
-              Image.asset('assets/login_bg.png', fit: BoxFit.fill),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Image.asset(
-                    'assets/logo_pink.png',
-                    width: 180,
-                    height: 180,
+        backgroundColor: Colors.white, //Color.fromRGBO(184, 27, 77, 10),
+        body: Stack(
+          children: <Widget>[
+            Image.asset('assets/login_bg.png', fit: BoxFit.fill),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets/logo_pink.png',
+                  width: 180,
+                  height: 180,
+                ),
+                Text(
+                  "Verify OTP",
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Color.fromRGBO(0, 32, 97, 5), //Colors.white,
                   ),
-                  Text(
-                    "Verify OTP",
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: Color.fromRGBO(0, 32, 97, 5),//Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  PinCodeTextField(
-                    backgroundColor: Color.fromRGBO(0, 27, 77, 0),
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    enableActiveFill: true,
-                    inactiveFillColor: Color.fromRGBO(0, 32, 97, 5),
-                    activeFillColor: Color.fromRGBO(0, 32, 97, 5),
-                    selectedFillColor: Color.fromRGBO(0, 32, 97, 5),
-                    borderWidth: 0.0,
-                    activeColor: Colors.transparent,
-                    textInputType: TextInputType.number,
-                    textStyle: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 24.0),
-                    autoFocus: true,
-                    length: 4,
-                    obsecureText: false,
-                    animationType: AnimationType.fade,
-                    shape: PinCodeFieldShape.circle,
-                    animationDuration: Duration(milliseconds: 300),
-                    borderRadius: BorderRadius.circular(5),
-                    fieldHeight: 60,
-                    fieldWidth: 60,
-                    // checkOTP(otpValue)
-                    // onSubmitted: (otpValue) => checkOTP(otpValue),
+                ),
+                SizedBox(height: 20),
+                PinCodeTextField(
+                  backgroundColor: Color.fromRGBO(0, 27, 77, 0),
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  enableActiveFill: true,
+                  inactiveFillColor: Color.fromRGBO(0, 32, 97, 5),
+                  activeFillColor: Color.fromRGBO(0, 32, 97, 5),
+                  selectedFillColor: Color.fromRGBO(0, 32, 97, 5),
+                  borderWidth: 0.0,
+                  activeColor: Colors.transparent,
+                  textInputType: TextInputType.number,
+                  textStyle: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 24.0),
+                  autoFocus: true,
+                  length: 4,
+                  obsecureText: false,
+                  animationType: AnimationType.fade,
+                  shape: PinCodeFieldShape.circle,
+                  animationDuration: Duration(milliseconds: 300),
+                  borderRadius: BorderRadius.circular(5),
+                  fieldHeight: 60,
+                  fieldWidth: 60,
+                  // checkOTP(otpValue)
+                  // onSubmitted: (otpValue) => checkOTP(otpValue),
 
-                    onChanged: (value) {
-                      if (value.toString().length == 4)
-                        checkOTP(value.toString());
-                    },
+                  onChanged: (value) {
+                    if (value.toString().length == 4)
+                      checkOTP(value.toString());
+                  },
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "OTP sent to " + mobileNum,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Color.fromRGBO(0, 32, 97, 5),
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    "OTP sent to " + mobileNum,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color.fromRGBO(0, 32, 97, 5),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  _start > 0
-                      ? Text(
-                          "Resend in " + _start.toString() + " seconds",
-                          style: TextStyle(fontSize: 18, color: Color.fromRGBO(0, 32, 97, 5)),
-                        )
-                      : Text(""),
-                ],
-              ),
-            ],
-          )),
+                ),
+                SizedBox(height: 20),
+                _start > 0
+                    ? ButtonTheme(
+                        minWidth: 200.0,
+                        height: 50.0,
+                        child: RaisedButton(
+                          onPressed: (){},
+                          textColor: Colors.white,
+                          color: Color.fromRGBO(0, 32, 97, 5),
+                          child: Text(
+                            "LOGIN",
+                            style: TextStyle(fontSize: 20, letterSpacing: 2.0),
+                          ),
+                          // onPressed: loginButtonPressed,
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(30.0),
+                          ),
+                        ),
+                      )
+                    // ButtonTheme(
+                    //     minWidth: 200.0,
+                    //     height: 50.0,
+                    //     child: RaisedButton(
+                    //       shape: new RoundedRectangleBorder(
+                    //         borderRadius: new BorderRadius.circular(30.0),
+                    //       ),
+                    //       onPressed: () {},
+                    //       // focusColor: ,
+                    //       child: Text(
+                    //           "Resend in " + _start.toString() + " seconds",
+                    //           style: TextStyle(fontSize: 20)),
+                    //       color: Color.fromRGBO(0, 32, 97, 0),
+                    //       textColor: Colors.white,
+                    //       // elevation: 5,
+                    //     ),
+                    //   )
+                    // // Text(
+                    //     "Resend in " + _start.toString() + " seconds",
+                    //     style: TextStyle(
+                    //         fontSize: 18, color: Color.fromRGBO(0, 32, 97, 5)),
+                    //   )
+                    : Text(""),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

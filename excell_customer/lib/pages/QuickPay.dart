@@ -31,7 +31,7 @@ class _QuickPayState extends State<QuickPay> {
       appBar: AppBar(
           title: Text("Quick Pay"),
           backgroundColor: Color.fromRGBO(184, 27, 77, 10)),
-      backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+      backgroundColor: Colors.white, //Color.fromRGBO(184, 27, 77, 10),
       body: loginWidget(),
     );
   }
@@ -60,17 +60,26 @@ class _QuickPayState extends State<QuickPay> {
                   color: Colors.black87,
                 ),
                 decoration: InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(
+                      color: Color.fromRGBO(184, 27, 77, 10),
+                    ),
+                  ),
                   contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                   prefixIcon: Icon(
                     Icons.account_circle,
                     size: 40.0,
                     color: Color.fromRGBO(184, 27, 77, 10),
                   ),
-
+                  border: OutlineInputBorder(
+                    // borderSide: BorderSide(width: 32.0),
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
                   hintText: "Customer Id.",
-                  filled: true,
+                  // filled: true,
                   // fillColor: Colors.white24,
-                  fillColor: Color(0xB1FFFFFF),
+                  // fillColor: Color(0xB1FFFFFF),
                   // border: OutlineInputBorder(
                   //   // borderSide: BorderSide(width: 32.0),
                   //   borderRadius: BorderRadius.circular(25.0),
@@ -88,6 +97,15 @@ class _QuickPayState extends State<QuickPay> {
                   fontSize: 20.0,
                 ),
                 decoration: InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(
+                      color: Color.fromRGBO(184, 27, 77, 10),
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
                   contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                   prefixIcon: Icon(
                     Icons.check_circle,
@@ -95,8 +113,8 @@ class _QuickPayState extends State<QuickPay> {
                     color: Color.fromRGBO(184, 27, 77, 10),
                   ),
                   hintText: "Registered Mobile No.",
-                  filled: true,
-                  fillColor: Color(0xB1FFFFFF),
+                  // filled: true,
+                  // fillColor: Color(0xB1FFFFFF),
                   // border: OutlineInputBorder(
                   //     borderRadius: BorderRadius.circular(25.0)),
                 ),
@@ -121,35 +139,42 @@ class _QuickPayState extends State<QuickPay> {
     );
   }
 
+// controller: ,
   WidgetAnimator getDuesLabelContainer() {
-    return WidgetAnimator(
-      Container(
-        padding: EdgeInsets.all(16.0),
-        child: TextField(
-          enabled: false,
-          controller: dueAmountController,
-          keyboardType: TextInputType.number,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20.0,
-          ),
-          decoration: InputDecoration(
-            contentPadding:
-                EdgeInsets.fromLTRB(10.0, 14.0, 10, 10), //, 10.0, 10.0, 10.0
-            prefixIcon: Icon(
-              Icons.note,
-              size: 40.0,
+    return WidgetAnimator(Container(
+      padding: EdgeInsets.all(16.0),
+      child: TextField(
+        enabled: false,
+        controller: dueAmountController,
+        keyboardType: TextInputType.number,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 20.0,
+        ),
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            borderSide: BorderSide(
               color: Color.fromRGBO(184, 27, 77, 10),
             ),
-            hintText: "Dues",
-            filled: true,
-            fillColor: Color(0xB1FFFFFF),
-            // border: OutlineInputBorder(
-            //     borderRadius: BorderRadius.circular(25.0)),
           ),
+          // border: OutlineInputBorder(
+          //   borderRadius: BorderRadius.circular(25.0),
+          // ),
+          contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+          prefixIcon: Icon(
+            Icons.note,
+            size: 40.0,
+            color: Color.fromRGBO(184, 27, 77, 10),
+          ),
+          hintText: "Registered Mobile No.",
+          // filled: true,
+          // fillColor: Color(0xB1FFFFFF),
+          // border: OutlineInputBorder(
+          //     borderRadius: BorderRadius.circular(25.0)),
         ),
       ),
-    );
+    ));
   }
 
   Widget goBackButton() {
@@ -270,7 +295,7 @@ class _QuickPayState extends State<QuickPay> {
           final int status = response["resonse"]["status"];
 
           print(status);
-          
+
           if (status == 200) {
             final qpToken = response["resonse"]["result"]["token"];
 
@@ -280,7 +305,8 @@ class _QuickPayState extends State<QuickPay> {
             };
 
             codeHelpers
-                .httpPost(customerDueBody, tempToken: qpToken, useTempToken: true)
+                .httpPost(customerDueBody,
+                    tempToken: qpToken, useTempToken: true)
                 .then((onValue) {
               onValue.transform(convert.utf8.decoder).join().then((payments) {
                 Map<String, dynamic> paymentDetail =

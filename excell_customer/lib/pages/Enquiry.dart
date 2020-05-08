@@ -30,13 +30,14 @@ class EnquiryFormState extends State<EnquiryForm> {
   Enquiry enquiryData = new Enquiry();
   CodeHelpers codeHelpers = new CodeHelpers();
   final errorStyle = TextStyle(
-    color: Color.fromRGBO(0, 32, 97, 5),
+    // color: Colors.fromRGBO(0, 32, 97, 5),
+    color: Colors.red,
   );
   final errorBorder = OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.white, width: 1.0),
+    borderSide: BorderSide(color: Colors.redAccent, width: 1.0),
   );
   final focusedBorder = OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.white, width: 1.0),
+    borderSide: BorderSide(color: Color.fromRGBO(184, 27, 77, 10), width: 1.0),
   );
   final enabledBorder = OutlineInputBorder(
     borderSide: BorderSide(color: Color.fromRGBO(0, 32, 97, 5), width: 1.0),
@@ -133,15 +134,15 @@ class EnquiryFormState extends State<EnquiryForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+      backgroundColor: Colors.white, // Color.fromRGBO(184, 27, 77, 10),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(184, 27, 77, 10),
         title: Text('Excell Broadband - Enquiry'),
       ),
       body: Card(
-        color: Color.fromRGBO(184, 27, 77, 10),
+        // color: Color.fromRGBO(184, 27, 77, 10),
         child: Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
           child: Form(
             key: _formKey,
             child: ListView(
@@ -153,7 +154,7 @@ class EnquiryFormState extends State<EnquiryForm> {
                 ),
                 WidgetAnimator(
                   TextFormField(
-                    cursorColor: Colors.white,
+                    cursorColor: Color.fromRGBO(184, 27, 77, 10),
                     textCapitalization: TextCapitalization.words,
                     decoration: InputDecoration(
                       focusedErrorBorder: focusedBorder,
@@ -162,7 +163,7 @@ class EnquiryFormState extends State<EnquiryForm> {
                       focusedBorder: focusedBorder,
                       enabledBorder: enabledBorder,
                       labelText: 'Full Name',
-                      labelStyle: TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.black),
                     ),
                     onSaved: (value) {
                       setState(() {
@@ -185,16 +186,17 @@ class EnquiryFormState extends State<EnquiryForm> {
                         enquiryData.email = value;
                       });
                     },
-                    cursorColor: Colors.white,
+                   cursorColor: Color.fromRGBO(184, 27, 77, 10),
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                        focusedErrorBorder: focusedBorder,
-                        errorStyle: errorStyle,
-                        errorBorder: errorBorder,
-                        focusedBorder: focusedBorder,
-                        enabledBorder: enabledBorder,
-                        labelText: 'Email Address',
-                        labelStyle: TextStyle(color: Colors.white)),
+                      focusedErrorBorder: focusedBorder,
+                      errorStyle: errorStyle,
+                      errorBorder: errorBorder,
+                      focusedBorder: focusedBorder,
+                      enabledBorder: enabledBorder,
+                      labelText: 'Email Address',
+                      labelStyle: TextStyle(color: Colors.black),
+                    ),
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'Please enter your email address';
@@ -214,15 +216,16 @@ class EnquiryFormState extends State<EnquiryForm> {
                       });
                     },
                     keyboardType: TextInputType.number,
-                    cursorColor: Colors.white,
+                    cursorColor: Color.fromRGBO(184, 27, 77, 10),
                     decoration: InputDecoration(
-                        focusedErrorBorder: focusedBorder,
-                        errorStyle: errorStyle,
-                        errorBorder: errorBorder,
-                        focusedBorder: focusedBorder,
-                        enabledBorder: enabledBorder,
-                        labelText: 'Mobile',
-                        labelStyle: TextStyle(color: Colors.white)),
+                      focusedErrorBorder: focusedBorder,
+                      errorStyle: errorStyle,
+                      errorBorder: errorBorder,
+                      focusedBorder: focusedBorder,
+                      enabledBorder: enabledBorder,
+                      labelText: 'Mobile',
+                      labelStyle: TextStyle(color: Colors.black),
+                    ),
                     validator: (value) {
                       if (value.trim().isEmpty) {
                         return 'Please enter your mobile no.';
@@ -241,15 +244,16 @@ class EnquiryFormState extends State<EnquiryForm> {
                         enquiryData.address = value;
                       });
                     },
-                    cursorColor: Colors.white,
+                    cursorColor: Color.fromRGBO(184, 27, 77, 10),
                     decoration: InputDecoration(
-                        focusedErrorBorder: focusedBorder,
-                        errorStyle: errorStyle,
-                        errorBorder: errorBorder,
-                        focusedBorder: focusedBorder,
-                        enabledBorder: enabledBorder,
-                        labelText: 'Address',
-                        labelStyle: TextStyle(color: Colors.white)),
+                      focusedErrorBorder: focusedBorder,
+                      errorStyle: errorStyle,
+                      errorBorder: errorBorder,
+                      focusedBorder: focusedBorder,
+                      enabledBorder: enabledBorder,
+                      labelText: 'Address',
+                      labelStyle: TextStyle(color: Colors.black),
+                    ),
                     validator: (value) {
                       if (value.trim().isEmpty) {
                         return 'Please enter your address';
@@ -268,14 +272,14 @@ class EnquiryFormState extends State<EnquiryForm> {
                         enquiryData.purpose = value;
                       });
                     },
-                    cursorColor: Colors.white,
+                    cursorColor: Color.fromRGBO(184, 27, 77, 10),
                     decoration: InputDecoration(
                         focusedErrorBorder: focusedBorder,
                         errorStyle: errorStyle,
                         errorBorder: errorBorder,
                         focusedBorder: focusedBorder,
                         enabledBorder: enabledBorder,
-                        labelStyle: TextStyle(color: Colors.white),
+                        labelStyle: TextStyle(color: Colors.black),
                         labelText: 'Purpose'),
                     validator: (value) {
                       if (value.trim().isEmpty) {
@@ -295,7 +299,7 @@ class EnquiryFormState extends State<EnquiryForm> {
                 //         enquiryData.city = value;
                 //       });
                 //     },
-                //     cursorColor: Colors.white,
+                //     cursorColor: Color.fromRGBO(184, 27, 77, 10),
                 //     decoration: InputDecoration(
                 //       focusedErrorBorder: focusedBorder,
                 //       errorStyle: errorStyle,
@@ -316,39 +320,63 @@ class EnquiryFormState extends State<EnquiryForm> {
                 SizedBox(
                   height: 10,
                 ),
-                WidgetAnimator(DropdownButton(
-                  isExpanded: true,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black54,
-                      fontSize: 18),
-                  icon: Icon(
-                    Icons.arrow_drop_down,
-                    color: Colors.white,
-                  ),
-                  items: locationItems,
-                  elevation: 5,
-                  hint: Text(
-                    currentCityName,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  value: null,
-                  onChanged: (value) {
-                    setState(() {
-                      currentCityId = int.parse(value);
-                      Location selectedLocation = locationList.firstWhere(
-                          (Location location) => location.location_id == value);
+                WidgetAnimator(
+                  Container(
+                    height: 60,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      border: Border.all(
+                        color: Color.fromRGBO(0, 32, 97, 5),
+                      ),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        focusColor: Colors.black,
+                        isExpanded: true,
+                        style: TextStyle(
+                            // fontWeight: FontWeight.w500,
+                            color: Colors.black54,
+                            fontSize: 16),
+                        icon: Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.black,
+                          size: 36,
+                        ),
+                        items: locationItems,
+                        elevation: 5,
+                        hint: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            currentCityName,
+                            style: TextStyle(
+                              color: Color.fromRGBO(0, 32, 97, 5),
+                            ),
+                          ),
+                        ),
+                        value: null,
+                        onChanged: (value) {
+                          setState(() {
+                            currentCityId = int.parse(value);
+                            Location selectedLocation = locationList.firstWhere(
+                                (Location location) =>
+                                    location.location_id == value);
 
-                      currentCityName = selectedLocation.location.toString();
-                      hasSubArea =
-                          selectedLocation.sub_area.toString().toUpperCase();
-                      getSubAreas(selectedLocation);
-                    });
-                  },
-                )),
+                            currentCityName =
+                                selectedLocation.location.toString();
+                            hasSubArea = selectedLocation.sub_area
+                                .toString()
+                                .toUpperCase();
+                            getSubAreas(selectedLocation);
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 6),
                 subAreaWidget(hasSubArea),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: WidgetAnimator(RaisedButton(
                     color: Color.fromRGBO(0, 32, 97, 5),
                     onPressed: () {
@@ -411,30 +439,44 @@ class EnquiryFormState extends State<EnquiryForm> {
         SizedBox(
           height: 5,
         ),
-        DropdownButton(
-          isExpanded: true,
-          style: TextStyle(
-              fontWeight: FontWeight.w500, color: Colors.black54, fontSize: 18),
-          icon: Icon(
-            Icons.arrow_drop_down,
-            color: Colors.white,
+        Container(
+          height: 60,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(
+              color: Color.fromRGBO(0, 32, 97, 5),
+            ),
           ),
-          items: subAreaItems,
-          elevation: 5,
-          hint: Text(
-            currentSubAreaName,
-            style: TextStyle(color: Colors.white),
-          ),
-          value: null,
-          onChanged: (value) {
-            setState(() {
-              currentSubAreaId = int.parse(value);
-              SubArea selectedSubArea = subAreaList
-                  .firstWhere((SubArea subArea) => subArea.subarea_id == value);
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton(
+              isExpanded: true,
+              style: TextStyle(color: Colors.black54, fontSize: 16),
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+                size: 36,
+              ),
+              items: subAreaItems,
+              elevation: 5,
+              hint: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  currentSubAreaName,
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              value: null,
+              onChanged: (value) {
+                setState(() {
+                  currentSubAreaId = int.parse(value);
+                  SubArea selectedSubArea = subAreaList.firstWhere(
+                      (SubArea subArea) => subArea.subarea_id == value);
 
-              currentSubAreaName = selectedSubArea.subarea_name.toString();
-            });
-          },
+                  currentSubAreaName = selectedSubArea.subarea_name.toString();
+                });
+              },
+            ),
+          ),
         ),
       ],
     );

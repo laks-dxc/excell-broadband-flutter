@@ -26,7 +26,7 @@ class _LoginState extends State<Login> {
     globalContext = context;
     return MaterialApp(
       home: Scaffold(
-        backgroundColor:Colors.white,// Color.fromRGBO(184, 27, 77, 10),
+        backgroundColor: Colors.white, // Color.fromRGBO(184, 27, 77, 10),
         body: loginWidget(),
       ),
     );
@@ -83,7 +83,6 @@ class _LoginState extends State<Login> {
 
             Navigator.pushReplacement(globalContext,
                 MaterialPageRoute(builder: (context) => OTPCheck()));
-
           } else {
             Fluttertoast.showToast(
                 msg: response["resonse"]["result"]["message"],
@@ -159,7 +158,6 @@ class _LoginState extends State<Login> {
           children: <Widget>[
             Image.asset(
               'assets/logo_pink.png',
-
               height: 180,
               width: 180,
             ),
@@ -185,6 +183,12 @@ class _LoginState extends State<Login> {
                   filled: true,
                   // fillColor: Colors.white24,
                   fillColor: Color(0xB1FFFFFF),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(
+                      color: Color.fromRGBO(184, 27, 77, 10),
+                    ),
+                  ),
                   border: OutlineInputBorder(
                     // borderSide: BorderSide(width: 32.0),
                     borderRadius: BorderRadius.circular(25.0),
@@ -203,6 +207,12 @@ class _LoginState extends State<Login> {
                 ),
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(
+                      color: Color.fromRGBO(184, 27, 77, 10),
+                    ),
+                  ),
                   prefixIcon: Icon(
                     Icons.check_circle,
                     size: 40.0,
@@ -226,6 +236,4 @@ class _LoginState extends State<Login> {
       ],
     );
   }
-
-
 }
