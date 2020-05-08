@@ -69,6 +69,8 @@ class _MyPackagesState extends State<MyPackages> {
   int selectedConnectionIndex = 0;
   SolidController _controller = SolidController();
 
+  Color headerColor = Color.fromRGBO(255, 255, 255, 0);
+
   populateCurrentConnectionVariables(index) {
     // lCurrentConnection = {
     //   "pkgnum": 300208,
@@ -163,74 +165,75 @@ class _MyPackagesState extends State<MyPackages> {
 
         // usageList = List.from(usageList.reversed);
 
-        usageList.forEach((usageDay) {
-          print(usageDay);
-          setState(() {
-            usageUpload[i] = new MonthlyUtilization(
-                formatDate(DateTime.parse(usageDay["date"]), [dd, '-', M]),
-                double.parse(usageDay["upload"]) / 1024);
-            usageDownload[j] = new MonthlyUtilization(
-                formatDate(DateTime.parse(usageDay["date"]), [dd, '-', M]),
-                double.parse(usageDay["download"]) / 1024);
-            i++;
-            j++;
-          });
+        // print(usageList.toString());
 
-          var seriesList = [
-            new charts.Series<MonthlyUtilization, String>(
-              id: 'Download',
-              displayName: "Download in GB",
-              seriesColor: charts.MaterialPalette.indigo.shadeDefault,
-              domainFn: (MonthlyUtilization utilization, _) => utilization.day,
-              measureFn: (MonthlyUtilization utilization, _) =>
-                  utilization.dataInMB,
-              colorFn: (_, __) => charts.ColorUtil.fromDartColor(
-                  Color.fromRGBO(0, 185, 251, 10)),
-              data: usageDownload,
-            ),
-            new charts.Series<MonthlyUtilization, String>(
-              id: 'Upload',
-              displayName: "Upload in GB",
-              seriesColor: charts.MaterialPalette.pink.shadeDefault,
-              domainFn: (MonthlyUtilization utilization, _) => utilization.day,
-              measureFn: (MonthlyUtilization utilization, _) =>
-                  utilization.dataInMB, //* 15.3,
-              data: usageUpload,
-              colorFn: (_, __) => charts.ColorUtil.fromDartColor(
-                  Color.fromRGBO(255, 67, 30, 10)),
-            ),
-          ];
-
+        if (usageList.length == 0) {
           setState(() {
-            barChart = charts.BarChart(
-              seriesList,
-              // defaultRenderer: new charts.BarRendererConfig<String>( strokeWidthPx: 0.3, barRendererDecorator: CustomBarLabelDecorator<String>(labelAnchor: CustomBarLabelAnchor.middle), ),
-              selectionModels: [
-                new charts.SelectionModelConfig(
-                  type: charts.SelectionModelType.info,
-                  changedListener: chartSelectionChanged,
-                  // listener: ,
-                )
-              ],
-              defaultInteractions: true,
-              animate: true,
-              barGroupingType: charts.BarGroupingType.groupedStacked,
-              behaviors: [
-                // new charts.ChartTitle('Daily Utilization',
-                //     behaviorPosition: charts.BehaviorPosition.top,
-                //     titleOutsideJustification:
-                //         charts.OutsideJustification.start,
-                //     // Set a larger inner padding than the default (10) to avoid
-                //     // rendering the text too close to the top measure axis tick label.
-                //     // The top tick label may extend upwards into the top margin region
-                //     // if it is located at the top of the draw area.
-                //     innerPadding: 18),
-                new charts.SeriesLegend(
-                    position: charts.BehaviorPosition.bottom),
-              ],
-            );
+            barChart = Center(child: Text("No Data", style: TextStyle(fontSize:25),),);
           });
-        });
+        } else {
+          usageList.forEach((usageDay) {
+            print(usageDay);
+            setState(() {
+              usageUpload[i] = new MonthlyUtilization(
+                  formatDate(DateTime.parse(usageDay["date"]), [dd, '-', M]),
+                  double.parse(usageDay["upload"]) / 1024);
+              usageDownload[j] = new MonthlyUtilization(
+                  formatDate(DateTime.parse(usageDay["date"]), [dd, '-', M]),
+                  double.parse(usageDay["download"]) / 1024);
+              i++;
+              j++;
+            });
+
+            var seriesList = [
+              new charts.Series<MonthlyUtilization, String>(
+                id: 'Download',
+                displayName: "Download in GB",
+                seriesColor: charts.MaterialPalette.indigo.shadeDefault,
+                domainFn: (MonthlyUtilization utilization, _) =>
+                    utilization.day,
+                measureFn: (MonthlyUtilization utilization, _) =>
+                    utilization.dataInMB,
+                colorFn: (_, __) => charts.ColorUtil.fromDartColor(
+                    Color.fromRGBO(0, 185, 251, 10)),
+                data: usageDownload,
+              ),
+              new charts.Series<MonthlyUtilization, String>(
+                id: 'Upload',
+                displayName: "Upload in GB",
+                seriesColor: charts.MaterialPalette.pink.shadeDefault,
+                domainFn: (MonthlyUtilization utilization, _) =>
+                    utilization.day,
+                measureFn: (MonthlyUtilization utilization, _) =>
+                    utilization.dataInMB, //* 15.3,
+                data: usageUpload,
+                colorFn: (_, __) => charts.ColorUtil.fromDartColor(
+                    Color.fromRGBO(255, 67, 30, 10)),
+              ),
+            ];
+
+            setState(() {
+              barChart = charts.BarChart(
+                seriesList,
+                // defaultRenderer: new charts.BarRendererConfig<String>( strokeWidthPx: 0.3, barRendererDecorator: CustomBarLabelDecorator<String>(labelAnchor: CustomBarLabelAnchor.middle), ),
+                selectionModels: [
+                  new charts.SelectionModelConfig(
+                    type: charts.SelectionModelType.info,
+                    changedListener: chartSelectionChanged,
+                    // listener: ,
+                  )
+                ],
+                defaultInteractions: true,
+                animate: true,
+                barGroupingType: charts.BarGroupingType.groupedStacked,
+                behaviors: [
+                  new charts.SeriesLegend(
+                      position: charts.BehaviorPosition.bottom),
+                ],
+              );
+            });
+          });
+        }
 
         // noOfConnections =
         // connectionsList["resonse"]["result"]["connections"].length;
@@ -262,11 +265,10 @@ class _MyPackagesState extends State<MyPackages> {
   void chartSelectionChanged(charts.SelectionModel<String> a) {
     print(a.selectedDatum[0].datum.day);
     print('Download');
-    print(a.selectedDatum[0].datum.dataInMB*1024);
+    print(a.selectedDatum[0].datum.dataInMB * 1024);
     print('Upload');
-    
-    print(a.selectedDatum[1].datum.dataInMB*1024);
 
+    print(a.selectedDatum[1].datum.dataInMB * 1024);
   }
 
   getConnectionsList() {
@@ -339,10 +341,48 @@ class _MyPackagesState extends State<MyPackages> {
     );
   }
 
+  headerView(label, {showValue: false, value}) {
+    return WidgetAnimator(
+      Card(
+        elevation: 1.0,
+        color:
+            Color.fromRGBO(184, 27, 77, 10), //Color.fromRGBO(184, 27, 77, 10),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                label,
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+              showValue == true
+                  ? GestureDetector(
+                      onTap: () {
+                        _controller.isOpened
+                            ? _controller.hide()
+                            : _controller.show();
+                      },
+                      child: Text(
+                        value,
+                        style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 18,
+                            ),
+                      ),
+                    )
+                  : Text(""),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   packageDetails() {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
-      floatingActionButton: noOfConnections > 1
+      floatingActionButton: noOfConnections > 1000
           ? Container(
               // padding: EdgeInsets.only(bottom: 100.0),
               child: Align(
@@ -363,7 +403,9 @@ class _MyPackagesState extends State<MyPackages> {
       bottomSheet: noOfConnections > 1 ? bottomSheet() : null,
       body: ListView(
         children: [
-          detailsListValue("Name", currentPackageName ?? ""),
+          headerView(currentPackageName ?? "",
+              showValue: noOfConnections > 1, value: "View More"),
+          // detailsListValue("Name", currentPackageName ?? ""),
           detailsListValue("Details", currentPackageDetail ?? ""),
           detailsListValue("IP Address", currentIPAddr ?? ""),
           // detailsListValue("Data Limit", currentDataLimit ?? ""),
@@ -389,8 +431,8 @@ class _MyPackagesState extends State<MyPackages> {
 
           detailsListValue("Current Limit", currentFinalDataLimitInGB ?? ""),
           detailsListValue("Consumed Data", currentConsumedInGB ?? ""),
-          detailsListValue("Daily Utlization", ""),
-
+          // detailsListValue(, ""),
+          headerView("Daily Utlization"),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -413,22 +455,33 @@ class _MyPackagesState extends State<MyPackages> {
 
   Widget barChart = loader(size: 20.0);
 
+  void setHeaderColor(Color _headerColor) {
+    setState(() {
+      headerColor = _headerColor;
+    });
+  }
+
   bottomSheet() {
     return SolidBottomSheet(
       controller: _controller,
       maxHeight: noOfConnections * 75.0,
       headerBar: Container(
-        color: Color.fromRGBO(184, 27, 77, 10),
-        height: 20,
-        child: Center(
-          child: Text(
-            // "View more connections",
-            "", style: TextStyle(color: Colors.white),
-          ),
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(184, 27, 77, 10),
+// Border.all(),
         ),
+
+        // color:
+        height: 10,
+        // child: Center(
+        //   child: Text(
+        //     // "View more connections",
+        //     "", style: TextStyle(color: Colors.white),
+        //   ),
+        // ),
       ),
       body: Container(
-        color: Colors.white,
+        color: Color.fromRGBO(229, 255, 255, 10),
         height: 30,
         child: ListView.separated(
           separatorBuilder: (context, index) => Divider(

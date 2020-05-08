@@ -213,17 +213,22 @@ class _CustomerPagesState extends State<CustomerPages> {
                   // Update the state of the app.
                   // ...
                   codeHelpers.setStorageKey('loggedIn', '0');
-                  print('loggedIn after logout press ' + codeHelpers.getStorageKey('loggedIn'));
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => MyApp()));
+                  print('loggedIn after logout press ' +
+                      codeHelpers.getStorageKey('loggedIn'));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => MyApp()));
                 },
               ),
             ],
           ),
         ),
         appBar: AppBar(
-            backgroundColor: Color.fromRGBO(184, 27, 77, 10),
-            title: Text(getAppTitle(contentId))),
+          backgroundColor: Color.fromRGBO(184, 27, 77, 10),
+          title: Text(
+            getAppTitle(contentId),
+          ),
+        ),
+
         body: setContent(contentId),
       ),
     );
@@ -251,8 +256,8 @@ class _CustomerPagesState extends State<CustomerPages> {
       case 2:
         content = Support();
         break;
-      // case 3:
-      //   content = Payment('');
+        // case 3:
+        //   content = Payment('');
         break;
       case 4:
         content = EnquiryForm();
