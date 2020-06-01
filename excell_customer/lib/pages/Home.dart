@@ -7,8 +7,7 @@ import 'package:ExcellCustomer/pages/QuickPay.dart';
 import 'package:ExcellCustomer/widgets/WidgetAnimator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -30,6 +29,7 @@ class _HomeState extends State<Home> {
   var loggedInKey;
   @override
   Widget build(BuildContext context) {
+    // codeHelpers.setStorageKey('loggedIn', '0');
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -47,122 +47,107 @@ class _HomeState extends State<Home> {
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
 
-    logoTopMargin = windowHeight * 0.1;
+    logoTopMargin = windowHeight * 0.2;
     logoDimensions = windowHeight * 0.2;
 
     logoButtonRowGap = windowHeight * 0.1;
 
-    buttonDimension = windowHeight * 0.08;
-    buttonFontSize = buttonDimension * 0.45;
+    buttonDimension = windowHeight * 0.12;
+    // buttonFontSize = buttonDimension * 0.40;
     interButtonVerticalGap = windowHeight * 0.05;
 
     setState(() {
       myContext = context;
     });
 
-    return Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: Color.fromRGBO(184, 27, 77, 10),
-        //   title: Center(child: Text('Welcome to Excell Broadband')),
-        // ),
-
-        body: homeComponents(),
-        backgroundColor: Colors.white
-        // Color.fromRGBO(184, 27, 77, 10), //Colors.white, //Color.fromRGBO(184, 27, 77, 10),
-        );
+    return Scaffold(body: homeComponents(), backgroundColor: Colors.white);
   }
 
   homeComponents() {
-    return SafeArea(
-      child: Stack(
-        children: [
-          Image.asset('assets/login_bg.png', fit: BoxFit.fill),
-          Column(
+    return Stack(
+      children: [
+        WidgetAnimator(Image.asset('assets/bg_bin.png', fit: BoxFit.fill)),
+        Column(
+          children: <Widget>[
+            SizedBox(height: logoTopMargin * 1),
+            buttonGroup()
+          ],
+        ),
+      ],
+    );
+  }
+
+  buttonGroup() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        WidgetAnimator(
+          Image.asset(
+            'assets/logo_white.png',
+            height: logoDimensions,
+            width: logoDimensions,
+          ),
+        ),
+        SizedBox(height: logoButtonRowGap * 0.8),
+        Text(
+          "Welcome to Excell Broadband " + loggedInKey,
+          style: TextStyle(fontSize: 22),
+        ),
+        SizedBox(height: logoButtonRowGap * 0.5),
+        WidgetAnimator(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              SizedBox(height: logoTopMargin),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  WidgetAnimator(
-                    Image.asset(
-                      'assets/logo_pink.png',
-                      height: logoDimensions,
-                      width: logoDimensions,
-                    ),
-                  ),
-                  SizedBox(height: logoButtonRowGap),
-                  WidgetAnimator(
-                    Container(
-                        child: Center(
-                            child: Text(
-                      'Welcome to Excell Broadband',
-                      style: TextStyle(
-                          fontSize: windowWidth * 0.05,
-                          color: Color.fromRGBO(0, 32, 97, 10)),
-                    ))),
-                  ),
-                  SizedBox(height: logoButtonRowGap),
-                  WidgetAnimator(
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        homeScreenButton("MY ACCOUNT", FontAwesomeIcons.user,
-                            onPressed: () {
-                          var nextActivity =
-                              loggedInKey == '0' ? Login() : CustomerPages();
-                          Navigator.push(
-                              myContext,
-                              MaterialPageRoute(
-                                  builder: (myContext) => nextActivity));
-                        }),
-                        homeScreenButton(
-                            "QUICK PAY", FontAwesomeIcons.rupeeSign,
-                            onPressed: () => {
-                                  Navigator.push(
-                                      myContext,
-                                      MaterialPageRoute(
-                                          builder: (myContext) => QuickPay()))
-                                }),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: interButtonVerticalGap,
-                  ),
-                  WidgetAnimator(
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        homeScreenButton(
-                          "PACKAGES",
-                          FontAwesomeIcons.wifi,
-                          onPressed: () {
-                            Navigator.push(
+              homeScreenButton("Account", "assets/11.svg",
+                  onPressed: () => {
+                        loggedInKey == '1'
+                            ? Navigator.push(
                                 myContext,
                                 MaterialPageRoute(
-                                    builder: (myContext) => Packages()));
-                          },
-                        ),
-                        homeScreenButton(
-                          "ENQUIRY",
-                          FontAwesomeIcons.questionCircle,
-                          onPressed: () {
-                            Navigator.push(
+                                    builder: (myContext) => CustomerPages()))
+                            : Navigator.push(
                                 myContext,
                                 MaterialPageRoute(
-                                    builder: (myContext) => EnquiryForm()));
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                                    builder: (myContext) => Login()))
+                      }),
+              homeScreenButton("Quick Pay", "assets/22.svg",
+                  onPressed: () => {
+                        Navigator.push(
+                            myContext,
+                            MaterialPageRoute(
+                                builder: (myContext) => QuickPay()))
+                      }),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: interButtonVerticalGap,
+        ),
+        WidgetAnimator(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              homeScreenButton(
+                "Packages",
+                "assets/33.svg",
+                onPressed: () {
+                  Navigator.push(myContext,
+                      MaterialPageRoute(builder: (myContext) => Packages()));
+                },
+              ),
+              homeScreenButton(
+                "New Connection",
+                "assets/44.svg",
+                onPressed: () {
+                  Navigator.push(myContext,
+                      MaterialPageRoute(builder: (myContext) => EnquiryForm()));
+                },
               ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -175,24 +160,7 @@ class _HomeState extends State<Home> {
           Container(
             width: buttonDimension,
             height: buttonDimension,
-            child: Center(
-              child: FaIcon(
-                icon,
-                color: Colors.white70,
-                size: buttonFontSize,
-              ),
-            ),
-            decoration: new BoxDecoration(
-              color: Color.fromRGBO(0, 32, 97, 5),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 100, 97, 5),
-                  blurRadius: 5.0,
-                  // offset: Offset(5, 5)
-                ),
-              ],
-            ),
+            child: SvgPicture.asset(icon),
           ),
           SizedBox(
             height: 15.0,
@@ -200,10 +168,7 @@ class _HomeState extends State<Home> {
           Text(
             label,
             style: TextStyle(
-                
-                color: Colors.black,
-                fontSize: 16,
-                letterSpacing: 1.5),
+                color: Colors.black, fontSize: 16, letterSpacing: 1.5),
           ),
         ],
       ),
