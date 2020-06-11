@@ -22,6 +22,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   final CodeHelpers codeHelpers = new CodeHelpers();
+  List<String> imgList = [];
 
   // _DashboardState() {}
 
@@ -29,6 +30,22 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     getConnectionsList();
 
+    codeHelpers
+        .httpPost({"name": "getCMSBanners", "param": {}}).then((urlsRaw) {
+      // 'assets/slide1.png',
+      urlsRaw.transform(convert.utf8.decoder).join().then((urls) {
+        final tempDynImgLst =
+            convert.jsonDecode(urls)["resonse"]["result"]["banners"];
+        List<String> tempStrImgLst = [];
+
+        tempDynImgLst.forEach((imgUrl) {
+          tempStrImgLst.add(imgUrl.toString());
+        });
+        setState(() {
+          imgList = tempStrImgLst;
+        });
+      });
+    });
     super.initState();
   }
 
@@ -233,7 +250,7 @@ class _DashboardState extends State<Dashboard> {
       child: Loading(
         indicator: BallPulseIndicator(),
         size: size,
-        color: Colors.white60,
+        color: Colors.deepPurpleAccent,
       ),
     );
   }
@@ -487,7 +504,7 @@ class _DashboardState extends State<Dashboard> {
       bottomSheet: noOfConnections > 1 ? bottomSheet() : null,
       body: ListView(
         children: [
-          WidgetAnimator(carousel()),
+          WidgetAnimator(ConnectionsCarousel(imgList)),
           WidgetAnimator(consumption()),
           WidgetAnimator(details()),
           WidgetAnimator(amountButton()),
@@ -512,7 +529,6 @@ class _DashboardState extends State<Dashboard> {
       ),
       body: Container(
         color: Color.fromRGBO(229, 255, 255, 10),
-
         height: 30,
         child: ListView.separated(
           separatorBuilder: (context, index) => Divider(
@@ -548,19 +564,19 @@ class _DashboardState extends State<Dashboard> {
     return (dataLoaded && amount != '0') ? payNowButton() : Text("");
   }
 
-  static Column carousel() {
-    return Column(
-      children: <Widget>[
-        SizedBox(
-          height: 3.0,
-        ),
-        ConnectionsCarousel(),
-        SizedBox(
-          height: 5.0,
-        )
-      ],
-    );
-  }
+  // static Column carousel(imgList) {
+  //   return Column(
+  //     children: <Widget>[
+  //       // SizedBox(
+  //       //   height: 3.0,
+  //       // ),
+  //       ConnectionsCarousel(imgList),
+  //       // SizedBox(
+  //       //   height: 5.0,
+  //       // )
+  //     ],
+  //   );
+  // }
 
   consumption() {
     return Column(

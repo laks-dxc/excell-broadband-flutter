@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
         ),
         SizedBox(height: logoButtonRowGap * 0.8),
         Text(
-          "Welcome to Excell Broadband " + loggedInKey,
+          "Welcome to Excell Broadband ",// + loggedInKey,
           style: TextStyle(fontSize: 22),
         ),
         SizedBox(height: logoButtonRowGap * 0.5),
@@ -100,7 +100,7 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               homeScreenButton("Account", "assets/11.svg",
-                  onPressed: () => {
+                  onPressed: ()  {
                         loggedInKey == '1'
                             ? Navigator.push(
                                 myContext,
@@ -109,7 +109,7 @@ class _HomeState extends State<Home> {
                             : Navigator.push(
                                 myContext,
                                 MaterialPageRoute(
-                                    builder: (myContext) => Login()))
+                                    builder: (myContext) => Login()));
                       }),
               homeScreenButton("Quick Pay", "assets/22.svg",
                   onPressed: () => {

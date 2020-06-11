@@ -37,7 +37,7 @@ class _SupportState extends State<Support> {
       lTickets.transform(convert.utf8.decoder).join().then((ticketsRaw) {
         final lTiketsList = convert.jsonDecode(ticketsRaw);
 
-        // print(lTiketsList.toString());
+        print('lTiketsList ' + lTiketsList.toString());
 
         lTiketsList["resonse"]["result"]["tickets"].forEach((ticket) {
           ticketsList.add(Ticket(
@@ -105,7 +105,7 @@ class _SupportState extends State<Support> {
               itemCount: sTiketsList.length,
               itemBuilder: (BuildContext ctxt, int index) {
                 return WidgetAnimator(
-                                  ListTile(
+                  ListTile(
                     contentPadding: EdgeInsets.all(5.0),
                     dense: true,
                     leading: sTiketsList[index].status == 'closed'
@@ -115,13 +115,19 @@ class _SupportState extends State<Support> {
                             color: Color.fromRGBO(0, 32, 97, 5),
                           )
                         : Icon(
-                            Icons.check_circle,
+                            Icons.error,
                             size: 30,
                             color: Color.fromRGBO(0, 32, 97, 5),
                           ),
-                    title: Text(
-                      sTiketsList[index].problem,
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(height: 15),
+                        Text(
+                          sTiketsList[index].problem,
+                          style: TextStyle(fontSize: 22, color: Colors.blue),
+                        ),//
+                      ],
                     ),
                     subtitle: Text(
                       sTiketsList[index]
@@ -149,13 +155,6 @@ class _SupportState extends State<Support> {
         ],
       ),
     );
-
-    // ListView.builder(
-    // scrollDirection: Axis.vertical,
-    // shrinkWrap: true,
-    // itemCount: sTiketsList.length,
-    // itemBuilder:
-    // ),
   }
 
   Widget newTicketScreen() {

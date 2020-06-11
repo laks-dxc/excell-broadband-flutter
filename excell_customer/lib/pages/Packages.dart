@@ -75,6 +75,8 @@ class _PackagesState extends State<Packages> {
       "name": "getLocations",
       "param": {"locationId": "all"}
     }).then((locations) {
+        print("locationsList " + locations.toString());
+
       locations.transform(convert.utf8.decoder).join().then((locationsRaw) {
         final locationsList = convert.jsonDecode(locationsRaw);
         locationsList["resonse"]["result"]["locations"].forEach((location) {
@@ -100,7 +102,7 @@ class _PackagesState extends State<Packages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,//fromRGBO(184, 27, 77, 10),
+      backgroundColor: Colors.white, //fromRGBO(184, 27, 77, 10),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(184, 27, 77, 10),
         title: Text('Excell Broadband - Packages'),
@@ -163,8 +165,7 @@ class _PackagesState extends State<Packages> {
                                 "₹ " + bbPlans[index].plan_amount,
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 18),
-                              )
-                              ,
+                              ),
                             ],
                           ),
                         ),
@@ -241,7 +242,7 @@ class _PackagesState extends State<Packages> {
   locationDropdown() {
     return Card(
       // elevation: 15.0,
-      
+
       color: Color.fromRGBO(0, 32, 97, 5), //Color.fromRGBO(184, 27, 77, 10),
       child: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 3.0, 10.0, 0.0),

@@ -90,7 +90,7 @@ class _MyPackagesState extends State<MyPackages> {
     //   "due_bill_date": "2020-04-06"
     // };
     setState(() {
-      barChart = loader(size: 20.0);
+      barChartContainer = loader(size: 20.0);
     });
 
     selectedConnectionIndex = index;
@@ -156,20 +156,75 @@ class _MyPackagesState extends State<MyPackages> {
           .then((utilizationRaw) {
         var usageList = convert.jsonDecode(utilizationRaw)["resonse"]["result"]
             ["usagereport"];
-        // print("utilization " + .toString());
+        // print("usageList " + usageList.toString());
+//         usageList = [
+//   {
+//     "date": "2020-06-01",
+//     "ip": "172.16.154.88",
+//     "download": "36756.97",
+//     "upload": "1025.42",
+//     "total": "37782.39"
+//   },
+//   {
+//     "date": "2020-06-02",
+//     "ip": "172.16.154.88",
+//     "download": "19181.32",
+//     "upload": "1003.23",
+//     "total": "20184.55"
+//   },
+//   {
+//     "date": "2020-06-03",
+//     "ip": "172.16.154.88",
+//     "download": "23938",
+//     "upload": "1017",
+//     "total": "24955"
+//   },
+//   {
+//     "date": "2020-06-04",
+//     "ip": "172.16.154.88",
+//     "download": "20367",
+//     "upload": "1023",
+//     "total": "21390"
+//   },
+//   {
+//     "date": "2020-06-05",
+//     "ip": "172.16.154.88",
+//     "download": "32046",
+//     "upload": "1004",
+//     "total": "33050"
+//   },
+//   {
+//     "date": "2020-06-06",
+//     "ip": "172.16.154.88",
+//     "download": "32839",
+//     "upload": "1016",
+//     "total": "33855"
+//   },
+//   {
+//     "date": "2020-06-07",
+//     "ip": "172.16.154.88",
+//     "download": "35382",
+//     "upload": "1024",
+//     "total": "36406"
+//   },
+//   {
+//     "date": "2020-06-08",
+//     "ip": "172.16.154.88",
+//     "download": "23091",
+//     "upload": "1006",
+//     "total": "24097"
+//   }
+// ];
+
         var i = 0;
         var j = 0;
         final List<MonthlyUtilization> usageUpload = new List(usageList.length);
         final List<MonthlyUtilization> usageDownload =
             new List(usageList.length);
 
-        // usageList = List.from(usageList.reversed);
-
-        // print(usageList.toString());
-
         if (usageList.length == 0) {
           setState(() {
-            barChart = Center(
+            barChartContainer = Center(
               child: Text(
                 "No Data",
                 style: TextStyle(fontSize: 25),
@@ -178,13 +233,13 @@ class _MyPackagesState extends State<MyPackages> {
           });
         } else {
           usageList.forEach((usageDay) {
-            print(usageDay);
+            // print(usageDay);
             setState(() {
               usageUpload[i] = new MonthlyUtilization(
-                  formatDate(DateTime.parse(usageDay["date"]), [dd, '-', M]),
+                  formatDate(DateTime.parse(usageDay["date"]), [dd]),
                   double.parse(usageDay["upload"]) / 1024);
               usageDownload[j] = new MonthlyUtilization(
-                  formatDate(DateTime.parse(usageDay["date"]), [dd, '-', M]),
+                  formatDate(DateTime.parse(usageDay["date"]), [dd]),
                   double.parse(usageDay["download"]) / 1024);
               i++;
               j++;
@@ -218,7 +273,7 @@ class _MyPackagesState extends State<MyPackages> {
             ];
 
             setState(() {
-              barChart = charts.BarChart(
+              barChartContainer = charts.BarChart(
                 seriesList,
                 // defaultRenderer: new charts.BarRendererConfig<String>( strokeWidthPx: 0.3, barRendererDecorator: CustomBarLabelDecorator<String>(labelAnchor: CustomBarLabelAnchor.middle), ),
                 selectionModels: [
@@ -228,6 +283,7 @@ class _MyPackagesState extends State<MyPackages> {
                     // listener: ,
                   )
                 ],
+
                 defaultInteractions: true,
                 animate: true,
                 barGroupingType: charts.BarGroupingType.groupedStacked,
@@ -267,13 +323,71 @@ class _MyPackagesState extends State<MyPackages> {
     });
   }
 
-  void chartSelectionChanged(charts.SelectionModel<String> a) {
-    print(a.selectedDatum[0].datum.day);
-    print('Download');
-    print(a.selectedDatum[0].datum.dataInMB * 1024);
-    print('Upload');
+  bool chartSelected = false;
 
-    print(a.selectedDatum[1].datum.dataInMB * 1024);
+  void chartSelectionChanged(charts.SelectionModel selectionModel) {
+    // MonthlyUtilization monthlyUtilization =
+    //     selectionModel.selectedDatum[0].datum;
+
+    setState(() {
+      chartInfo = Text("");
+
+      if (selectionModel.selectedSeries.length == 1 &&
+          selectionModel.selectedSeries[0].displayName == 'Download in GB') {
+        chartSelected = true;
+
+        gDate = selectionModel.selectedDatum[0].datum.day.toString();
+
+        gUpload = double.parse(
+                selectionModel.selectedDatum[1].datum.dataInMB.toString())
+            .toStringAsPrecision(2);
+        gDownload = double.parse(
+                selectionModel.selectedDatum[0].datum.dataInMB.toString())
+            .toStringAsPrecision(2);
+
+        chartInfo = WidgetAnimator(Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.fromLTRB(5.0, 4.0, 0.0, 0.0),
+                child: Text(
+                  gDate + " " + formatDate(DateTime.now(), [MM, " ", yyyy]),
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                width: 200,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Icon(Icons.cloud_download),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5.0, 4.0, 0.0, 0.0),
+                    child: Text(gDownload + " GB"),
+                    width: 60,
+                  ),
+                  Icon(Icons.cloud_upload),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5.0, 4.0, 0.0, 0.0),
+                    child: Text(gUpload + " GB"),
+                    width: 60,
+                  ),
+                ],
+              )
+            ],
+          ),
+        ));
+      }
+    });
+
+    // print(gDate);
+    // print('Download');
+    // print(gDownload);
+    // print('Upload');
+    // print();
   }
 
   getConnectionsList() {
@@ -364,6 +478,7 @@ class _MyPackagesState extends State<MyPackages> {
               showValue == true
                   ? GestureDetector(
                       onTap: () {
+                         chartInfo = Text("");
                         _controller.isOpened
                             ? _controller.hide()
                             : _controller.show();
@@ -437,7 +552,8 @@ class _MyPackagesState extends State<MyPackages> {
           detailsListValue("Current Limit", currentFinalDataLimitInGB ?? ""),
           detailsListValue("Consumed Data", currentConsumedInGB ?? ""),
           // detailsListValue(, ""),
-          headerView("Daily Utlization"),
+          headerView("Daily Utlization - " +
+              formatDate(DateTime.now(), [MM, " ", yyyy])),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -449,16 +565,42 @@ class _MyPackagesState extends State<MyPackages> {
               height: 400,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: barChart,
+                child: barChartContainer,
               ),
             ),
-          )
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: chartInfo,
+          ), //selectedChartDetail(gDate, gUpload, gDownload)),
         ],
       ),
     );
   }
 
-  Widget barChart = loader(size: 20.0);
+  String gDate;
+  String gUpload;
+  String gDownload;
+  Widget chartInfo = Text("");
+
+  selectedChartDetail(lDate, lUpload, lDownload) {
+    // return
+    return !chartSelected
+        ? Text("Nothing selected")
+        : Row(
+            children: <Widget>[
+              Text(lDate),
+              Text("Upload"),
+              Text(lUpload),
+              Text("Downlaod"),
+              Text(lDownload),
+            ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          );
+  }
+
+  Widget barChartContainer = loader(size: 20.0);
 
   void setHeaderColor(Color _headerColor) {
     setState(() {

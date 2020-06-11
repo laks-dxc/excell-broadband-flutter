@@ -57,7 +57,7 @@ class _CustomerPagesState extends State<CustomerPages> {
               DrawerHeader(
                 child: Center(
                     child: Text(
-                  'Customer Name',
+                  '',
                   style: TextStyle(
                     color: Colors.white,
                   ),

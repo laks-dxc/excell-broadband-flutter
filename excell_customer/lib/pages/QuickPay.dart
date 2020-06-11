@@ -45,86 +45,87 @@ class _QuickPayState extends State<QuickPay> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'assets/logo_white.png',
-              height: 180,
-              width: 180,
+              'assets/logo_pink.png',
+              height: 150,
+              width: 150,
             ),
-            Container(
-              padding: EdgeInsets.all(16.0),
-              child: TextField(
-                keyboardType: TextInputType.number,
-                controller: customerIdController,
-                // autofocus: true,
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.black87,
-                ),
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25.0),
-                    borderSide: BorderSide(
-                      color: Color.fromRGBO(184, 27, 77, 10),
+            Center(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      controller: customerIdController,
+                      // autofocus: true,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black87,
+                      ),
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(184, 27, 77, 10),
+                          ),
+                        ),
+                        contentPadding:
+                            EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                        prefixIcon: Icon(
+                          Icons.account_circle,
+                          size: 40.0,
+                          color: Color.fromRGBO(184, 27, 77, 10),
+                        ),
+                        border: OutlineInputBorder(
+                          // borderSide: BorderSide(width: 32.0),
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        hintText: "Customer Id.",
+                      ),
                     ),
                   ),
-                  contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-                  prefixIcon: Icon(
-                    Icons.account_circle,
-                    size: 40.0,
-                    color: Color.fromRGBO(184, 27, 77, 10),
-                  ),
-                  border: OutlineInputBorder(
-                    // borderSide: BorderSide(width: 32.0),
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  hintText: "Customer Id.",
-                  // filled: true,
-                  // fillColor: Colors.white24,
-                  // fillColor: Color(0xB1FFFFFF),
-                  // border: OutlineInputBorder(
-                  //   // borderSide: BorderSide(width: 32.0),
-                  //   borderRadius: BorderRadius.circular(25.0),
-                  // ),
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(16.0),
-              child: TextField(
-                controller: mobileNoController,
-                keyboardType: TextInputType.number,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20.0,
-                ),
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25.0),
-                    borderSide: BorderSide(
-                      color: Color.fromRGBO(184, 27, 77, 10),
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: TextField(
+                      controller: mobileNoController,
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                      ),
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(184, 27, 77, 10),
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        contentPadding:
+                            EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                        prefixIcon: Icon(
+                          Icons.check_circle,
+                          size: 40.0,
+                          color: Color.fromRGBO(184, 27, 77, 10),
+                        ),
+                        hintText: "Registered Mobile No.",
+                        // filled: true,
+                        // fillColor: Color(0xB1FFFFFF),
+                        // border: OutlineInputBorder(
+                        //     borderRadius: BorderRadius.circular(25.0)),
+                      ),
                     ),
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-                  prefixIcon: Icon(
-                    Icons.check_circle,
-                    size: 40.0,
-                    color: Color.fromRGBO(184, 27, 77, 10),
-                  ),
-                  hintText: "Registered Mobile No.",
-                  // filled: true,
-                  // fillColor: Color(0xB1FFFFFF),
-                  // border: OutlineInputBorder(
-                  //     borderRadius: BorderRadius.circular(25.0)),
-                ),
+                  // WidgetAnimator(
+                  getDuesLoaded == true ? getDuesLabelContainer() : Text(""),
+                  getDuesLoaded == false
+                      ? getDuesButtonTheme()
+                      : amount == "0" ? goBackButton() : payNowButton(),
+                ],
               ),
             ),
-            // WidgetAnimator(
-            getDuesLoaded == true ? getDuesLabelContainer() : Text(""),
-            getDuesLoaded == false
-                ? getDuesButtonTheme()
-                : amount == "0" ? goBackButton() : payNowButton(),
           ],
         ),
       ],
