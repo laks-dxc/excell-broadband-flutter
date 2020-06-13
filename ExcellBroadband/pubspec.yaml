@@ -17,6 +17,8 @@ dependencies:
   pin_code_fields: ^3.0.1
   localstorage: ^3.0.0
   page_transition: "^1.1.5"
+  fl_chart: ^0.10.0
+  
 
 dev_dependencies:
   flutter_test:

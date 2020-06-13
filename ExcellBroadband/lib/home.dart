@@ -42,72 +42,76 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Image.asset(
-          "assets/login_bg.png",
-          fit: BoxFit.fill,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: FadeInX(
-                2,
-                Image.asset(
-                  "assets/logo_pink.png",
-                  height: 190,
-                  width: 190,
+    return Scaffold(
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Image.asset(
+              "assets/login_bg.png",
+              fit: BoxFit.fill,
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Center(
+                child: FadeInX(
+                  2,
+                  Image.asset(
+                    "assets/logo_pink.png",
+                    height: 190,
+                    width: 190,
+                  ),
+                  translate: false,
+                  duration: 3.0,
                 ),
-                translate: false,
-                duration: 3.0,
               ),
-            ),
-            SizedBox(height: 20),
-            FadeInX(
-                3.0,
-                Text(
-                  "Welcome to Excell Broadband",
-                  style: TextStyle(fontSize: 26),
-                ),
-                translate: false,
-                duration: 3),
-          ],
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            mainScreenOption(
-              "Account",
-              subText: "Your package, consumption & payment information",
-              sequence: 4.0,
-              imageURI: 'assets/11.png',
-              onTap: () {
-                storage.getItem('exbb_lsitems') == null
-                    ? loginDialog(context)
-                    : Navigator.push(
-                        context,
-                        PageTransition(
-                            type: PageTransitionType.leftToRight,
-                            duration: Duration(milliseconds: 500),
-                            child: Dashboard()));
-              },
-            ),
-            SizedBox(height: 20),
-            mainScreenOption("Quick Pay",
-                subText: "Make payment for your broadband subscription",
-                sequence: 5.0,
-                imageURI: 'assets/22.png',
-                onTap: () => quickPayDialog(context)),
-            SizedBox(height: 20),
-            mainScreenOption("New Connection",
-                subText: "Raise enquiry for a new broadband connection ",
-                sequence: 6.0,
-                imageURI: 'assets/44.png'),
-          ],
-        )
-      ],
+              SizedBox(height: 20),
+              FadeInX(
+                  3.0,
+                  Text(
+                    "Welcome to Excell Broadband",
+                    style: TextStyle(fontSize: 26),
+                  ),
+                  translate: false,
+                  duration: 3),
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              mainScreenOption(
+                "Account",
+                subText: "Your package, consumption & payment information",
+                sequence: 4.0,
+                imageURI: 'assets/11.png',
+                onTap: () {
+                  storage.getItem('exbb_lsitems') == null
+                      ? loginDialog(context)
+                      : Navigator.push(
+                          context,
+                          PageTransition(
+                              type: PageTransitionType.fade,
+                              duration: Duration(milliseconds: 500),
+                              child: Dashboard()));
+                },
+              ),
+              SizedBox(height: 20),
+              mainScreenOption("Quick Pay",
+                  subText: "Make payment for your broadband subscription",
+                  sequence: 5.0,
+                  imageURI: 'assets/22.png',
+                  onTap: () => quickPayDialog(context)),
+              SizedBox(height: 20),
+              mainScreenOption("New Connection",
+                  subText: "Raise enquiry for a new broadband connection ",
+                  sequence: 6.0,
+                  imageURI: 'assets/44.png'),
+            ],
+          )
+        ],
+      ),
     );
   }
 
@@ -408,7 +412,7 @@ class _HomeState extends State<Home> {
                         Navigator.push(
                             context,
                             PageTransition(
-                                type: PageTransitionType.leftToRight,
+                                type: PageTransitionType.fade,
                                 duration: Duration(milliseconds: 500),
                                 child: Dashboard()));
                         setState(() {
@@ -757,29 +761,36 @@ class _HomeState extends State<Home> {
                       });
 
                       Utilities.getUserToken(customerIdController.text.trim(),
-                              customerIdController.text.trim())
+                              mobileNoController.text.trim())
                           .then((_token) {
-                        Utilities.apiPost({
-                          "name": "getCustomerDue",
-                          "param": {
-                            "customerId": customerIdController.text.trim(),
-                            "mobileNum": customerIdController.text.trim()
-                          }
-                        }, needAuth: true, token: _token)
-                            .then((response) {
+                        if (_token == "-1") {
+                          ToastUtils.showCustomToast(
+                              context, "Incorrect Customer Id or Mobile No ");
                           setState(() {
                             quickPayLoading = false;
-                            quickPayFooter = 'pay';
                           });
-
-                          int status = Utilities.getStatus(response);
-                          if (status == 200) {
+                        } else
+                          Utilities.apiPost({
+                            "name": "getCustomerDue",
+                            "param": {
+                              "customerId": customerIdController.text.trim(),
+                              "mobileNum": mobileNoController.text.trim()
+                            }
+                          }, token: _token)
+                              .then((response) {
                             setState(() {
-                              quickPayPayableAmount = double.parse(
-                                  response['resonse']['result']['amount']);
+                              quickPayLoading = false;
+                              quickPayFooter = 'pay';
                             });
-                          } else {}
-                        });
+
+                            int status = Utilities.getStatus(response);
+                            if (status == 200) {
+                              setState(() {
+                                quickPayPayableAmount = double.parse(
+                                    response['resonse']['result']['amount']);
+                              });
+                            } else {}
+                          });
                       });
                     }
                   },

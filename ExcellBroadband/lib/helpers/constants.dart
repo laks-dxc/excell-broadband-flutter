@@ -22,6 +22,11 @@ class Constants {
     'excell_color':Color.fromRGBO(184, 27, 77, 10),
     'gradient_colors2': [fromHex('#bb377d'), fromHex('#fbd3e9')],
     'gradient_colors3': [fromHex('#b993d6'), fromHex('#8ca6db')],
+    'gradient_danger_colors': [fromHex('#f85032'), fromHex('#f16f5c')],
+     
+    'gradient_success_colors': [fromHex('#cdeb8e'), fromHex('#a5c956')],
+
+
     
   };
 

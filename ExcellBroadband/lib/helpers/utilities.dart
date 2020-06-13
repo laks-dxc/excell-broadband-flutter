@@ -6,8 +6,18 @@ import 'package:localstorage/localstorage.dart';
 import 'constants.dart';
 
 class Utilities {
-
   static LocalStorage storage = new LocalStorage('exbb_app');
+
+  static String getStorageItem(item) {
+    String storageItemValue;
+
+    if (storage.getItem('exbb_lsitems') != null)
+      storageItemValue = storage.getItem('exbb_lsitems')[0][item] ?? '';
+    else
+      storageItemValue = '';
+
+    return storageItemValue;
+  }
 
   static Future<Map<String, dynamic>> apiPost(body,
       {needAuth: true, token}) async {
@@ -17,6 +27,8 @@ class Utilities {
         await httpClient.postUrl(Uri.parse(Constants.baseURL));
 
     request.headers.set('content-type', 'application/json');
+
+    print(body.toString());
 
     if (token != null)
       request.headers.set('Authorization', 'Excell ' + token);
@@ -45,8 +57,15 @@ class Utilities {
       "param": {"custId": custId, "mobileNum": mobileNo, "mobilOTP": "0"}
     }, needAuth: false);
 
+    print("getUserToken " + response.toString());
+
+
     if (getStatus(response) == 200)
       token = response['resonse']['result']['token'];
+    else 
+      token = "-1";
+
+    print("token " + token);
 
     return token;
   }
@@ -61,5 +80,9 @@ class Utilities {
       status = response['resonse']['status'];
     } catch (ex) {}
     return status;
+  }
+
+  static void clearStorage() {
+    storage.clear();
   }
 }
