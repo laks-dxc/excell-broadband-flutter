@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:math' as Math;
+
 import 'dart:convert' as convert;
 
 import 'package:localstorage/localstorage.dart';
@@ -28,7 +30,7 @@ class Utilities {
 
     request.headers.set('content-type', 'application/json');
 
-    print(body.toString());
+    // print(body.toString());
 
     if (token != null)
       request.headers.set('Authorization', 'Excell ' + token);
@@ -57,15 +59,14 @@ class Utilities {
       "param": {"custId": custId, "mobileNum": mobileNo, "mobilOTP": "0"}
     }, needAuth: false);
 
-    print("getUserToken " + response.toString());
-
+    // print("getUserToken " + response.toString());
 
     if (getStatus(response) == 200)
       token = response['resonse']['result']['token'];
-    else 
+    else
       token = "-1";
 
-    print("token " + token);
+    // print("token " + token);
 
     return token;
   }
@@ -84,5 +85,89 @@ class Utilities {
 
   static void clearStorage() {
     storage.clear();
+  }
+
+  static String bytesToGBString(String bytesValue) {
+    return bytesValue != null
+        ? (double.parse(bytesValue) / 1073741824).toStringAsFixed(2) + " GB"
+        : "0 GB";
+  }
+
+  static double bytesToGBDouble(String bytesValue) {
+    return bytesValue != null
+        ? double.parse(
+            (double.parse(bytesValue) / 1073741824).toStringAsFixed(2))
+        : 0.0;
+  }
+
+  static double convertToDouble(String stringValue) {
+    return stringValue == null ? 0.00 : double.parse(stringValue);
+  }
+
+  static String bytesToSize(String bytesString) {
+    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    String output = '';
+
+    if (bytesString == null) {
+      output = '0.00';
+    } else {
+      double bytesInDouble = double.parse(bytesString);
+
+      if (bytesInDouble == 0) output = '';
+
+      var i = (Math.log(bytesInDouble) / Math.log(1024)).floor();
+
+      if (i == 0) output = bytesInDouble.toString() + ' ' + sizes[i];
+      output = (bytesInDouble / Math.pow(1024, i)).toStringAsFixed(2) +
+          ' ' +
+          sizes[i];
+    }
+
+    return output;
+  }
+
+  static String mbToSize(String bytesString) {
+    var sizes = ['MB', 'GB', 'TB'];
+    String output = '';
+
+    if (bytesString == null) {
+      output = '0.00';
+    } else {
+      double bytesInDouble = double.parse(bytesString);
+
+      if (bytesInDouble == 0) output = '';
+
+      var i = (Math.log(bytesInDouble) / Math.log(1024)).floor();
+
+      if (i == 0) output = bytesInDouble.toString() + ' ' + sizes[i];
+      output = (bytesInDouble / Math.pow(1024, i)).toStringAsFixed(2) +
+          ' ' +
+          sizes[i];
+    }
+
+    return output;
+  }
+
+  static String bytesToUnits(String bytesValue) {
+    String bytesToUnitsString = '';
+    String unitString = " GB";
+
+    if (bytesValue != null) {
+      bytesToUnitsString = '';
+
+      double _value = (double.parse(bytesValue) / 1073741824);
+      if (_value < 1) {
+        unitString = " MB";
+        _value = _value * 1024 * 1024;
+      } else if (_value >= 1024) {
+        unitString = " TB";
+        _value = _value / 1024;
+      }
+
+      bytesToUnitsString = _value.toStringAsFixed(2) + unitString;
+    } else
+      bytesToUnitsString = "0.0 GB";
+
+    return bytesToUnitsString;
   }
 }

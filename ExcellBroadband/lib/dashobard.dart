@@ -80,7 +80,7 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   ],
                 ),
-                SizedBox(height: 25),
+                // SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -118,7 +118,7 @@ class _DashboardState extends State<Dashboard> {
         List<dynamic> connectionsList =
             connectionsListResponse['resonse']['result']['connections'];
 
-        print("connectionsList length  " + connectionsList.length.toString());
+        // print("connectionsList length  " + connectionsList.length.toString());
 
         setState(() {
           showPackageSpinner = false;
@@ -129,7 +129,7 @@ class _DashboardState extends State<Dashboard> {
             duration: Duration(milliseconds: 500),
             child: PackageList(connectionsList)));
 
-        print("connectionsList " + connectionsList.toString());
+        // print("connectionsList " + connectionsList.toString());
       }
       // print("connectionsList " + connectionsListResponse.toString());
     });
@@ -174,14 +174,14 @@ class _DashboardState extends State<Dashboard> {
       },
       child: Container(
         width: cWidth * 0.45,
-        height: cHeight * 0.24,
+        height: cWidth * 0.45,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(35),
           ),
           boxShadow: [
             BoxShadow(
-              offset: Offset(2.0, 2.0),
+              offset: Offset(2.5, 2.5),
               color: Colors.grey[800],
               blurRadius: 5.0,
               // blurStyle: BlurStyle.outer
@@ -202,7 +202,7 @@ class _DashboardState extends State<Dashboard> {
               alignment: Alignment(0.55, 0.75),
               child: Text(
                 title, //"Payments",
-                style: TextStyle(color: Colors.deepPurple, fontSize: 32),
+                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 24),
               ),
             ),
             showSpinner

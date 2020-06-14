@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          fontFamily: 'AlegreyaSans'),
+          fontFamily: 'Lato'),
       home: Scaffold(
           // backgroundColor: Colors.transparent,
           body: SafeArea(

@@ -1,4 +1,7 @@
+import 'package:ExcellBroadband/helpers/utilities.dart';
+import 'package:ExcellBroadband/packageDetail.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 // import 'package:fl_chart/fl_chart.dart';
 
 import 'helpers/constants.dart';
@@ -24,7 +27,7 @@ class _PackageListState extends State<PackageList> {
     cHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-        backgroundColor: Colors.grey[300],
+        backgroundColor: Colors.grey[200],
         body: Stack(
           children: <Widget>[
             Align(
@@ -59,10 +62,18 @@ class _PackageListState extends State<PackageList> {
                             padding: EdgeInsets.all(8.0),
                             child: FadeInY(
                               double.parse((index + 3).toString()),
-                              packageDetailTile(
-                                  () => print('tapped Payments'),
-                                  connectionsList[index]['pkgname'],
-                                  "Payment level description"),
+                              GestureDetector(
+                                  child: packageDetailTile(
+                                      connectionsList[index],
+                                      "Payment level description"),
+                                  onTap: () {
+                                    Navigator.of(context).push(PageTransition(
+                                        type: PageTransitionType
+                                            .rightToLeftWithFade,
+                                        duration: Duration(milliseconds: 500),
+                                        child: PackageDetail(
+                                            connectionsList[index])));
+                                  }),
                               distance: -30.0,
                             ),
                           );
@@ -121,63 +132,137 @@ class _PackageListState extends State<PackageList> {
     );
   }
 
-  Widget packageDetailTile(onTapFn, String title, String description) {
-    double containerWidth = cWidth * 0.45;
-    return InkWell(
-      onTap: () {
-        onTapFn();
-      },
-      child: Container(
-        width: containerWidth,
-        height: cHeight * 0.25,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(2.0, 2.0),
-              color: Colors.grey[800],
-              blurRadius: 3.0,
-            )
-          ],
+  Widget packageDetailTile(connectionListItem, String description) {
+    // double containerWidth = cWidth * 0.45;
+
+    return Container(
+      // width: containerWidth,
+      height: cHeight * 0.075 * 3.5 ,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
         ),
-        child: Stack(
-          children: [
-            
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                height: cHeight * 0.05,
-                // width: containerWidth,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      title,
-                      style: TextStyle(fontSize: 24, color: Colors.black),
-                    ),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(2.0, 2.0),
+            color: Colors.grey[800],
+            blurRadius: 3.0,
+          )
+        ],
+      ),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              height: cHeight * 0.06,
+              // width: containerWidth,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    connectionListItem['pkgname'],
+                    style: TextStyle(fontSize: 22, color: Colors.black),
                   ),
                 ),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                    ),
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomRight,
-                      end: Alignment.topLeft,
-                      colors: Constants.colors['gradient_colors3'],
-
-                      // stops: [0.5, 1],
-                    )),
               ),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomRight,
+                    end: Alignment.topLeft,
+                    colors: Constants.colors['gradient_colors3'],
+                  )),
             ),
-          ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              SizedBox(
+                height: 40,
+              ),
+              textBoxContainer('Detail', connectionListItem["pkgdetail"]),
+              textBoxContainer('IP Address', connectionListItem["ip_addr"]),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  // Widget textBoxContainer(String itemName, String itemValue) {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(8.0),
+  //     child: Container(
+  //     height: cHeight * 0.075,
+
+  //       child: Align(
+  //         alignment: Alignment.centerLeft,
+  //         child: Padding(
+  //           padding: const EdgeInsets.all(20.0),
+  //           child: Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: <Widget>[
+  //               Text(
+  //                 itemName,
+  //                 style: TextStyle(fontSize: 20, color: Colors.black38),
+  //               ),
+  //               Text(
+  //                 itemValue,
+  //                 style: TextStyle(
+  //                     fontSize: 20,
+  //                     color: Colors.black,
+  //                     fontWeight: FontWeight.w500),
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //       decoration: BoxDecoration(
+  //         color: Colors.grey[200],
+  //         borderRadius: BorderRadius.all(
+  //           Radius.circular(15),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+ Widget textBoxContainer(String title, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom:8.0,left:8.0,right:8.0),
+      child: Container(
+        height: cHeight * 0.075,
+        // width: cWidth * 0.85,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 20, color: Colors.black38),
+              ),
+              Text(
+                value,
+                style: TextStyle(fontSize: 20, color: Colors.black),
+              )
+            ],
+          ),
+        ),
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          ),
         ),
       ),
     );
   }
+
 }

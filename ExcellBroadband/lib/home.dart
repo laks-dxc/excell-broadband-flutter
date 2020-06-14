@@ -686,8 +686,8 @@ class _HomeState extends State<Home> {
                             Align(
                               alignment: Alignment.center,
                               child: Text(
-                                "No Dues",
-                                style: TextStyle(fontSize: 40.0),
+                                "No Dues..!",
+                                style: TextStyle(fontSize: 36.0),
                               ),
                             ),
                             distance: -10.0,
