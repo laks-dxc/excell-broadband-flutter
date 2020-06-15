@@ -5,6 +5,7 @@ import 'package:ExcellBroadband/helpers/utilities.dart';
 import 'package:ExcellBroadband/packageList.dart';
 // import 'package:ExcellBroadband/packageList.dart';
 import 'package:ExcellBroadband/profiles.dart';
+import 'package:ExcellBroadband/support.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:page_transition/page_transition.dart';
@@ -86,7 +87,14 @@ class _DashboardState extends State<Dashboard> {
                   children: <Widget>[
                     FadeInY(
                       3.5,
-                      dashboardTile(() => print('tapped Support'),
+                      dashboardTile(() {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                              type: PageTransitionType.fade,
+                              duration: Duration(milliseconds: 500),
+                              child: Support()));
+                      },
                           supportImageWidget, "Support"),
                       distance: 10.0,
                     ),

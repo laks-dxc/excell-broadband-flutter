@@ -24,21 +24,21 @@ class _PackageDetailState extends State<PackageDetail> {
   final dynamic connectionListItem;
   double cHeight, cWidth;
   double consumptionWidth = 0.0;
-  static String ipAddr;
+  static String ipAddr ;
 
-  static List<DataRow> dataTableRows = [
-    DataRow(cells: [
-      DataCell(Text("")),
-      DataCell(Text("")),
-      DataCell(Text("")),
-      DataCell(Text("")),
-    ])
-  ];
+  // static List<DataRow> dataTableRows = [
+  //   DataRow(cells: [
+  //     DataCell(Text("")),
+  //     DataCell(Text("")),
+  //     DataCell(Text("")),
+  //     DataCell(Text("")),
+  //   ])
+  // ];
 
   String consumedText = "Consumed";
 
   List<dynamic> usageReport;
-  Widget usedUtilzationContainer = chartContainer();
+  Widget usedUtilzationContainer = Container();//chartContainer(connectionListItem["ip_addr"]);
   _PackageDetailState(this.connectionListItem);
 
   final Radius containerBorderRadius = Radius.circular(15);
@@ -115,7 +115,7 @@ class _PackageDetailState extends State<PackageDetail> {
                               usedUtilzationContainer = index == 1
                                   ? tableContainer(
                                       connectionListItem["ip_addr"])
-                                  : chartContainer();
+                                  : chartContainer(connectionListItem["ip_addr"]);
                             });
 
                             // print('switched to: $index');
@@ -208,10 +208,12 @@ class _PackageDetailState extends State<PackageDetail> {
     );
   }
 
-  static Widget chartContainer() {
+  static Widget chartContainer(_ipAddr) {
+
+    
     return Container(
       key: ValueKey(0),
-      child: LineChartSample2(),
+      child: UtilLineChart(_ipAddr),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey[300]),
         borderRadius: BorderRadius.all(

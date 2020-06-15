@@ -18,4 +18,20 @@ class CustomerInfo {
 
     return connectionsList;
   }
+
+  static Future<List<dynamic>> getUtilData(_ipAddr) async {
+    Map<String, dynamic> usageReportResponse =
+        await CustomerInfo.usageReport(_ipAddr);
+
+    List<dynamic> usageReport = [];
+
+    if (Utilities.getStatus(usageReportResponse) == 200) {
+      usageReport = usageReportResponse["resonse"]["result"]["usagereport"];
+    } else {
+      usageReport = [
+        {"Error": usageReportResponse}
+      ];
+    }
+    return usageReport;
+  }
 }

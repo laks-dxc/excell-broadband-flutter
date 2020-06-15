@@ -1,15 +1,21 @@
 import 'package:ExcellBroadband/helpers/customerInfo.dart';
+import 'package:ExcellBroadband/helpers/fadeInY.dart';
 import 'package:ExcellBroadband/helpers/utilities.dart';
+import 'package:ExcellBroadband/models/lsUtilization.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 
 class UtilDataTable extends StatefulWidget {
   String ipAddr;
+
   UtilDataTable(this.ipAddr);
   @override
   _UtilDataTableState createState() => _UtilDataTableState(ipAddr);
 }
 
 class _UtilDataTableState extends State<UtilDataTable> {
+  final LocalStorage storage = new LocalStorage('exbb_app');
+
   String ipAddr;
   List<dynamic> results = [];
   _UtilDataTableState(this.ipAddr);
@@ -21,63 +27,73 @@ class _UtilDataTableState extends State<UtilDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: DataTable(columns: [
-        DataColumn(label: Text('Date ')),
-        DataColumn(label: Text('Upload'), numeric: true),
-        DataColumn(label: Text('Download'), numeric: true),
-        DataColumn(label: Text('Total'), numeric: true),
-      ], rows: List.generate(results.length, (index) => results[index])),
-    );
+    return results.length > 0
+        ? SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: FadeInY(
+              1.0,
+              DataTable(
+                  columns: [
+                    DataColumn(
+                        label: Text('Date '),
+                        onSort: (a, b) {
+                          print(b.toString());
+                        }),
+                    DataColumn(label: Text('Upload'), numeric: true),
+                    DataColumn(label: Text('Download'), numeric: true),
+                    DataColumn(label: Text('Total'), numeric: true),
+                  ],
+                  rows:
+                      List.generate(results.length, (index) => results[index])),
+              translate: false,
+            ),
+          )
+        : Container();
   }
 
-  _getDataRow() {
+  _getDataRow() async {
+    List<dynamic> usageReport = await Utilities.getSmartUtilData(ipAddr);
     List<DataRow> dataTableRowsLocal = [];
 
-    CustomerInfo.usageReport(ipAddr).then((usageReportResponse) {
-      if (Utilities.getStatus(usageReportResponse) == 200) {
-        List<dynamic> usageReport =
-            usageReportResponse["resonse"]["result"]["usagereport"];
+    var now = new DateTime.now();
 
-        // print(usageReport.toString());
+    String monthName = [
+      '',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ][now.month];
 
-        var now = new DateTime.now();
-        String monthName = [
-          '',
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec'
-        ][now.month];
-
-        usageReport.forEach((element) {
-          DataRow dataRow = DataRow(cells: [
-            DataCell(Text(
-                element["date"].toString().substring(8) + "-" + monthName)),
-            DataCell(Text(Utilities.mbToSize(element["upload"].toString()))),
-            DataCell(Text(Utilities.mbToSize(element["download"]))),
-            DataCell(Text(Utilities.mbToSize(element["total"].toString()))),
-          ]);
-          dataTableRowsLocal.add(dataRow);
-          // print(dataTableRowsLocal);
-        });
-
-        setState(() {
-          results = dataTableRowsLocal;
-        });
-      } else {
-        print("Error " + usageReportResponse.toString());
-      }
+    usageReport.forEach((element) {
+      DataRow dataRow = DataRow(cells: [
+        DataCell(FadeInY(1.0,
+            Text(element["date"].toString().substring(8) + "-" + monthName),
+            distance: -5.0)),
+        DataCell(FadeInY(
+            1.0, Text(Utilities.mbToSize(element["upload"].toString())),
+            distance: -5.0)),
+        DataCell(FadeInY(1.0, Text(Utilities.mbToSize(element["download"])),
+            distance: -5.0)),
+        DataCell(FadeInY(
+          1.0,
+          Text(Utilities.mbToSize(element["total"].toString())),
+          distance: -5.0,
+        )),
+      ]);
+      dataTableRowsLocal.add(dataRow);
     });
-    // return dataTableRowsLocal;
+
+    setState(() {
+      results = dataTableRowsLocal;
+    });
   }
 }

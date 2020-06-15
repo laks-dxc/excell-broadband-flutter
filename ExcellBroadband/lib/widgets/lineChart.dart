@@ -1,13 +1,30 @@
 import 'package:ExcellBroadband/helpers/constants.dart';
+import 'package:ExcellBroadband/helpers/fadeInY.dart';
+import 'package:ExcellBroadband/helpers/utilities.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class LineChartSample2 extends StatefulWidget {
+class UtilLineChart extends StatefulWidget {
+  final String ipAddr;
+
+  UtilLineChart(this.ipAddr);
+
   @override
-  _LineChartSample2State createState() => _LineChartSample2State();
+  _UtilLineChartState createState() => _UtilLineChartState(ipAddr);
 }
 
-class _LineChartSample2State extends State<LineChartSample2> {
+class _UtilLineChartState extends State<UtilLineChart> {
+  String ipAddr;
+  List<dynamic> results;
+  double maxY;
+
+  _UtilLineChartState(this.ipAddr);
+
+  void initState() {
+    _getDataRow();
+    super.initState();
+  }
+
   List<Color> gradientColors = Constants.colors['gradient_colors3'];
 
   // [
@@ -19,11 +36,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
 
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(
-        //  border: Border(
-        // bottom: BorderSide( //                   <--- left side
-        //   color: Colors.black,
-        //   width: 1.0,
-        // ),),
+      
         borderRadius: BorderRadius.all(
           Radius.circular(18),
         ),
@@ -40,14 +53,22 @@ class _LineChartSample2State extends State<LineChartSample2> {
             decoration: myBoxDecoration(),
             child: Padding(
               padding: const EdgeInsets.only(
-                  // right: 18.0, left: 12.0, top: 24, bottom: 12),
+                  // right: 18.0, left: 12.0, top: 0, bottom: 12),
                   right: 0.0,
                   left: 0.0,
                   top: 0,
-                  bottom: 0),
-              child: LineChart(
-                showAvg ? avgData() : mainData(),
-              ),
+                  bottom: 0
+                  
+                  ),
+              child: results != null && results.length > 0
+                  ? FadeInY(
+                      0.1,
+                      LineChart(
+                        mainData(results),
+                      ),
+                      translate: false,
+                    )
+                  : Container(child: Center(child: Text("No Data")),),
             ),
           ),
         ),
@@ -73,12 +94,14 @@ class _LineChartSample2State extends State<LineChartSample2> {
     );
   }
 
-  LineChartData mainData() {
+  LineChartData mainData(_results) {
     return LineChartData(
+      
+      clipData: FlClipData.horizontal(),
       gridData: FlGridData(
         show: true,
         drawVerticalLine: false,
-        drawHorizontalLine: false,
+        drawHorizontalLine: true,
         getDrawingHorizontalLine: (value) {
           return FlLine(
             color: const Color(0xff37434d),
@@ -146,46 +169,13 @@ class _LineChartSample2State extends State<LineChartSample2> {
         ),
       ),
       minX: 1,
-      maxX: 9,
+      maxX: double.parse(_results.length.toString()),
       minY: 0,
-      maxY: 45,
+      maxY: maxY,
       lineBarsData: [
         LineChartBarData(
-          spots: [
-            FlSpot(1, 22),
-            FlSpot(2, 9),
-            FlSpot(3, 23),
-            FlSpot(4, 3),
-            FlSpot(5, 28),
-            FlSpot(6, 31),
-            FlSpot(7, 17),
-            FlSpot(8, 22),
-            FlSpot(9, 5),
- 
-         
-            // FlSpot(10, 41),
-            // FlSpot(11, 36),
-            // FlSpot(12, 39),
-            // FlSpot(13, 21),
-            // FlSpot(14, 18),
-            // FlSpot(15, 23),
-            // FlSpot(16, 26),
-            // FlSpot(17, 5),
-            // FlSpot(18, 23),
-            // FlSpot(19, 8),
-            // FlSpot(20, 37),
-            // FlSpot(21, 14),
-            // FlSpot(22, 28),
-            // FlSpot(23, 41),
-            // FlSpot(24, 20),
-            // FlSpot(25, 41),
-            // FlSpot(26, 6),
-            // FlSpot(27, 43),
-            // FlSpot(28, 14),
-            // FlSpot(29, 28),
-            // FlSpot(30, 19),
-            // FlSpot(31, 9),
-          ],
+      
+          spots: List.generate(_results.length, (index) => _results[index]),
           isCurved: true,
           colors: [
             const Color(0xff23b6e6),
@@ -320,4 +310,59 @@ class _LineChartSample2State extends State<LineChartSample2> {
       ],
     );
   }
+
+  _getDataRow() async {
+    List<dynamic> usageReport = await Utilities.getSmartUtilData(ipAddr);
+    List<FlSpot> flSpots = [];
+    double _maxY = 0;
+    usageReport.forEach((element) {
+      double y = double.parse(element["total"]);
+      _maxY = _maxY > y ? _maxY : y;
+      flSpots.add(
+          FlSpot(double.parse(element["date"].toString().substring(8)), y));
+    });
+
+    setState(() {
+      results = flSpots;
+      maxY = _maxY + 1000;
+      // print(results.toString());
+    });
+  }
 }
+
+/* Spots
+// [
+//   FlSpot(1, 22),
+//   FlSpot(2, 9),
+//   FlSpot(3, 23),
+//   FlSpot(4, 3),
+//   FlSpot(5, 28),
+//   FlSpot(6, 31),
+//   FlSpot(7, 17),
+//   FlSpot(8, 22),
+//   FlSpot(9, 5),
+
+//   // FlSpot(10, 41),
+//   // FlSpot(11, 36),
+//   // FlSpot(12, 39),
+//   // FlSpot(13, 21),
+//   // FlSpot(14, 18),
+//   // FlSpot(15, 23),
+//   // FlSpot(16, 26),
+//   // FlSpot(17, 5),
+//   // FlSpot(18, 23),
+//   // FlSpot(19, 8),
+//   // FlSpot(20, 37),
+//   // FlSpot(21, 14),
+//   // FlSpot(22, 28),
+//   // FlSpot(23, 41),
+//   // FlSpot(24, 20),
+//   // FlSpot(25, 41),
+//   // FlSpot(26, 6),
+//   // FlSpot(27, 43),
+//   // FlSpot(28, 14),
+//   // FlSpot(29, 28),
+//   // FlSpot(30, 19),
+//   // FlSpot(31, 9),
+// ],
+*/

@@ -6,9 +6,35 @@ import 'dart:convert' as convert;
 import 'package:localstorage/localstorage.dart';
 
 import 'constants.dart';
+import 'customerInfo.dart';
 
 class Utilities {
   static LocalStorage storage = new LocalStorage('exbb_app');
+
+  static Future<List<dynamic>> getSmartUtilData(_ipAddr) async {
+    List<dynamic> usageReport = [];
+
+    int currentEpoch = DateTime.now().millisecondsSinceEpoch;
+
+    if (storage.getItem(_ipAddr + '_lsUtilization') == null) {
+      usageReport = await CustomerInfo.getUtilData(_ipAddr);
+      storage.setItem(_ipAddr + '_lsUtilization', usageReport);
+      storage.setItem(_ipAddr + '_lsUtilizationlastUpdated', currentEpoch);
+    } else {
+      List<dynamic> lsUsageReport = storage.getItem(_ipAddr + '_lsUtilization');
+      int lastUpdated = storage.getItem(_ipAddr + '_lsUtilizationlastUpdated');
+      if (currentEpoch - lastUpdated >= 1800000) {
+        usageReport = await CustomerInfo.getUtilData(_ipAddr);
+
+        storage.setItem(_ipAddr + '_lsUtilization', usageReport);
+        storage.setItem(_ipAddr + '_lsUtilizationlastUpdated', currentEpoch);
+      } else {
+        usageReport = lsUsageReport;
+      }
+    }
+
+    return usageReport;
+  }
 
   static String getStorageItem(item) {
     String storageItemValue;
@@ -126,25 +152,27 @@ class Utilities {
     return output;
   }
 
-  static String mbToSize(String bytesString) {
+  static String mbToSize(String mbString) {
     var sizes = ['MB', 'GB', 'TB'];
+
     String output = '';
 
-    if (bytesString == null) {
+    if (mbString == null) {
       output = '0.00';
     } else {
-      double bytesInDouble = double.parse(bytesString);
+      double mbDouble = double.parse(mbString);
 
-      if (bytesInDouble == 0) output = '';
+      if (mbDouble == 0)
+        output = '0.00';
+      else {
+        var i = (Math.log(mbDouble) / Math.log(1024)).floor();
 
-      var i = (Math.log(bytesInDouble) / Math.log(1024)).floor();
+        if (i == 0) output = mbDouble.toString() + ' ' + sizes[i];
 
-      if (i == 0) output = bytesInDouble.toString() + ' ' + sizes[i];
-      output = (bytesInDouble / Math.pow(1024, i)).toStringAsFixed(2) +
-          ' ' +
-          sizes[i];
+        output =
+            (mbDouble / Math.pow(1024, i)).toStringAsFixed(2) + ' ' + sizes[i];
+      }
     }
-
     return output;
   }
 
