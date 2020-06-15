@@ -2,7 +2,9 @@
 
 import 'package:ExcellBroadband/helpers/fadeInY.dart';
 import 'package:ExcellBroadband/helpers/utilities.dart';
+import 'package:ExcellBroadband/packageDetail.dart';
 import 'package:ExcellBroadband/packageList.dart';
+import 'package:ExcellBroadband/payment.dart';
 // import 'package:ExcellBroadband/packageList.dart';
 import 'package:ExcellBroadband/profiles.dart';
 import 'package:ExcellBroadband/support.dart';
@@ -68,8 +70,9 @@ class _DashboardState extends State<Dashboard> {
                   children: <Widget>[
                     FadeInX(
                       3.5,
-                      dashboardTile(() => print('tapped Payments'),
-                          rupeeImageWidget, "Payments"),
+                      dashboardTile(
+                          paymentsTileOnTapped, rupeeImageWidget, "Payments",
+                          showSpinner: showPaymentsSpinner),
                       distance: -10.0,
                     ),
                     FadeInX(
@@ -87,15 +90,9 @@ class _DashboardState extends State<Dashboard> {
                   children: <Widget>[
                     FadeInY(
                       3.5,
-                      dashboardTile(() {
-                        Navigator.push(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 500),
-                              child: Support()));
-                      },
-                          supportImageWidget, "Support"),
+                      dashboardTile(
+                          supportTileOnTapped, supportImageWidget, "Support",
+                          showSpinner: showSupportSpinner),
                       distance: 10.0,
                     ),
                     Container(
@@ -117,6 +114,57 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
+  supportTileOnTapped() {
+    setState(() {
+      showSupportSpinner = true;
+    });
+
+    CustomerInfo.supportTickets().then((supportTikcetsListResponse) {
+      if (Utilities.getStatus(supportTikcetsListResponse) == 200) {
+        List<dynamic> supportTikcetsList =
+            supportTikcetsListResponse['resonse']['result']['tickets'];
+        setState(() {
+          showSupportSpinner = false;
+        });
+
+        Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.fade,
+                duration: Duration(milliseconds: 500),
+                child: Support(supportTikcetsList)));
+      } else {}
+    });
+  }
+
+  paymentsTileOnTapped() {
+    setState(() {
+      showPaymentsSpinner = true;
+    });
+    CustomerInfo.getCustomerDue().then((getCustomerDueResponse) {
+
+
+      // if (Utilities.getStatus(getCustomerDueResponse) == 200) {
+        dynamic customerDue = getCustomerDueResponse;
+
+        setState(() {
+          showPaymentsSpinner = false;
+        });
+
+        Navigator.of(context).push(PageTransition(
+            type: PageTransitionType.rightToLeft,
+            duration: Duration(milliseconds: 500),
+            child: Payment(customerDue)));
+
+        // print("connectionsList " + connectionsList.toString());
+      // }
+      // else {
+      //   print(getCustomerDueResponse.toString());
+      // }
+      // print("connectionsList " + connectionsListResponse.toString());
+    });
+  }
+
   packagesTileOnTapped() {
     setState(() {
       showPackageSpinner = true;
@@ -132,10 +180,16 @@ class _DashboardState extends State<Dashboard> {
           showPackageSpinner = false;
         });
 
-        Navigator.of(context).push(PageTransition(
-            type: PageTransitionType.fade,
-            duration: Duration(milliseconds: 500),
-            child: PackageList(connectionsList)));
+        if (connectionsList.length > 1)
+          Navigator.of(context).push(PageTransition(
+              type: PageTransitionType.fade,
+              duration: Duration(milliseconds: 500),
+              child: PackageList(connectionsList)));
+        else if (connectionsList.length == 1)
+          Navigator.of(context).push(PageTransition(
+              type: PageTransitionType.rightToLeft,
+              duration: Duration(milliseconds: 500),
+              child: PackageDetail(connectionsList[0])));
 
         // print("connectionsList " + connectionsList.toString());
       }
@@ -210,7 +264,10 @@ class _DashboardState extends State<Dashboard> {
               alignment: Alignment(0.55, 0.75),
               child: Text(
                 title, //"Payments",
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 24),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 24),
               ),
             ),
             showSpinner

@@ -24,7 +24,7 @@ class _PackageDetailState extends State<PackageDetail> {
   final dynamic connectionListItem;
   double cHeight, cWidth;
   double consumptionWidth = 0.0;
-  static String ipAddr ;
+  static String ipAddr;
 
   // static List<DataRow> dataTableRows = [
   //   DataRow(cells: [
@@ -38,7 +38,8 @@ class _PackageDetailState extends State<PackageDetail> {
   String consumedText = "Consumed";
 
   List<dynamic> usageReport;
-  Widget usedUtilzationContainer = Container();//chartContainer(connectionListItem["ip_addr"]);
+  Widget usedUtilzationContainer =
+      Container(); //chartContainer(connectionListItem["ip_addr"]);
   _PackageDetailState(this.connectionListItem);
 
   final Radius containerBorderRadius = Radius.circular(15);
@@ -100,7 +101,7 @@ class _PackageDetailState extends State<PackageDetail> {
                             ),
                           ]),
                       child: ToggleSwitch(
-                          initialLabelIndex: 0,
+                          // initialLabelIndex: 0,
                           minWidth: 100.0,
                           cornerRadius: 20,
                           activeBgColor: gradientColors[0], // Colors.green,
@@ -115,7 +116,8 @@ class _PackageDetailState extends State<PackageDetail> {
                               usedUtilzationContainer = index == 1
                                   ? tableContainer(
                                       connectionListItem["ip_addr"])
-                                  : chartContainer(connectionListItem["ip_addr"]);
+                                  : chartContainer(
+                                      connectionListItem["ip_addr"]);
                             });
 
                             // print('switched to: $index');
@@ -194,9 +196,13 @@ class _PackageDetailState extends State<PackageDetail> {
 
   static Widget tableContainer(ipAddr) {
     return Container(
+      height: 450,
       key: ValueKey(1),
       child: Center(
-        child: UtilDataTable(ipAddr),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: UtilDataTable(ipAddr),
+        ),
       ),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey[300]),
@@ -209,8 +215,6 @@ class _PackageDetailState extends State<PackageDetail> {
   }
 
   static Widget chartContainer(_ipAddr) {
-
-    
     return Container(
       key: ValueKey(0),
       child: UtilLineChart(_ipAddr),

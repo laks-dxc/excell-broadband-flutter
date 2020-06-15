@@ -39,9 +39,9 @@ class _UtilDataTableState extends State<UtilDataTable> {
                         onSort: (a, b) {
                           print(b.toString());
                         }),
-                    DataColumn(label: Text('Upload'), numeric: true),
-                    DataColumn(label: Text('Download'), numeric: true),
                     DataColumn(label: Text('Total'), numeric: true),
+                    DataColumn(label: Text('Download'), numeric: true),
+                    DataColumn(label: Text('Upload'), numeric: true),
                   ],
                   rows:
                       List.generate(results.length, (index) => results[index])),
@@ -79,15 +79,15 @@ class _UtilDataTableState extends State<UtilDataTable> {
             Text(element["date"].toString().substring(8) + "-" + monthName),
             distance: -5.0)),
         DataCell(FadeInY(
-            1.0, Text(Utilities.mbToSize(element["upload"].toString())),
-            distance: -5.0)),
-        DataCell(FadeInY(1.0, Text(Utilities.mbToSize(element["download"])),
-            distance: -5.0)),
-        DataCell(FadeInY(
           1.0,
           Text(Utilities.mbToSize(element["total"].toString())),
           distance: -5.0,
         )),
+        DataCell(FadeInY(1.0, Text(Utilities.mbToSize(element["download"])),
+            distance: -5.0)),
+        DataCell(FadeInY(
+            1.0, Text(Utilities.mbToSize(element["upload"].toString())),
+            distance: -5.0)),
       ]);
       dataTableRowsLocal.add(dataRow);
     });
