@@ -1,61 +1,60 @@
 import 'package:ExcellCustomer/helpers/netUtils.dart';
 import 'package:ExcellCustomer/helpers/storageUtils.dart';
 import 'package:ExcellCustomer/models/enum.dart';
-import 'package:localstorage/localstorage.dart';
 
 class Customer {
-  static LocalStorage storage = new LocalStorage('exbb_app');
-
-  static int customerId;
-  static int customerName;
-
-  static Future<int> authenticate(String custId, String mobileNo) async {
-    Map<String, dynamic> authenticateResponse = await NetUtils.apiPostWithoutToken({
+  static Future<Map<String, dynamic>> authenticate(String custId, String mobileNo) async {
+    Map<String, dynamic> authenticatedResponse = await NetUtils.apiPostWithoutToken({
       "name": "generateToken",
       "param": {"custId": custId, "mobileNum": mobileNo, "mobilOTP": "1"}
     });
 
-    int isAuthenticated = -1;
+    Map<String, dynamic> authResponse = {"status": -1, "token": "", "otp": "otp"};
 
-    if (authenticateResponse["status"] == 200) {
-      // String token = authenticateResponse["result"]["token"];
+    if (authenticatedResponse["status"] == 200) {
+      String token = authenticatedResponse["result"]["token"];
 
-      // Map<StorageKeys, String> storageItems = {
-      //   StorageKeys.UserToken: token,
-      //   StorageKeys.CustId: custId,
-      //   StorageKeys.MobileNo: mobileNo,
-      // };
+      authResponse = {"status": 200, "token": token, "otp": authenticatedResponse['result']['otp']};
+      StorageUtils.setStorageItem(StorageKey.UserToken, token);
+    } else {}
 
-      // StorageUtils.setStorageItems(storageItems);
-      isAuthenticated = authenticateResponse['result']['otp'];
+    return authResponse;
+  }
+
+  static Future<bool> isLoggedIn() async {
+    return await StorageUtils.hasKey(StorageKey.UserToken);
+  }
+
+  static Future<bool> details(String custId, String mobileNo) async {
+    Map<String, dynamic> customerDetailsResponse = await NetUtils.apiPostWithToken({
+      "name": "getCustomerDetails",
+      "param": {"customerId": custId}
+    });
+
+    bool detailsReceived;
+
+    if (customerDetailsResponse["status"] == 200) {
+      Map<String, dynamic> custDetails = customerDetailsResponse["result"];
+
+      Map<StorageKey, String> storageItems = {
+        StorageKey.CustId: custId,
+        StorageKey.MobileNo: mobileNo,
+        StorageKey.CutomerName: custDetails['cutomerName'],
+        StorageKey.ContactNo: custDetails['contactno'],
+        StorageKey.AltContactNo: custDetails['altcontactno'],
+        StorageKey.Address: custDetails['address'],
+        StorageKey.City: custDetails['city'],
+        StorageKey.State: custDetails['state'],
+        StorageKey.Emailid: custDetails['emailid'],
+      };
+
+      StorageUtils.setStorageItems(storageItems);
+
+      detailsReceived = true;
     } else {
-      isAuthenticated = 0;
+      detailsReceived = false;
     }
 
-    Future<bool> authenticate1(String custId, String mobileNo) async {
-      Map<String, dynamic> authenticateResponse = await NetUtils.apiPostWithoutToken({
-        "name": "generateToken",
-        "param": {"custId": custId, "mobileNum": mobileNo, "mobilOTP": "1"}
-      });
-
-      bool isAuthenticated;
-
-      if (authenticateResponse["status"] == 200) {
-        // String token = authenticateResponse["result"]["token"];
-
-        // Map<StorageKeys, String> storageItems = {
-        //   StorageKeys.UserToken: token,
-        //   StorageKeys.CustId: custId,
-        //   StorageKeys.MobileNo: mobileNo,
-        // };
-
-        // StorageUtils.setStorageItems(storageItems);
-        isAuthenticated = authenticateResponse['result']['otp'];
-      } else {
-        isAuthenticated = false;
-      }
-
-      return isAuthenticated;
-    }
+    return detailsReceived;
   }
 }

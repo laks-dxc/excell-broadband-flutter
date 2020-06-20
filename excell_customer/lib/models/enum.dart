@@ -13,4 +13,15 @@ enum FooterState {
 
 enum Direction { x, y }
 
-enum StorageKeys { UserToken, CustId, MobileNo }
+enum StorageKey {
+  UserToken,
+  CustId,
+  MobileNo,
+  CutomerName,
+  ContactNo,
+  AltContactNo,
+  Address,
+  City,
+  State,
+  Emailid
+}

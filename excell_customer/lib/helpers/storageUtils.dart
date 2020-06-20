@@ -1,23 +1,48 @@
 import 'package:ExcellCustomer/models/enum.dart';
-import 'package:localstorage/localstorage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageUtils {
-  static LocalStorage storage = new LocalStorage("exbb_app");
+  static Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  // static getToken() {
-  //   String token = "token";
-  //   return token;
-  // }
-
-  static String getStorageItem(StorageKeys key) {
-    return storage.getItem(key.toString().split(".").last);
+  static Future<void> setStorageItem(StorageKey key, value) async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setString(key.toString().split(".").last, value);
   }
 
-  static void setStorageItem(StorageKeys key, value) {
-    storage.setItem(key.toString().split(".").last, value);
+  static Future<String> getStorageItem(StorageKey key) async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getString(key.toString().split(".").last);
   }
 
-  static void setStorageItems(Map<StorageKeys, String> storageItems) {
+  static void setStorageItems(Map<StorageKey, String> storageItems) async {
     storageItems.forEach((key, value) => setStorageItem(key, value));
   }
+
+  static Future<bool> hasKey(StorageKey key) async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.containsKey(key.toString().split(".").last);
+  }
+
+  static Future<Map<StorageKey, String>> getStorageItems(List<StorageKey> keys) async {
+    Map<StorageKey, String> storageItems = {};
+
+    Future futureStorageValuss = Future.wait(List.generate(keys.length, (index) {
+      return getStorageItem(keys[index]);
+    }));
+
+    List<String> storageValuss = await futureStorageValuss;
+    storageValuss.asMap().forEach((index, _val) {
+      _val = _val ?? "";
+      storageItems[keys[index]] = _val;
+    });
+
+    return storageItems;
+  }
+
+  static Future<bool> clearStorage() async {
+    final SharedPreferences prefs = await _prefs;
+    return await prefs.clear();
+  }
 }
+
+//    StorageKey key = StorageKey.values.firstWhere((e) => e.toString() == str);

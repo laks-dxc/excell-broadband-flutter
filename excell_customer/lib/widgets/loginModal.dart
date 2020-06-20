@@ -9,6 +9,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
+import '../drawer.dart';
+
 class LoginModal extends StatefulWidget {
   @override
   _LoginModalState createState() => _LoginModalState();
@@ -17,8 +19,9 @@ class LoginModal extends StatefulWidget {
 class _LoginModalState extends State<LoginModal> {
   Size screenSize;
   FooterState currentFooterState = FooterState.Default;
-  TextEditingController customerIdController = TextEditingController(text: '46888');
-  TextEditingController mobileNoController = TextEditingController(text: '830903863');
+  TextEditingController customerIdController = TextEditingController(text: '46888'); //text: '46888'
+  TextEditingController mobileNoController =
+      TextEditingController(text: '830903863'); //text: '830903863'
   TextEditingController mobileOTPController = TextEditingController();
 
   bool mobileNoTextFieldEnabled = true;
@@ -99,8 +102,10 @@ class _LoginModalState extends State<LoginModal> {
   final focusMobileNo = new FocusNode();
 
   String activeContainerBody = 'login';
-  int otpDuration = 10;
+  int otpDuration = 60;
   bool showAnimation = true;
+
+  String custId, mobileNo;
 
   Color footerColor;
   dynamic footerText;
@@ -161,12 +166,12 @@ class _LoginModalState extends State<LoginModal> {
 
                 _setFooterState(FooterState.ValidatingCredentials);
                 Customer.authenticate(customerIdController.text, mobileNoController.text)
-                    .then((otp) {
-                  if (otp > 0) {
+                    .then((authResponse) async {
+                  if (authResponse["status"] == 200) {
                     _setFooterState(FooterState.OTPEntryPending);
 
                     setState(() {
-                      receivedOTP = otp.toString();
+                      receivedOTP = authResponse["otp"].toString();
                       activeContainerBody = "OTP";
                       pinsEnabled = true;
                     });
@@ -186,14 +191,14 @@ class _LoginModalState extends State<LoginModal> {
               {
                 _setFooterState(FooterState.ValidatingCredentials);
                 Customer.authenticate(customerIdController.text, mobileNoController.text)
-                    .then((otp) {
-                  if (otp > 0) {
+                    .then((authResponse) {
+                  if (authResponse["status"] == 200) {
                     _setFooterState(FooterState.OTPEntryPending);
 
                     setState(() {
                       showResendText = true;
                       otpDuration = 59;
-                      receivedOTP = otp.toString();
+                      receivedOTP = authResponse["otp"].toString();
                       activeContainerBody = "OTP";
                       pinsEnabled = true;
                     });
@@ -431,7 +436,7 @@ class _LoginModalState extends State<LoginModal> {
                     style: TextStyle(fontSize: 20, color: Colors.grey[500]),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 22.0, right: 22.0, top: 15),
+                    padding: const EdgeInsets.only(left: 22.0, right: 22.0, top: 22.0),
                     child: PinCodeTextField(
                       length: 4,
                       controller: mobileOTPController,
@@ -463,8 +468,20 @@ class _LoginModalState extends State<LoginModal> {
                             _enteredOTP.toString() == '5347') {
                           setState(() {
                             showResendText = false;
+                            pinsEnabled = false;
                           });
+
                           _setFooterState(FooterState.OTPEnteredResultCorrect);
+
+                          Customer.details(customerIdController.text, mobileNoController.text)
+                              .then((bool detailsReceived) {
+                            if (detailsReceived) {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) => DrawerPage()));
+                            }
+                          });
                         } else {
                           _setFooterState(FooterState.OTPEnteredResultWrong);
                         }
@@ -486,6 +503,7 @@ class _LoginModalState extends State<LoginModal> {
                             RotateAnimatedTextKit(
                               duration: Duration(milliseconds: 600),
                               isRepeatingAnimation: false,
+                              transitionHeight: 30.0,
                               onFinished: () {
                                 if (showResendText) {
                                   _setFooterState(FooterState.ResendOTP);

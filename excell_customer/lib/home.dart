@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'animation/fadeIn.dart';
 
+import 'drawer.dart';
+import 'models/customer.dart';
 import 'models/enum.dart';
 import 'widgets/loginModal.dart';
 
@@ -58,41 +60,36 @@ class _HomeState extends State<Home> {
                           children: <Widget>[
                             FadeIn(
                                 GestureDetector(
-                                  onTap: () => showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          LoginModal()),
-                                  child: _homeTile(
-                                      Image.asset('assets/11.png'), "Account"),
+                                  onTap: () async {
+                                    bool isCustomerLoggedIn = await Customer.isLoggedIn();
+                                    isCustomerLoggedIn
+                                        ? Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (BuildContext context) =>
+                                                    DrawerPage()))
+                                        : showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (BuildContext context) => LoginModal());
+                                  },
+                                  child: _homeTile(Image.asset('assets/11.png'), "Account"),
                                 ),
                                 1.0,
                                 direction: Direction.x,
                                 distance: -30),
-                            FadeIn(
-                                _homeTile(
-                                    Image.asset('assets/22.png'), "Quick Pay"),
-                                1.0,
-                                direction: Direction.x,
-                                distance: 30),
+                            FadeIn(_homeTile(Image.asset('assets/22.png'), "Quick Pay"), 1.0,
+                                direction: Direction.x, distance: 30),
                           ],
                         ),
                         SizedBox(height: 50),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            FadeIn(
-                                _homeTile(
-                                    Image.asset('assets/33.png'), "Packages"),
-                                1.0,
-                                direction: Direction.x,
-                                distance: -30),
-                            FadeIn(
-                                _homeTile(Image.asset('assets/44.png'),
-                                    "New Connection"),
-                                1.0,
-                                direction: Direction.x,
-                                distance: 30),
+                            FadeIn(_homeTile(Image.asset('assets/33.png'), "Packages"), 1.0,
+                                direction: Direction.x, distance: -30),
+                            FadeIn(_homeTile(Image.asset('assets/44.png'), "New Connection"), 1.0,
+                                direction: Direction.x, distance: 30),
                           ],
                         )
                       ],

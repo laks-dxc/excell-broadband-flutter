@@ -15,8 +15,8 @@ dependencies:
   flutter_spinkit: "^4.1.2"
   pin_code_fields: ^3.0.1
   animated_text_kit: ^2.2.0
-  localstorage: ^3.0.0
-
+  shared_preferences: ^0.5.7+3
+  hidden_drawer_menu: ^1.1.4
 
   
   
