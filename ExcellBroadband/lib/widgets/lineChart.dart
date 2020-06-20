@@ -16,7 +16,8 @@ class UtilLineChart extends StatefulWidget {
 class _UtilLineChartState extends State<UtilLineChart> {
   String ipAddr;
   List<dynamic> results;
-  double maxY;
+  double maxY, minY, minX, maxX;
+  // double ;
 
   _UtilLineChartState(this.ipAddr);
 
@@ -36,7 +37,6 @@ class _UtilLineChartState extends State<UtilLineChart> {
 
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(
-      
         borderRadius: BorderRadius.all(
           Radius.circular(18),
         ),
@@ -57,9 +57,7 @@ class _UtilLineChartState extends State<UtilLineChart> {
                   right: 0.0,
                   left: 0.0,
                   top: 0,
-                  bottom: 0
-                  
-                  ),
+                  bottom: 0),
               child: results != null && results.length > 0
                   ? FadeInY(
                       0.1,
@@ -68,43 +66,126 @@ class _UtilLineChartState extends State<UtilLineChart> {
                       ),
                       translate: false,
                     )
-                  : Container(child: Center(child: Text("No Data")),),
+                  : Container(
+                      child: Center(child: Text("No Data")),
+                    ),
             ),
           ),
         ),
-        SizedBox(
-          width: 60,
-          height: 34,
-          child: FlatButton(
-            onPressed: () {
-              setState(() {
-                showAvg = !showAvg;
-              });
-            },
-            child: Text(
-              'avg',
-              style: TextStyle(
-                  fontSize: 12,
-                  color:
-                      showAvg ? Colors.white.withOpacity(0.5) : Colors.white),
-            ),
-          ),
-        ),
+        // SizedBox(
+        //   width: 60,
+        //   height: 34,
+        //   child: FlatButton(
+        //     onPressed: () {
+        //       setState(() {
+        //         showAvg = !showAvg;
+        //       });
+        //     },
+        //     child: Text(
+        //       'avg',
+        //       style: TextStyle(
+        //           fontSize: 12,
+        //           color:
+        //               showAvg ? Colors.white.withOpacity(0.5) : Colors.white),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
 
   LineChartData mainData(_results) {
+    var now = new DateTime.now();
+
+    String monthName = [
+      '',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ][now.month];
+    List<int> stepValues = [
+      1,2,
+    ];
+print(maxX.toString()  +" maxX");
+    if (maxX == 3.0)
+      stepValues = [2];
+    else if (maxX == 4.0)
+      stepValues = [2, 3];
+    else if (maxX == 5.0)
+      stepValues = [2, 4];
+    else if (maxX == 6.0)
+      stepValues = [2, 4];
+    else if (maxX == 7.0)
+      stepValues = [2, 5];
+    else if (maxX == 8.0)
+      stepValues = [2, 5, 7];
+    else if (maxX == 9.0)
+      stepValues = [2, 6, 8];
+    else if (maxX == 10.0)
+      stepValues = [2, 5, 7, 9];
+    else if (maxX == 11.0)
+      stepValues = [2, 5, 7, 10];
+    else if (maxX == 12.0)
+      stepValues = [2, 4, 7, 9, 11];
+    else if (maxX == 13.0)
+      stepValues = [2, 5, 8, 10, 12];
+    else if (maxX == 14.0)
+      stepValues = [2, 5, 8, 11, 13];
+    else if (maxX == 15.0) stepValues = [2, 5, 8, 12, 14];
+    else if (maxX == 16.0) stepValues = [2, 5, 8, 11, 15];
+    else if (maxX == 17.0) stepValues = [2, 6, 9, 12, 16];
+    else if (maxX == 18.0) stepValues = [2,];
+    else if (maxX == 19.0) stepValues = [2,];
+    else if (maxX == 20.0) stepValues = [2,];
+    else if (maxX == 21.0) stepValues = [2,];
+    else if (maxX == 22.0) stepValues = [2,];
+    else if (maxX == 23.0) stepValues = [2,];
+    else if (maxX == 24.0) stepValues = [2,];
+    else if (maxX == 25.0) stepValues = [2,];
+    else if (maxX == 26.0) stepValues = [2,];
+    else if (maxX == 27.0) stepValues = [2,];
+    else if (maxX == 28.0) stepValues = [2,];
+    else if (maxX == 29.0) stepValues = [2,];
+    else if (maxX == 30.0) stepValues = [2,];
+    else if (maxX == 31.0) stepValues = [2,];
+
+/*
+
+Srinivas T
+
+7881
+7993048888
+
+Hari
+
+96733
+9000622123
+
+
+
+
+*/
+
+
+
     return LineChartData(
-      
-      clipData: FlClipData.horizontal(),
+      clipData: FlClipData.all(),
       gridData: FlGridData(
         show: true,
         drawVerticalLine: false,
         drawHorizontalLine: true,
         getDrawingHorizontalLine: (value) {
           return FlLine(
-            color: const Color(0xff37434d),
+            color: Colors.grey[400],
             strokeWidth: 0,
           );
         },
@@ -116,29 +197,26 @@ class _UtilLineChartState extends State<UtilLineChart> {
         },
       ),
       titlesData: FlTitlesData(
-        show: false,
+        show: true,
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
           textStyle: const TextStyle(
               color: Color(0xff68737d),
               fontWeight: FontWeight.bold,
-              fontSize: 16),
+              fontSize: 12),
           getTitles: (value) {
-            switch (value.toInt()) {
-              case 2:
-                return 'MAR';
-              case 5:
-                return 'JUN';
-              case 8:
-                return 'SEP';
-            }
+
+
+            if (stepValues.indexOf(value.toInt()) != -1)
+              return value.toInt().toString() + "-" + monthName;
+
             return '';
           },
           margin: 8,
         ),
         leftTitles: SideTitles(
-          showTitles: true,
+          showTitles: false,
           textStyle: const TextStyle(
             color: Color(0xff67727d),
             fontWeight: FontWeight.bold,
@@ -170,24 +248,24 @@ class _UtilLineChartState extends State<UtilLineChart> {
       ),
       minX: 1,
       maxX: double.parse(_results.length.toString()),
-      minY: 0,
+      minY: minY,
       maxY: maxY,
       lineBarsData: [
         LineChartBarData(
-      
           spots: List.generate(_results.length, (index) => _results[index]),
           isCurved: true,
           colors: [
             const Color(0xff23b6e6),
             const Color(0xff02d39a),
           ],
-          barWidth: 3,
+          barWidth: 2,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,
           ),
           belowBarData: BarAreaData(
             show: true,
+            // spotsLine: BarAreaSpotsLine(show:true),
             colors:
                 gradientColors.map((color) => color.withOpacity(0.3)).toList(),
           ),
@@ -315,16 +393,36 @@ class _UtilLineChartState extends State<UtilLineChart> {
     List<dynamic> usageReport = await Utilities.getSmartUtilData(ipAddr);
     List<FlSpot> flSpots = [];
     double _maxY = 0;
+    double _minY = 0;
+    double _minX = 1;
+    double _maxX = 0;
+
     usageReport.forEach((element) {
       double y = double.parse(element["total"]);
+      double x = double.parse(element["date"].toString().substring(8));
+
       _maxY = _maxY > y ? _maxY : y;
-      flSpots.add(
-          FlSpot(double.parse(element["date"].toString().substring(8)), y));
+      _minY = _minY < y ? _minY : y;
+
+      _maxX = _maxX > x ? _maxX : x;
+      _minX = _minX < x ? _minX : x;
+
+      // print(element["date"].toString() + " " + element["total"].toString());
+
+      flSpots.add(FlSpot(x, y));
     });
+
+    print("_maxY" + " " + _maxY.toString());
+    print("_minY" + " " + _minY.toString());
 
     setState(() {
       results = flSpots;
-      maxY = _maxY + 1000;
+      maxY = _maxY + 10000;
+      minY = _minY - 30000;
+
+      maxX = _maxX;
+      minX = _minX;
+
       // print(results.toString());
     });
   }

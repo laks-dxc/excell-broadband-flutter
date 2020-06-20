@@ -91,7 +91,7 @@ class _PaymentState extends State<Payment> {
                 children: <Widget>[
                   paymentDetailsContainer(),
                   // SizedBox(height: 15),
-                  payNowButton(),
+                  double.parse(customerDueInfo["amount"]) != 0?payNowButton():Container(),
                 ],
               ),
             )
@@ -329,4 +329,7 @@ class _PaymentState extends State<Payment> {
       ),
     );
   }
+
+
+
 }
