@@ -1,4 +1,5 @@
 import 'package:ExcellCustomer/profile.dart';
+import 'package:ExcellCustomer/support.dart';
 import 'package:flutter/material.dart';
 import 'package:hidden_drawer_menu/hidden_drawer/hidden_drawer_menu.dart';
 import 'package:hidden_drawer_menu/hidden_drawer/screen_hidden_drawer.dart';
@@ -32,9 +33,6 @@ class _DrawerPageState extends State<DrawerPage> {
           colorLineSelected: selectedTheme.appBarColor,
           baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.3), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
-          onTap: () {
-            print("Click item");
-          },
         ),
         MyPackages()),
     ScreenHiddenDrawer(
@@ -45,12 +43,18 @@ class _DrawerPageState extends State<DrawerPage> {
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Profile()),
+    ScreenHiddenDrawer(
+        ItemHiddenMenu(
+          name: "Support",
+          colorLineSelected: selectedTheme.appBarColor,
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.3), fontSize: 25.0),
+          selectedStyle: TextStyle(color: selectedTheme.textColor),
+        ),
+        Support()),
   ];
 
   @override
   Widget build(BuildContext context) {
-    
-
     return HiddenDrawerMenu(
       initPositionSelected: 0,
       screens: itens,

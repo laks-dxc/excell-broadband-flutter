@@ -9,6 +9,11 @@ class StorageUtils {
     await prefs.setString(key.toString().split(".").last, value);
   }
 
+    static Future<void> setStorageRawItem(String key, dynamic value) async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setString(key, value.toString());
+  }
+
   static Future<String> getStorageItem(StorageKey key) async {
     final SharedPreferences prefs = await _prefs;
     return prefs.getString(key.toString().split(".").last);
@@ -44,5 +49,3 @@ class StorageUtils {
     return await prefs.clear();
   }
 }
-
-//    StorageKey key = StorageKey.values.firstWhere((e) => e.toString() == str);

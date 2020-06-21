@@ -7,14 +7,14 @@ import 'package:ExcellCustomer/models/enum.dart';
 class NetUtils {
   static String _url = 'http://app.excellbroadband.com/api/index.php';
 
-  static Future<Map<String, dynamic>> apiPostWithToken(body, {String token}) async {
+  static Future<Map<String, dynamic>> apiPostWithToken(body,
+      {String resultField = 'result'}) async {
     Map<String, dynamic> apiResponse = {};
     Map<String, dynamic> response = {};
 
     HttpClient httpClient = new HttpClient();
     int status;
     String exception;
-
     HttpClientRequest request = await httpClient.postUrl(Uri.parse(_url));
     request.headers.set('content-type', 'application/json');
     String _token = await StorageUtils.getStorageItem(StorageKey.UserToken);
@@ -24,11 +24,16 @@ class NetUtils {
       request.add(convert.utf8.encode(convert.jsonEncode(body)));
       HttpClientResponse httpCientResponse = await request.close();
       String transformedValue = await httpCientResponse.transform(convert.utf8.decoder).join();
-      
+
       apiResponse = await convert.jsonDecode(transformedValue);
+
+      // print('apiResponse Raw ' + apiResponse.toString());
+
       status = apiResponse['resonse']['status'];
       response = {"status": status, "result": apiResponse['resonse']['result']};
+      
     } catch (ex) {
+      print(ex.toString());
       status = -1;
       exception = ex.toString();
       response = {"status": status, "result": "", "exception": exception};

@@ -15,29 +15,11 @@ class _ProfileState extends State<Profile> {
   Size displaySize;
   static AppThemeData selectedTheme = AppStyles.getTheme(AppTheme.Light);
 
-/*
-
-  String customerName = Utilities.getStorageItem('cutomerName');
-  String mobileNos = Utilities.getStorageItem('mobileNo') +
-      ", " +
-      Utilities.getStorageItem('altcontactno');
-  String emailAddress = Utilities.getStorageItem('emailid');
-  String fullAddress =
-      Utilities.getStorageItem('address').replaceAll(",", ", ").trim() +
-          ", " +
-          Utilities.getStorageItem('city') +
-          ", " +
-          Utilities.getStorageItem('state');
-
-
-*/
-
   String customerName = "", mobileNos = "", emailAddress = "", fullAddress = "";
 
   @override
   void initState() {
     getProfileFields();
-
     super.initState();
   }
 
@@ -84,7 +66,6 @@ class _ProfileState extends State<Profile> {
     return ListView(
       children: <Widget>[
         SizedBox(height: 10),
-
         Container(
           decoration: BoxDecoration(
               color: selectedTheme.enabledBackground.withOpacity(0.3),
@@ -125,12 +106,15 @@ class _ProfileState extends State<Profile> {
         Center(
           child: RaisedButton(
             textColor: Colors.white,
-
             color: selectedTheme.primaryGradientColors[1],
             child: Container(
-              height:50,
-              width:200,
-              child:Center(child: Text("Log Out", style: TextStyle(fontSize:24.0),))),
+                height: 50,
+                width: 200,
+                child: Center(
+                    child: Text(
+                  "Log Out",
+                  style: TextStyle(fontSize: 24.0),
+                ))),
             onPressed: () {
               StorageUtils.clearStorage().then((bool cleared) {
                 Navigator.pushReplacement(

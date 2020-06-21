@@ -12,13 +12,13 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   String customerName = "";
   Size displaySize;
-  
+
   @override
   void initState() {
-    StorageUtils.getStorageItem(StorageKey.CutomerName).then((_customerName) => {
+    StorageUtils.getStorageItem(StorageKey.CutomerName).then((_customerName)  {
           setState(() {
             customerName = _customerName;
-          })
+          });
         });
 
     super.initState();

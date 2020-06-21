@@ -25,3 +25,7 @@ enum StorageKey {
   State,
   Emailid
 }
+
+enum TicketsScreenMode { CreateTicket, ViewTickets, Loading }
+
+enum MyPackagesScreenMode { List, Detail }
