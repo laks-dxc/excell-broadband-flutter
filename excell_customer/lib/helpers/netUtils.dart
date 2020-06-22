@@ -8,7 +8,7 @@ class NetUtils {
   static String _url = 'http://app.excellbroadband.com/api/index.php';
 
   static Future<Map<String, dynamic>> apiPostWithToken(body,
-      {String resultField = 'result'}) async {
+      {String resultField = 'result', String token}) async {
     Map<String, dynamic> apiResponse = {};
     Map<String, dynamic> response = {};
 
@@ -17,7 +17,10 @@ class NetUtils {
     String exception;
     HttpClientRequest request = await httpClient.postUrl(Uri.parse(_url));
     request.headers.set('content-type', 'application/json');
-    String _token = await StorageUtils.getStorageItem(StorageKey.UserToken);
+
+    String _token = await StorageUtils.hasKey(StorageKey.UserToken)
+        ? await StorageUtils.getStorageItem(StorageKey.UserToken)
+        : token;
 
     try {
       request.headers.set('Authorization', 'Excell ' + _token);
@@ -31,7 +34,6 @@ class NetUtils {
 
       status = apiResponse['resonse']['status'];
       response = {"status": status, "result": apiResponse['resonse']['result']};
-      
     } catch (ex) {
       print(ex.toString());
       status = -1;

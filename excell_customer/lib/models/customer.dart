@@ -15,14 +15,32 @@ class Customer {
       String token = authenticatedResponse["result"]["token"];
 
       authResponse = {"status": 200, "token": token, "otp": authenticatedResponse['result']['otp']};
-      StorageUtils.setStorageItem(StorageKey.UserToken, token);
+      await StorageUtils.setStorageItem(StorageKey.UserToken, token);
+    } else {}
+
+    return authResponse;
+  }
+
+  static Future<Map<String, dynamic>> authenticateWithoutOTP(String custId, String mobileNo) async {
+    Map<String, dynamic> authenticatedResponse = await NetUtils.apiPostWithoutToken({
+      "name": "generateToken",
+      "param": {"custId": custId, "mobileNum": mobileNo, "mobilOTP": "0"}
+    });
+
+    Map<String, dynamic> authResponse = {"status": -1, "token": ""};
+
+    if (authenticatedResponse["status"] == 200) {
+      String token = authenticatedResponse["result"]["token"];
+      await StorageUtils.setStorageItem(StorageKey.UserToken, token);
+
+      authResponse = {"status": 200, "token": token};
     } else {}
 
     return authResponse;
   }
 
   static Future<bool> isLoggedIn() async {
-    return await StorageUtils.hasKey(StorageKey.UserToken);
+    return await StorageUtils.hasKey(StorageKey.CutomerName);
   }
 
   static Future<bool> details(String custId, String mobileNo) async {
@@ -119,22 +137,47 @@ class Customer {
       connectionsList = connectionsListResponse["result"]["connections"];
     }
 
- 
     return connectionsList;
   }
 
-  static Future<List<dynamic>> getSmartUtilData(ipAddr) async {
+  static Future<dynamic> paymentDue() async {
+    dynamic paymentDue;
 
+    final Map<String, dynamic> paymentDueResponse = await NetUtils.apiPostWithToken({
+      "name": "getCustomerDue",
+      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId)}
+    });
+
+    if (paymentDueResponse["status"] == 200) {
+      paymentDue = paymentDueResponse["result"];
+    }
+
+    return paymentDue;
+  }
+
+   static Future<dynamic> paymentDueWithToken(String token, String custId) async {
+    dynamic paymentDue;
+
+    final Map<String, dynamic> paymentDueResponse = await NetUtils.apiPostWithToken({
+      "name": "getCustomerDue",
+      "param": {"customerId": custId}
+    }, token: token);
+
+    if (paymentDueResponse["status"] == 200) {
+      paymentDue = paymentDueResponse["result"];
+    }
+
+    return paymentDue;
+  }
+
+  static Future<List<dynamic>> getSmartUtilData(ipAddr) async {
     final Map<String, dynamic> utilizationResponse = await NetUtils.apiPostWithToken({
       "name": "getUsageReport",
       "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "ip": ipAddr}
     });
 
-   
     // List<dynamic> a = ;
 
     return utilizationResponse["result"]["usagereport"];
   }
-
-
 }

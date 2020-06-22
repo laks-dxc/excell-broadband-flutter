@@ -125,7 +125,7 @@ class _LoginModalState extends State<LoginModal> {
     screenSize = MediaQuery.of(context).size;
 
     final double dialogWidth = screenSize.width * 0.8;
-    final double dialogHeight = screenSize.height * 0.30;
+    final double dialogHeight = screenSize.height * 0.35;
 
     Dialog loginDialog = Dialog(
       shape: RoundedRectangleBorder(
@@ -287,6 +287,7 @@ class _LoginModalState extends State<LoginModal> {
     return Container(
       height: screenSize.height * 0.06,
       child: TextFormField(
+
         enabled: customerIdTextFieldEnabled,
         onChanged: (_customerId) {
           if (currentFooterState == FooterState.ValidatedCredentialsResultWrong)
@@ -307,9 +308,10 @@ class _LoginModalState extends State<LoginModal> {
           // _loginFormKey.
         },
         style: TextStyle(
-            height: 1.5, letterSpacing: 7.0, fontSize: 20.0, color: selectedTheme.primaryColor),
-        cursorColor: Colors.black38,
+            height: 1.0, letterSpacing: 7.0, fontSize: 20.0, color: selectedTheme.primaryColor),
+        cursorColor: Colors.black38, 
         decoration: InputDecoration(
+          contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
           filled: true,
           fillColor: selectedTheme.activeBackground.withOpacity(0.2),
           border: OutlineInputBorder(
@@ -357,8 +359,9 @@ class _LoginModalState extends State<LoginModal> {
         cursorColor: Colors.black38,
         autocorrect: false,
         style: TextStyle(
-            height: 1.5, letterSpacing: 7.0, fontSize: 20.0, color: selectedTheme.primaryColor),
+            height: 1.0, letterSpacing: 7.0, fontSize: 20.0, color: selectedTheme.primaryColor),
         decoration: InputDecoration(
+           contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
           filled: true,
           fillColor: selectedTheme.activeBackground.withOpacity(0.2),
           counterText: "",
@@ -389,7 +392,7 @@ class _LoginModalState extends State<LoginModal> {
 
   Widget _containerBody(String _activeContainerName) {
     final double dialogWidth = screenSize.width * 0.8;
-    final double dialogHeight = screenSize.height * 0.30;
+    final double dialogHeight = screenSize.height * 0.50;
     Widget container;
 
     container = _activeContainerName == 'login'

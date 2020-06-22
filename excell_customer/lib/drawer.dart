@@ -1,3 +1,4 @@
+import 'package:ExcellCustomer/payments.dart';
 import 'package:ExcellCustomer/profile.dart';
 import 'package:ExcellCustomer/support.dart';
 import 'package:flutter/material.dart';
@@ -27,22 +28,23 @@ class _DrawerPageState extends State<DrawerPage> {
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Dashboard()),
+        ScreenHiddenDrawer(
+        ItemHiddenMenu(
+          name: "Payment",
+          colorLineSelected: selectedTheme.appBarColor,
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.3), fontSize: 25.0),
+          selectedStyle: TextStyle(color: selectedTheme.textColor),
+        ),
+        Payment()),
     ScreenHiddenDrawer(
         ItemHiddenMenu(
-          name: "My Packages",
+          name: "Packages",
           colorLineSelected: selectedTheme.appBarColor,
           baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.3), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         MyPackages()),
-    ScreenHiddenDrawer(
-        ItemHiddenMenu(
-          name: "Profile",
-          colorLineSelected: selectedTheme.appBarColor,
-          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.3), fontSize: 25.0),
-          selectedStyle: TextStyle(color: selectedTheme.textColor),
-        ),
-        Profile()),
+    
     ScreenHiddenDrawer(
         ItemHiddenMenu(
           name: "Support",
@@ -51,6 +53,15 @@ class _DrawerPageState extends State<DrawerPage> {
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Support()),
+ScreenHiddenDrawer(
+        ItemHiddenMenu(
+          name: "Profile",
+          colorLineSelected: selectedTheme.appBarColor,
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.3), fontSize: 25.0),
+          selectedStyle: TextStyle(color: selectedTheme.textColor),
+        ),
+        Profile())
+
   ];
 
   @override

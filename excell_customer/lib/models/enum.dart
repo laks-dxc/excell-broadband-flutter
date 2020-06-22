@@ -9,6 +9,9 @@ enum FooterState {
   OTPEnteredResultCorrect,
   OTPEnteredResultWrong,
   ResendOTP,
+  DueExist,
+  DueNotExist,
+
 }
 
 enum Direction { x, y }

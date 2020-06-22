@@ -20,6 +20,7 @@ dependencies:
   fl_chart: ^0.10.0
   toggle_switch: "^0.1.4"
   date_format: ^1.0.8  
+  bot_toast: ^3.0.0
   
   
 

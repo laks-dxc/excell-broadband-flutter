@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 // import 'package:localstorage/localstorage.dart';
 
 class UtilDataTable extends StatefulWidget {
-  String ipAddr;
+  final String ipAddr;
 
   UtilDataTable(this.ipAddr);
   @override

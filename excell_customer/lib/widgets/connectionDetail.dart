@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ExcellCustomer/animation/fadeIn.dart';
 import 'package:ExcellCustomer/helpers/Utils.dart';
 import 'package:ExcellCustomer/helpers/appStyles.dart';
 import 'package:ExcellCustomer/models/AppTheme.dart';
@@ -25,12 +26,13 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
   Widget usedUtilzationContainer;
 
   _ConnectionDetailState(this.connectionDetailItem);
-
   double consumedFactor = 0.0001;
+  bool showUtilization = false;
 
 /*
 [{pkgnum: 300208, pkgname: Smart, ip_addr: 172.16.100.197, speed_down: 50, mac_addr: 1c:5f:2b:9f:3e:a1, data: null, datalimit: 429496729600, topup: null, new_limit: null, paybonus: null, freq: 1, pkgdetail: 50Mbps-400GB, last_bill_date: 2020-06-01, due_bill_date: 2020-06-06}]
 */
+
   Size displaySize;
 
   @override
@@ -47,7 +49,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: <Widget>[
-                tileItem("Package", connectionDetailItem["pkgname"]),
+                tileItem("Package", Utils.clipStringTo( connectionDetailItem["pkgname"],20)),
                 tileItem("Plan", connectionDetailItem["pkgdetail"]),
               ],
             ),
@@ -97,27 +99,52 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ToggleSwitch(
-                  // initialLabelIndex: 0,
-                  minWidth: displaySize.width * 0.25,
-                  cornerRadius: 20,
-                  activeBgColor: selectedTheme.primaryColor,
-                  activeTextColor: Colors.white,
-                  inactiveBgColor: Colors.grey[300], //gradientColors[1],
-                  inactiveTextColor: Colors.black87,
-                  labels: ['Trend', 'Table'],
-                  icons: [Icons.show_chart, Icons.list],
-                  onToggle: (index) {
-                    setState(() {
-                      usedUtilzationContainer = index == 1
-                          ? UtilDataTable(connectionDetailItem["ip_addr"])
-                          : UtilLineChart(connectionDetailItem["ip_addr"]);
-                    });
+                padding: const EdgeInsets.all(16.0),
+                child: !showUtilization
+                    ? RaisedButton(
+                        textColor: Colors.white,
+                        color: selectedTheme.primaryGradientColors[1],
+                        child: Container(
+                            height: 40,
+                            width: displaySize.width * 0.25,
+                            child: Center(
+                                child: Text(
+                              "Analysis",
+                              style: TextStyle(fontSize: 20.0),
+                            ))),
+                        onPressed: () {
+                          setState(() {
+                            showUtilization = true;
+                            usedUtilzationContainer =
+                                UtilLineChart(connectionDetailItem["ip_addr"]);
+                          });
+                        },
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30.0),
+                        ),
+                      )
+                    : FadeIn(
+                        ToggleSwitch(
+                            initialLabelIndex: 0,
+                            minWidth: displaySize.width * 0.25,
+                            cornerRadius: 20,
+                            activeBgColor: selectedTheme.primaryColor,
+                            activeTextColor: Colors.white,
+                            inactiveBgColor: Colors.grey[300], //gradientColors[1],
+                            inactiveTextColor: Colors.black87,
+                            labels: ['Trend', 'Table'],
+                            icons: [Icons.show_chart, Icons.list],
+                            onToggle: (index) {
+                              setState(() {
+                                usedUtilzationContainer = index == 1
+                                    ? UtilDataTable(connectionDetailItem["ip_addr"])
+                                    : UtilLineChart(connectionDetailItem["ip_addr"]);
+                              });
 
-                    // print('switched to: $index');
-                  }),
-            ),
+                              // print('switched to: $index');
+                            }),
+                        0.5,
+                        translate: false)),
           ),
         ),
       ),
@@ -147,7 +174,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
 
     double totalDataLimit = planData + payBonus + topup;
 
-    if (consumedData > totalDataLimit) consumedData = totalDataLimit;
+    if (totalDataLimit != 0.0 && consumedData > totalDataLimit) consumedData = totalDataLimit;
 
 // print('again and again');
 
@@ -161,6 +188,8 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
 
     // print("consumedData " + "$consumedData");
 
+
+
     if (consumedData == null)
       consumedString = "0.00 of " + Utils.bytesToSize(totalDataLimit.toString()) + " consumed ";
     else
@@ -168,6 +197,11 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
           " of " +
           Utils.bytesToSize(totalDataLimit.toString()) +
           " used ";
+
+
+    if(totalDataLimit == 0.0 && consumedData != null)
+      consumedString =  Utils.bytesToSize(consumedData.toString()) + " consumed ";
+
 
     return Stack(
       children: <Widget>[

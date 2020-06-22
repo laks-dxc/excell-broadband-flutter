@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,7 +14,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeData lightTheme = ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity, fontFamily: 'Lato');
+  ThemeData lightTheme =
+      ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity, fontFamily: 'Lato');
 
   @override
   void initState() {
@@ -22,8 +24,14 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
-    return MaterialApp(debugShowCheckedModeBanner: false, theme: lightTheme, home: Home());
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: lightTheme,
+        builder: BotToastInit(), //1. call BotToastInit
+        navigatorObservers: [BotToastNavigatorObserver()],
+        home: Home());
   }
 }

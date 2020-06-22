@@ -10,16 +10,16 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  String customerName = "";
+  String customerName = " ";
   Size displaySize;
 
   @override
   void initState() {
-    StorageUtils.getStorageItem(StorageKey.CutomerName).then((_customerName)  {
-          setState(() {
-            customerName = _customerName;
-          });
-        });
+    StorageUtils.getStorageItem(StorageKey.CutomerName).then((_customerName) {
+      setState(() {
+        customerName = _customerName;
+      });
+    });
 
     super.initState();
   }
@@ -57,14 +57,7 @@ class _DashboardState extends State<Dashboard> {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Column(
-                children: <Widget>[
-                  Container(
-                    color: Colors.teal,
-                    width: displaySize.width,
-                    height: displaySize.height * 0.2,
-                    child: Text("Hello Buddy"),
-                  ),
-                ],
+                children: <Widget>[],
               ),
             ),
           ),

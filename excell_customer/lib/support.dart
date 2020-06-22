@@ -1,14 +1,17 @@
 import 'package:ExcellCustomer/models/enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:date_format/date_format.dart';
 
 import 'animation/fadeIn.dart';
+import 'helpers/Utils.dart';
 import 'helpers/appStyles.dart';
 import 'models/AppTheme.dart';
 import 'models/customer.dart';
 
 class Support extends StatefulWidget {
+
+
+
   @override
   _SupportState createState() => _SupportState();
 }
@@ -78,11 +81,9 @@ class _SupportState extends State<Support> {
           supportText += ticket["problem"] != null ? "" : "\n";
 
           supportText += "created on ";
-          supportText += formatDate(
-              DateTime.parse(ticket["created"]).subtract(Duration(minutes: 0)),
-              [dd, '-', M, '-', 'yyyy', ', ']);
+          supportText += Utils.formatDateString(ticket["created"]);
           supportText +=
-              "is registred with us. \n\nOur support team will get in touch with you shortly.\n\nThank You.";
+              ", is registered with us. \n\nOur support team will get in touch with you shortly.\n\nThank You.";
           getIssueTypes();
         } else if (ticketsList["ticketCount"] == 0) {
           screenMode = TicketsScreenMode.CreateTicket;
@@ -343,3 +344,4 @@ class _SupportState extends State<Support> {
     );
   }
 }
+

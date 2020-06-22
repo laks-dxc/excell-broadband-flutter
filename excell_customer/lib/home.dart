@@ -1,3 +1,4 @@
+import 'package:ExcellCustomer/widgets/quickPayModel.dart';
 import 'package:flutter/material.dart';
 
 import 'animation/fadeIn.dart';
@@ -13,12 +14,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Size screenSize;
+  Size displaySize;
 
   @override
   Widget build(BuildContext context) {
-    screenSize = MediaQuery.of(context).size;
-
+    displaySize = MediaQuery.of(context).size;
+print("displaySize.height "+ displaySize.height.toString());
     return Scaffold(
       body: Stack(
         alignment: Alignment.topCenter,
@@ -29,12 +30,12 @@ class _HomeState extends State<Home> {
             child: Container(
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 100),
+                  SizedBox(height: displaySize.height * 0.1),
                   FadeIn(
                     Image.asset(
                       "assets/logo.png",
-                      width: 150,
-                      height: 150,
+                      width: displaySize.height*0.1522,
+                      height: displaySize.height*0.1522,
                     ),
                     0.5,
                     direction: Direction.y,
@@ -66,11 +67,11 @@ class _HomeState extends State<Home> {
                                         ? Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (BuildContext context) =>
-                                                    DrawerPage()))
+                                                builder: (BuildContext context) => DrawerPage()))
                                         : showDialog(
                                             barrierDismissible: false,
                                             context: context,
+                                            
                                             builder: (BuildContext context) => LoginModal());
                                   },
                                   child: _homeTile(Image.asset('assets/11.png'), "Account"),
@@ -78,7 +79,13 @@ class _HomeState extends State<Home> {
                                 1.0,
                                 direction: Direction.x,
                                 distance: -30),
-                            FadeIn(_homeTile(Image.asset('assets/22.png'), "Quick Pay"), 1.0,
+                            FadeIn(GestureDetector(onTap:(){
+                              showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            
+                                            builder: (BuildContext context) => QuickPayModal());
+                            },child: _homeTile(Image.asset('assets/22.png'), "Quick Pay")), 1.0,
                                 direction: Direction.x, distance: 30),
                           ],
                         ),
