@@ -155,7 +155,7 @@ class Customer {
     return paymentDue;
   }
 
-   static Future<dynamic> paymentDueWithToken(String token, String custId) async {
+  static Future<dynamic> paymentDueWithToken(String token, String custId) async {
     dynamic paymentDue;
 
     final Map<String, dynamic> paymentDueResponse = await NetUtils.apiPostWithToken({
@@ -179,5 +179,14 @@ class Customer {
     // List<dynamic> a = ;
 
     return utilizationResponse["result"]["usagereport"];
+  }
+
+  static Future<List<dynamic>> getBBPlans(String locationId) async {
+    final Map<String, dynamic> bbPlanDetails = await NetUtils.apiPostWithoutToken({
+      "name": "getBbplanDetails",
+      "param": {"locationId": locationId}
+    });
+
+    return bbPlanDetails["result"]["plans"];
   }
 }

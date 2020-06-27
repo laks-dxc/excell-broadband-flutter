@@ -110,7 +110,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
                             child: Center(
                                 child: Text(
                               "Analysis",
-                              style: TextStyle(fontSize: 20.0),
+                              style: TextStyle(fontSize: 18.0),
                             ))),
                         onPressed: () {
                           setState(() {

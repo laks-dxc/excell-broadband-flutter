@@ -5,27 +5,27 @@ import 'package:flutter/material.dart';
 class AppStyles {
   static AppThemeData lightMode = AppThemeData(
       radialGradient: RadialGradient(
-          colors: [_fromHex('#112c75'), _fromHex('#20347e')], stops: [0, 1], radius: 20.0),
-      primaryGradientColors: [_fromHex('#112c75'), _fromHex('#20347e')],
-      primaryColor: _fromHex('#112c75'),
+          colors: [_fromHex('#0e347f'), _fromHex('#20347e')], stops: [0, 1], radius: 20.0),
+      primaryGradientColors: [_fromHex('#0e347f'), _fromHex('#20347e')],
+      primaryColor: _fromHex('#0e347f'),
       disabledBackground: _fromHex('#d9d8e7'),
       enabledBackground: _fromHex('#d9d8e7'),
       activeBackground: _fromHex('#b4b2d0'),
-      primaryText: _fromHex('#112c75'),
-      textColor: _fromHex('#112c75'),
-      appBarColor: _fromHex('#112c75'),
+      primaryText: _fromHex('#0e347f'),
+      textColor: _fromHex('#0e347f'),
+      appBarColor: _fromHex('#0e347f'),
       disabledText: _fromHex('#434343'));
 
   static AppThemeData darkMode = AppThemeData(
       radialGradient: RadialGradient(
-          colors: [_fromHex('#112c75'), _fromHex('#20347e')], stops: [0, 1], radius: 20.0),
-      primaryGradientColors: [_fromHex('#112c75'), _fromHex('#20347e')],
-      primaryColor: _fromHex('#112c75'),
+          colors: [_fromHex('#0e347f'), _fromHex('#20347e')], stops: [0, 1], radius: 20.0),
+      primaryGradientColors: [_fromHex('#0e347f'), _fromHex('#20347e')],
+      primaryColor: _fromHex('#0e347f'),
       disabledBackground: _fromHex('#d9d8e7'),
       enabledBackground: _fromHex('#d9d8e7'),
       activeBackground: _fromHex('#b4b2d0'),
-      primaryText: _fromHex('#112c75'),
-      textColor: _fromHex('#112c75'),
+      primaryText: _fromHex('#0e347f'),
+      textColor: _fromHex('#0e347f'),
       appBarColor: _fromHex('#ffffff'),
       disabledText: _fromHex('#434343'));
 

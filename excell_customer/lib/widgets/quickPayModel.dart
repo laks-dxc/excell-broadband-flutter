@@ -145,15 +145,13 @@ class __QuickPayModalState extends State<QuickPayModal> {
 
                 Customer.authenticateWithoutOTP(customerIdController.text, mobileNoController.text)
                     .then((authResponse) async {
-                  print(authResponse.toString());
                   if (authResponse["status"] == 200) {
                     Customer.paymentDueWithToken(authResponse["token"], customerIdController.text)
                         .then((paymentDueResponse) {
-                      // print(paymentDueResponse.toString());
                       setState(() {
                         activeContainerBody = "QuickPay";
-                        doubleAmoutDue = double.parse(paymentDueResponse["amount"]);
                         amountDue = Utils.showAsMoney(paymentDueResponse["amount"]);
+                        doubleAmoutDue = double.parse(paymentDueResponse["amount"]);
                       });
                       doubleAmoutDue > 0
                           ? _setFooterState(FooterState.DueExist)

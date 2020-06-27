@@ -24,7 +24,7 @@ class _DrawerPageState extends State<DrawerPage> {
         ItemHiddenMenu(
           name: "Dashboard",
           colorLineSelected: selectedTheme.appBarColor,
-          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.3), fontSize: 25.0),
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Dashboard()),
@@ -32,7 +32,7 @@ class _DrawerPageState extends State<DrawerPage> {
         ItemHiddenMenu(
           name: "Payment",
           colorLineSelected: selectedTheme.appBarColor,
-          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.3), fontSize: 25.0),
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Payment()),
@@ -40,7 +40,7 @@ class _DrawerPageState extends State<DrawerPage> {
         ItemHiddenMenu(
           name: "Packages",
           colorLineSelected: selectedTheme.appBarColor,
-          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.3), fontSize: 25.0),
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         MyPackages()),
@@ -49,7 +49,7 @@ class _DrawerPageState extends State<DrawerPage> {
         ItemHiddenMenu(
           name: "Support",
           colorLineSelected: selectedTheme.appBarColor,
-          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.3), fontSize: 25.0),
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Support()),
@@ -57,7 +57,7 @@ ScreenHiddenDrawer(
         ItemHiddenMenu(
           name: "Profile",
           colorLineSelected: selectedTheme.appBarColor,
-          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.3), fontSize: 25.0),
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Profile())

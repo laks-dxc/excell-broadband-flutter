@@ -26,7 +26,8 @@ enum StorageKey {
   Address,
   City,
   State,
-  Emailid
+  Emailid,
+  Locations
 }
 
 enum TicketsScreenMode { CreateTicket, ViewTickets, Loading }

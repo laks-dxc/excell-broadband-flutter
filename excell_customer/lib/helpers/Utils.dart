@@ -53,12 +53,12 @@ class Utils {
     return output;
   }
 
-  static String showAsMoney(String money) {
+  static String showAsMoney(String money, {precision:2}) {
     if (money == null)
       return "Rs. 0";
     else {
       double moneyDouble = double.parse(money);
-      return "Rs. " + moneyDouble.toStringAsFixed(2);
+      return "Rs. " + moneyDouble.toStringAsFixed(precision);
     }
   }
 

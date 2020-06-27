@@ -9,9 +9,6 @@ import 'models/AppTheme.dart';
 import 'models/customer.dart';
 
 class Support extends StatefulWidget {
-
-
-
   @override
   _SupportState createState() => _SupportState();
 }
@@ -19,6 +16,7 @@ class Support extends StatefulWidget {
 class _SupportState extends State<Support> {
   static AppThemeData selectedTheme = AppStyles.getTheme(AppTheme.Light);
   Size displaySize;
+  bool isProcessing = false;
 
   TicketsScreenMode screenMode = TicketsScreenMode.Loading;
   Map<String, dynamic> ticket = {};
@@ -80,7 +78,7 @@ class _SupportState extends State<Support> {
           supportText += ticket["problem"] != null ? " for " + ticket["problem"] : "";
           supportText += ticket["problem"] != null ? "" : "\n";
 
-          supportText += "created on ";
+          supportText += " created on ";
           supportText += Utils.formatDateString(ticket["created"]);
           supportText +=
               ", is registered with us. \n\nOur support team will get in touch with you shortly.\n\nThank You.";
@@ -128,6 +126,8 @@ class _SupportState extends State<Support> {
               return FadeIn(
                 GestureDetector(
                   onTap: () {
+                    print("changed");
+
                     setState(() {
                       selectedIssueTypeId = issueTypes[index]["id"];
                     });
@@ -201,44 +201,52 @@ class _SupportState extends State<Support> {
           SizedBox(height: 30),
           FadeIn(
               Center(
-                child: selectedIssueTypeId == null
-                    ? RaisedButton(
-                        textColor: Colors.white,
-                        disabledColor: selectedTheme.disabledBackground,
-                        child: Container(
-                            height: 50,
-                            width: 200,
-                            child: Center(
-                                child: Text(
-                              "Create Ticket",
-                              style: TextStyle(fontSize: 24.0),
-                            ))),
-                        onPressed: null,
-                        shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0),
-                        ),
-                      )
-                    : RaisedButton(
-                        textColor: Colors.white,
-                        color: selectedTheme.primaryGradientColors[1],
-                        child: Container(
-                            height: 50,
-                            width: 200,
-                            child: Center(
-                                child: Text(
-                              "Create Ticket",
-                              style: TextStyle(fontSize: 24.0),
-                            ))),
-                        onPressed: createNewTicket,
-                        shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0),
-                        ),
-                      ),
+                child: selectedIssueTypeId == null || isProcessing == true
+                    ? disabledButton()
+                    : enabledButton(),
               ),
               (issueTypes.length + 1.0),
               direction: Direction.y,
               distance: 10.0)
         ],
+      ),
+    );
+  }
+
+  Widget disabledButton() {
+    return RaisedButton(
+      textColor: Colors.white,
+      disabledColor: selectedTheme.disabledBackground,
+      child: Container(
+          height: 50,
+          width: 200,
+          child: Center(
+              child: Text(
+            "Create Ticket",
+            style: TextStyle(fontSize: 24.0),
+          ))),
+      onPressed: null,
+      shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(30.0),
+      ),
+    );
+  }
+
+  Widget enabledButton() {
+    return RaisedButton(
+      textColor: Colors.white,
+      color: selectedTheme.primaryGradientColors[1],
+      child: Container(
+          height: 50,
+          width: 200,
+          child: Center(
+              child: Text(
+            "Create Ticket",
+            style: TextStyle(fontSize: 24.0),
+          ))),
+      onPressed: createNewTicket,
+      shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(30.0),
       ),
     );
   }
@@ -258,7 +266,7 @@ class _SupportState extends State<Support> {
               Center(
                 child: Text(
                   "No active support requests found",
-                  style: TextStyle(fontSize: 24, color: selectedTheme.primaryText),
+                  style: TextStyle(fontSize: 20, color: selectedTheme.primaryText),
                 ),
               ),
               Align(
@@ -283,7 +291,7 @@ class _SupportState extends State<Support> {
               child: Center(
                   child: Text(
                 "New Support Request",
-                style: TextStyle(fontSize: 24.0),
+                style: TextStyle(fontSize: 18.0),
               ))),
           onPressed: () {
             setState(() {
@@ -299,6 +307,9 @@ class _SupportState extends State<Support> {
   }
 
   createNewTicket() {
+    setState(() {
+      isProcessing = true;
+    });
     Customer.createTicket(selectedIssueTypeId,
             issueTypes.firstWhere((element) => element["id"] == selectedIssueTypeId)["messages"])
         .then((int ticketCreationStatus) {
@@ -344,4 +355,3 @@ class _SupportState extends State<Support> {
     );
   }
 }
-

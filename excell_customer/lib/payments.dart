@@ -148,7 +148,7 @@ class _PaymentState extends State<Payment> {
                 child: Center(
                     child: Text(
                   "Pay Now",
-                  style: TextStyle(fontSize: 24.0),
+                  style: TextStyle(fontSize: 18.0),
                 ))),
             onPressed: null,
             shape: new RoundedRectangleBorder(

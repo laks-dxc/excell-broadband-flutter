@@ -19,9 +19,9 @@ class LoginModal extends StatefulWidget {
 class _LoginModalState extends State<LoginModal> {
   Size screenSize;
   FooterState currentFooterState = FooterState.Default;
-  TextEditingController customerIdController = TextEditingController(text: '46888'); //text: '46888'
+  TextEditingController customerIdController = TextEditingController();//text: '46888'); //text: '46888'
   TextEditingController mobileNoController =
-      TextEditingController(text: '830903863'); //text: '830903863'
+      TextEditingController();//text: '830903863'); //text: '830903863'
   TextEditingController mobileOTPController = TextEditingController();
 
   bool mobileNoTextFieldEnabled = true;

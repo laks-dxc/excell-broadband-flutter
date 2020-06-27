@@ -164,7 +164,7 @@ class _ProfileState extends State<Profile> {
                 child: Center(
                     child: Text(
                   "Log Out",
-                  style: TextStyle(fontSize: 24.0),
+                  style: TextStyle(fontSize: 18.0),
                 ))),
             onPressed: () {
               StorageUtils.clearStorage().then((bool cleared) {
