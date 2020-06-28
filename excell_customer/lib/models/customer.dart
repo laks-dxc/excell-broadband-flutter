@@ -189,4 +189,43 @@ class Customer {
 
     return bbPlanDetails["result"]["plans"];
   }
+
+  static Future<List<dynamic>> getLocations() async {
+    dynamic getLocationsResponse;
+
+    getLocationsResponse = await NetUtils.apiPostWithoutToken({
+      "name": "getLocations",
+      "param": {"locationId": "all"}
+    });
+
+    return getLocationsResponse["result"]["locations"];
+  }
+
+  static Future<int> createEnquiry(
+      {String name,
+      String mobile,
+      String email,
+      String address,
+      int areaId,
+      String city,
+      int subAreaId,
+      String purpose = ""}) async {
+    dynamic enquiryCreateResponse;
+
+    enquiryCreateResponse = await NetUtils.apiPostWithoutToken({
+      "name": "addEnquiry",
+      "param": {
+        "name": name,
+        "mobile": mobile,
+        "email": email,
+        "address": address,
+        "city": city,
+        "area_id": areaId,
+        "sub_area_id": subAreaId,
+        "purpose": purpose
+      }
+    });
+
+    return int.parse(enquiryCreateResponse["status"].toString());
+  }
 }

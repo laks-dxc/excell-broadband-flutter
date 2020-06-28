@@ -5,7 +5,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'animation/fadeIn.dart';
 import 'helpers/Utils.dart';
 import 'helpers/appStyles.dart';
-import 'helpers/netUtils.dart';
+import 'models/cities.dart';
 import 'models/AppTheme.dart';
 import 'models/customer.dart';
 import 'models/enum.dart';
@@ -16,8 +16,8 @@ class PackageList extends StatefulWidget {
 }
 
 class _PackageListState extends State<PackageList> {
-  final TextEditingController _typeAheadController = TextEditingController();
   static AppThemeData selectedTheme = AppStyles.getTheme(AppTheme.Light);
+  final TextEditingController _typeAheadController = TextEditingController();
 
   List<dynamic> excellLocationsList;
   CitiesService excellCitites;
@@ -26,8 +26,7 @@ class _PackageListState extends State<PackageList> {
 
   @override
   void initState() {
-    print("are we here yet??");
-    getLocations().then((value) {
+    Customer.getLocations().then((value) {
       setState(() {
         excellLocationsList = value;
         excellCitites = CitiesService(value);
@@ -43,9 +42,9 @@ class _PackageListState extends State<PackageList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: Text("Excell Packages"), backgroundColor: Color(0xff112c75) //(0xff112c75),
-              ),
+      appBar: AppBar(
+          title: Text("Excell Packages"), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
+          ),
       body: ListView(
         children: [
           Padding(
@@ -207,39 +206,6 @@ class _PackageListState extends State<PackageList> {
       ],
     );
   }
-
-  Future<List<dynamic>> getLocations() async {
-    dynamic getLocationsResponse;
-
-    print("getting executed");
-
-    getLocationsResponse = await NetUtils.apiPostWithoutToken({
-      "name": "getLocations",
-      "param": {"locationId": "all"}
-    });
-
-    return getLocationsResponse["result"]["locations"];
-  }
 }
 
-class CitiesService {
-  List<dynamic> excellLocationsList;
 
-  static List<String> citiesList = [];
-
-  CitiesService(this.excellLocationsList) {
-    excellLocationsList.forEach((element) {
-      citiesList.add(element["location"]);
-    });
-  }
-
-  List<String> getSuggestions(String query) {
-    List<String> matches = List();
-    matches.addAll(citiesList);
-
-    matches
-        .retainWhere((s) => s.toLowerCase().startsWith(query.toLowerCase()) && matches.contains(s));
-
-    return matches;
-  }
-}

@@ -14,6 +14,7 @@ class AppStyles {
       primaryText: _fromHex('#0e347f'),
       textColor: _fromHex('#0e347f'),
       appBarColor: _fromHex('#0e347f'),
+      scaffoldBgColor:Color(0xffe6e7e9),
       disabledText: _fromHex('#434343'));
 
   static AppThemeData darkMode = AppThemeData(

@@ -30,8 +30,6 @@ class NetUtils {
 
       apiResponse = await convert.jsonDecode(transformedValue);
 
-    
-
       status = apiResponse['resonse']['status'];
       response = {"status": status, "result": apiResponse['resonse']['result']};
     } catch (ex) {
@@ -59,8 +57,15 @@ class NetUtils {
       HttpClientResponse httpCientResponse = await request.close();
       String transformedValue = await httpCientResponse.transform(convert.utf8.decoder).join();
       apiResponse = await convert.jsonDecode(transformedValue);
-      status = apiResponse['resonse']['status'];
-      response = {"status": status, "result": apiResponse['resonse']['result']};
+    
+
+      if (apiResponse['resonse'] == null) {
+        status = apiResponse['error']['status'];
+        response = {"status": status, "result": null};
+      } else {
+        status = apiResponse['resonse']['status'];
+        response = {"status": status, "result": apiResponse['resonse']['result']};
+      }
     } catch (ex) {
       status = -1;
       exception = ex.toString();

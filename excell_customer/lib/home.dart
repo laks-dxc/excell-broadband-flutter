@@ -1,3 +1,4 @@
+import 'package:ExcellCustomer/enquiry.dart';
 import 'package:ExcellCustomer/packageList.dart';
 import 'package:ExcellCustomer/widgets/quickPayModel.dart';
 import 'package:flutter/material.dart';
@@ -136,7 +137,15 @@ class _HomeState extends State<Home> {
                                 1.0,
                                 direction: Direction.x,
                                 distance: -30),
-                            FadeIn(_homeTile(Image.asset('assets/44.png'), "New Connection"), 1.0,
+                            FadeIn(GestureDetector(
+                              onTap: (){
+                                    Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) => Enquiry()));
+                              },
+                              
+                              child: _homeTile(Image.asset('assets/44.png'), "New Connection")), 1.0,
                                 direction: Direction.x, distance: 30),
                           ],
                         )

@@ -11,7 +11,6 @@ enum FooterState {
   ResendOTP,
   DueExist,
   DueNotExist,
-
 }
 
 enum Direction { x, y }
@@ -33,3 +32,5 @@ enum StorageKey {
 enum TicketsScreenMode { CreateTicket, ViewTickets, Loading }
 
 enum MyPackagesScreenMode { List, Detail }
+
+enum EnquiryScreenMode { WelcomeScreen, BasicDetail, AddressDetail, ThankYou }

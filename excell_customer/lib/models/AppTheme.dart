@@ -11,6 +11,7 @@ class AppThemeData {
   final Gradient radialGradient;
   final Color textColor;
   final Color appBarColor;
+  final Color scaffoldBgColor;
 
   AppThemeData(
       {this.primaryGradientColors,
@@ -22,6 +23,7 @@ class AppThemeData {
       this.disabledText,
       this.radialGradient,
       this.textColor,
+      this.scaffoldBgColor,
       this.appBarColor});
 
   AppThemeData copyWith(
@@ -34,6 +36,7 @@ class AppThemeData {
       Color disabledText,
       List<Color> radialGradient,
       Color textColor,
+      Color scaffoldBgColor,
       Color appBarColor}) {
     return AppThemeData(
         primaryGradientColors: primaryGradientColors ?? this.primaryGradientColors,
@@ -45,6 +48,7 @@ class AppThemeData {
         disabledText: disabledText ?? this.disabledText,
         radialGradient: radialGradient ?? this.radialGradient,
         textColor: textColor ?? this.textColor,
+        scaffoldBgColor: scaffoldBgColor ?? this.scaffoldBgColor,
         appBarColor: appBarColor ?? this.appBarColor);
   }
 
