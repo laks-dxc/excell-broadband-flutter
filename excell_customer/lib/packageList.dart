@@ -42,6 +42,8 @@ class _PackageListState extends State<PackageList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: selectedTheme.scaffoldBgColor,
+
       appBar: AppBar(
           title: Text("Excell Packages"), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
           ),

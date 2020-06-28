@@ -17,6 +17,7 @@ class NetUtils {
     String exception;
     HttpClientRequest request = await httpClient.postUrl(Uri.parse(_url));
     request.headers.set('content-type', 'application/json');
+    request.headers.set('Source', 'Android');
 
     String _token = await StorageUtils.hasKey(StorageKey.UserToken)
         ? await StorageUtils.getStorageItem(StorageKey.UserToken)
@@ -24,6 +25,7 @@ class NetUtils {
 
     try {
       request.headers.set('Authorization', 'Excell ' + _token);
+
       request.add(convert.utf8.encode(convert.jsonEncode(body)));
       HttpClientResponse httpCientResponse = await request.close();
       String transformedValue = await httpCientResponse.transform(convert.utf8.decoder).join();
@@ -53,11 +55,11 @@ class NetUtils {
     try {
       HttpClientRequest request = await httpClient.postUrl(Uri.parse(_url));
       request.headers.set('content-type', 'application/json');
+      request.headers.set('Source', 'Android');
       request.add(convert.utf8.encode(convert.jsonEncode(body)));
       HttpClientResponse httpCientResponse = await request.close();
       String transformedValue = await httpCientResponse.transform(convert.utf8.decoder).join();
       apiResponse = await convert.jsonDecode(transformedValue);
-    
 
       if (apiResponse['resonse'] == null) {
         status = apiResponse['error']['status'];

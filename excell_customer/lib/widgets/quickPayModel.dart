@@ -7,6 +7,8 @@ import 'package:ExcellCustomer/models/enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+import 'makePayment.dart';
+
 class QuickPayModal extends StatefulWidget {
   @override
   __QuickPayModalState createState() => __QuickPayModalState();
@@ -81,6 +83,7 @@ class __QuickPayModalState extends State<QuickPayModal> {
   int otpDuration = 60;
   bool showAnimation = true;
   String amountDue = "--";
+  String pgMsg;
   double doubleAmoutDue;
 
   String custId, mobileNo;
@@ -152,6 +155,7 @@ class __QuickPayModalState extends State<QuickPayModal> {
                         activeContainerBody = "QuickPay";
                         amountDue = Utils.showAsMoney(paymentDueResponse["amount"]);
                         doubleAmoutDue = double.parse(paymentDueResponse["amount"]);
+                        pgMsg = paymentDueResponse["msg"];
                       });
                       doubleAmoutDue > 0
                           ? _setFooterState(FooterState.DueExist)
@@ -169,6 +173,8 @@ class __QuickPayModalState extends State<QuickPayModal> {
               }
             case FooterState.DueExist:
               {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) => MakePayment(pgMsg)));
                 break;
               }
 

@@ -73,7 +73,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
                         width: 0,
                       ),
                 connectionDetailItem["topup"] != null
-                    ? tileItem("Top Ups", connectionDetailItem["pkgdetail"])
+                    ? tileItem("Top Up", Utils.bytesToSize(connectionDetailItem["topup"]))
                     : SizedBox(
                         width: 0,
                       ),
@@ -109,7 +109,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
                             width: displaySize.width * 0.25,
                             child: Center(
                                 child: Text(
-                              "Analysis",
+                              "Utilization Analysis",
                               style: TextStyle(fontSize: 18.0),
                             ))),
                         onPressed: () {

@@ -73,6 +73,7 @@ ScreenHiddenDrawer(
       backgroundColorMenu: Colors.white,
       typeOpen: TypeOpen.FROM_LEFT,
       enableScaleAnimation: true,
+      backgroundColorContent: selectedTheme.scaffoldBgColor,
       //    enableCornerAnimin: true,
       slidePercent: 90.0,
       verticalScalePercent: 80.0,

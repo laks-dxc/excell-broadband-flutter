@@ -1,6 +1,7 @@
 import 'package:ExcellCustomer/models/subAreas.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import 'animation/fadeIn.dart';
@@ -9,6 +10,8 @@ import 'models/cities.dart';
 import 'models/AppTheme.dart';
 import 'models/customer.dart';
 import 'models/enum.dart';
+
+// import 'models/extensions.dart';
 
 class Enquiry extends StatefulWidget {
   @override
@@ -351,6 +354,40 @@ class _EnquiryState extends State<Enquiry> {
             height: 10,
           ),
           Text(
+            "Enquiry Purpose:",//.capitalize(),
+            style: TextStyle(fontSize: 22),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          TextFormField(
+              keyboardType: TextInputType.text,
+              controller: _purposeController,
+              inputFormatters: [],
+              style: TextStyle(fontSize: 22),
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(
+                    borderSide: BorderSide(width: 0.0),
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                filled: true,
+                fillColor: selectedTheme.enabledBackground.withOpacity(0.6),
+                floatingLabelBehavior: FloatingLabelBehavior.auto,
+                labelText: "Purpose",
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: Icon(
+                    Icons.speaker_notes,
+                    color: selectedTheme.primaryColor.withOpacity(0.2),
+                    size: 30,
+                  ),
+                ),
+                labelStyle:
+                    TextStyle(fontSize: 22, letterSpacing: 1.0, color: selectedTheme.primaryColor),
+              )),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
             "Contact Info:",
             style: TextStyle(fontSize: 22),
           ),
@@ -361,7 +398,7 @@ class _EnquiryState extends State<Enquiry> {
               keyboardType: TextInputType.text,
               controller: _nameController,
               inputFormatters: [],
-              style: TextStyle(fontSize: 26),
+              style: TextStyle(fontSize: 22),
               decoration: InputDecoration(
                 border: UnderlineInputBorder(
                     borderSide: BorderSide(width: 0.0),
@@ -385,7 +422,7 @@ class _EnquiryState extends State<Enquiry> {
             height: 15,
           ),
           TextFormField(
-              style: TextStyle(fontSize: 26),
+              style: TextStyle(fontSize: 22),
               keyboardType: TextInputType.number,
               controller: _mobileController,
               maxLength: 10,
@@ -405,6 +442,7 @@ class _EnquiryState extends State<Enquiry> {
                 fillColor: selectedTheme.enabledBackground.withOpacity(0.6),
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
                 labelText: "Mobile No.",
+                counterText: "",
                 labelStyle:
                     TextStyle(fontSize: 22, letterSpacing: 1.0, color: selectedTheme.primaryColor),
               )),
@@ -412,7 +450,7 @@ class _EnquiryState extends State<Enquiry> {
             height: 15,
           ),
           TextFormField(
-              style: TextStyle(fontSize: 26),
+              style: TextStyle(fontSize: 22),
               keyboardType: TextInputType.emailAddress,
               controller: _emailController,
               decoration: InputDecoration(
@@ -447,19 +485,24 @@ class _EnquiryState extends State<Enquiry> {
                 String _name = _nameController.text.trim();
                 String _email = _emailController.text.trim();
                 String _mobile = _mobileController.text.trim();
+                String _purpose = _purposeController.text.trim();
+
+                if (_purpose == "") {
+                  showErrorMessage("Please enter the purpose of your enquiry");
+                  return;
+                }
 
                 if (_name == "") {
                   showErrorMessage("Please enter your name");
                   return;
                 }
 
-                if (emailValid(_email) == false) {
-                  showErrorMessage("Please a valid email address");
-                  return;
-                }
-
                 if (mobileValid(_mobile) == false) {
                   showErrorMessage("Please a valid mobile number");
+                  return;
+                }
+                if (emailValid(_email) == false) {
+                  showErrorMessage("Please a valid email address");
                   return;
                 }
 
@@ -472,37 +515,6 @@ class _EnquiryState extends State<Enquiry> {
         ],
       ),
     );
-  }
-
-  showErrorMessage(text) {
-    BotToast.showAttachedWidget(
-        allowClick: true,
-        enableSafeArea: true,
-        attachedBuilder: (_) => Align(
-              alignment: Alignment(0.0, 0.9),
-              child: Container(
-                width: displaySize.width,
-                decoration: BoxDecoration(
-                  color: Colors.red[100],
-                  border: Border(
-                    top: BorderSide(width: 5.0, color: Colors.red[500]),
-                    bottom: BorderSide(width: 1.0, color: Colors.red[500]),
-                    left: BorderSide(width: 1.0, color: Colors.red[500]),
-                    right: BorderSide(width: 1.0, color: Colors.red[500]),
-                  ),
-                ),
-                margin: EdgeInsets.all(12.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    text,
-                    style: TextStyle(fontSize: 15, color: selectedTheme.primaryColor),
-                  ),
-                ),
-              ),
-            ),
-        target: Offset(520, 520),
-        duration: Duration(seconds: 3));
   }
 
   welcomeText() {
@@ -570,6 +582,47 @@ class _EnquiryState extends State<Enquiry> {
           borderRadius: BorderRadius.circular(25.0),
         ),
       ),
+    );
+  }
+
+  showErrorMessage(text) {
+    BotToast.showAttachedWidget(
+        allowClick: true,
+        enableSafeArea: true,
+        attachedBuilder: (_) => Align(
+              alignment: Alignment(0.0, 0.9),
+              child: Container(
+                width: displaySize.width,
+                decoration: BoxDecoration(
+                  color: Colors.red[100],
+                  border: Border(
+                    top: BorderSide(width: 5.0, color: Colors.red[500]),
+                    bottom: BorderSide(width: 1.0, color: Colors.red[500]),
+                    left: BorderSide(width: 1.0, color: Colors.red[500]),
+                    right: BorderSide(width: 1.0, color: Colors.red[500]),
+                  ),
+                ),
+                margin: EdgeInsets.all(12.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    text,
+                    style: TextStyle(fontSize: 15, color: selectedTheme.primaryColor),
+                  ),
+                ),
+              ),
+            ),
+        target: Offset(520, 520),
+        duration: Duration(seconds: 3));
+  }
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text?.toUpperCase(),
+      selection: newValue.selection,
     );
   }
 }

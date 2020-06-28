@@ -16,6 +16,12 @@ class CitiesService {
     matches
         .retainWhere((s) => s.toLowerCase().startsWith(query.toLowerCase()) && matches.contains(s));
 
-    return matches;
+    List<String> returnMatches = [];
+
+    matches.forEach((element) {
+      if (!returnMatches.contains(element)) returnMatches.add(element);
+    });
+
+    return returnMatches;
   }
 }

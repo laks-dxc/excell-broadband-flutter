@@ -78,6 +78,7 @@ class _MyPackagesState extends State<MyPackages> {
                           context,
                           MaterialPageRoute(
                             builder: (BuildContext context) => Scaffold(
+                              backgroundColor: selectedTheme.scaffoldBgColor,
                               appBar: AppBar(
                                   title: Text(connections[index]["pkgname"]),
                                   backgroundColor: selectedTheme.appBarColor //(0xff112c75),
@@ -120,14 +121,11 @@ class _MyPackagesState extends State<MyPackages> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(Utils.clipStringTo(connectionListItem["pkgname"], 18) ,
-
-
+                      Text(Utils.clipStringTo(connectionListItem["pkgname"], 18),
                           overflow: TextOverflow.clip,
                           style: TextStyle(
                               color: selectedTheme.primaryColor,
                               fontSize: 21,
-                              
                               fontWeight: FontWeight.w600)),
                       Text(connectionListItem["ip_addr"],
                           style: TextStyle(

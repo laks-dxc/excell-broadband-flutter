@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'animation/fadeIn.dart';
 
 import 'drawer.dart';
+import 'helpers/appStyles.dart';
+import 'models/AppTheme.dart';
 import 'models/customer.dart';
 import 'models/enum.dart';
 import 'widgets/loginModal.dart';
@@ -17,43 +19,20 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Size displaySize;
+  double textScaleFactor;
+  static AppThemeData selectedTheme = AppStyles.getTheme(AppTheme.Light);
 
   @override
   Widget build(BuildContext context) {
     displaySize = MediaQuery.of(context).size;
+    textScaleFactor = (1 / MediaQuery.of(context).textScaleFactor);
 
     return Scaffold(
+      backgroundColor: selectedTheme.scaffoldBgColor,
       body: Stack(
         alignment: Alignment.topCenter,
         children: <Widget>[
-          Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(205),
-                      bottomRight: Radius.circular(75),
-                    ),
-                    gradient: RadialGradient(colors: [
-                      Color(0xff0e347f),
-                      Colors.white38,
-                      Colors.white70,
-                      Color(0xff20347e)
-                    ], stops: [
-                      0,
-                      0.55,
-                      0.75,
-                      1
-                    ], radius: 20.0),
-                    color: Color(0xff0e347f)),
-                width: displaySize.width,
-                height: displaySize.height * 0.45,
-              )),
-          Opacity(
-              opacity: 0.1,
-              child: Image.asset(
-                "assets/login_bg.png",
-              )),
+          Align(alignment: Alignment.topCenter, child: Image.asset('assets/blue_bg.png')),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -70,15 +49,16 @@ class _HomeState extends State<Home> {
                     direction: Direction.y,
                     distance: -10,
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 15),
                   Expanded(
                     child: ListView(
                       children: <Widget>[
                         Center(
                           child: FadeIn(
                             Text(
-                              "Welcome to Excell Media",
-                              style: TextStyle(fontSize: 30, color: Colors.white70),
+                              "Welcome to Excell Media ", // + (1/textScaleFactor).toString(),
+                              style:
+                                  TextStyle(fontSize: 25 * textScaleFactor, color: Colors.white70),
                             ),
                             0.8,
                             translate: false,
@@ -86,7 +66,7 @@ class _HomeState extends State<Home> {
                         ),
                         SizedBox(height: 100),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             FadeIn(
                                 GestureDetector(
@@ -123,7 +103,7 @@ class _HomeState extends State<Home> {
                         ),
                         SizedBox(height: 50),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             FadeIn(
                                 GestureDetector(
@@ -137,16 +117,18 @@ class _HomeState extends State<Home> {
                                 1.0,
                                 direction: Direction.x,
                                 distance: -30),
-                            FadeIn(GestureDetector(
-                              onTap: (){
-                                    Navigator.push(
+                            FadeIn(
+                                GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (BuildContext context) => Enquiry()));
-                              },
-                              
-                              child: _homeTile(Image.asset('assets/44.png'), "New Connection")), 1.0,
-                                direction: Direction.x, distance: 30),
+                                    },
+                                    child: _homeTile(Image.asset('assets/44.png'), "Enquiry")),
+                                1.0,
+                                direction: Direction.x,
+                                distance: 30),
                           ],
                         )
                       ],
@@ -165,16 +147,17 @@ class _HomeState extends State<Home> {
     Widget image,
     String title,
   ) {
+    double imageDimension = displaySize.width * 0.25;
     return Column(
       children: <Widget>[
         Container(
-          width: 120.0,
-          height: 120.0,
+          width: imageDimension, // 120.0,
+          height: imageDimension,
           child: image,
         ),
         Text(
           title,
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 20 * textScaleFactor),
         )
       ],
     );

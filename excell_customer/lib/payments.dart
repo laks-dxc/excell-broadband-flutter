@@ -1,3 +1,4 @@
+import 'package:ExcellCustomer/widgets/makePayment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -102,9 +103,9 @@ class _PaymentState extends State<Payment> {
         SizedBox(
           height: 30,
         ),
-
         Padding(
-            padding: EdgeInsets.only(left:100,right:100), child: paymentButton(double.parse(amountDue) > 0)),
+            padding: EdgeInsets.only(left: 100, right: 100),
+            child: paymentButton(double.parse(amountDue) > 0)),
         SizedBox(
           height: 10,
         ),
@@ -150,7 +151,10 @@ class _PaymentState extends State<Payment> {
                   "Pay Now",
                   style: TextStyle(fontSize: 18.0),
                 ))),
-            onPressed: null,
+            onPressed: () {
+              print("printint");
+     
+            },
             shape: new RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(30.0),
             ),
@@ -166,7 +170,10 @@ class _PaymentState extends State<Payment> {
                   "Pay Now",
                   style: TextStyle(fontSize: 24.0),
                 ))),
-            onPressed: () {},
+            onPressed: () {
+                       Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) => MakePayment(pgMsg)));
+            },
             shape: new RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(30.0),
             ),

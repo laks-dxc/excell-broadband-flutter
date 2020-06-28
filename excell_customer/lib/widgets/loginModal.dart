@@ -19,9 +19,10 @@ class LoginModal extends StatefulWidget {
 class _LoginModalState extends State<LoginModal> {
   Size screenSize;
   FooterState currentFooterState = FooterState.Default;
-  TextEditingController customerIdController = TextEditingController();//text: '46888'); //text: '46888'
+  TextEditingController customerIdController =
+      TextEditingController(); //text: '46888'); //text: '46888'
   TextEditingController mobileNoController =
-      TextEditingController();//text: '830903863'); //text: '830903863'
+      TextEditingController(); //text: '830903863'); //text: '830903863'
   TextEditingController mobileOTPController = TextEditingController();
 
   bool mobileNoTextFieldEnabled = true;
@@ -37,6 +38,7 @@ class _LoginModalState extends State<LoginModal> {
     FooterState.Default: {
       "child": Text(
         "Continue",
+        textScaleFactor: 1.0,
         style: TextStyle(
             color: selectedTheme.disabledText.withOpacity(0.5),
             fontSize: 20,
@@ -47,6 +49,7 @@ class _LoginModalState extends State<LoginModal> {
     FooterState.ValidCredentialsEntered: {
       "child": Text(
         "Continue",
+        textScaleFactor: 1.0,
         style: TextStyle(color: selectedTheme.textColor, fontSize: 20, fontWeight: FontWeight.w100),
       ),
       "color": selectedTheme.activeBackground,
@@ -61,6 +64,7 @@ class _LoginModalState extends State<LoginModal> {
     FooterState.ValidatedCredentialsResultWrong: {
       "child": Text(
         "Invalid Customer Id / Mobile No",
+        textScaleFactor: 1.0,
         style: TextStyle(color: Colors.red, fontSize: 20, fontWeight: FontWeight.w100),
       ),
       "color": selectedTheme.disabledBackground,
@@ -68,6 +72,7 @@ class _LoginModalState extends State<LoginModal> {
     FooterState.OTPEntryPending: {
       "child": Text(
         "Continue",
+        textScaleFactor: 1.0,
         style: TextStyle(
             color: selectedTheme.disabledText.withOpacity(0.5),
             fontSize: 20,
@@ -85,6 +90,7 @@ class _LoginModalState extends State<LoginModal> {
     FooterState.OTPEnteredResultWrong: {
       "child": Text(
         "Invalid OTP",
+        textScaleFactor: 1.0,
         style: TextStyle(color: Colors.red, fontSize: 20, fontWeight: FontWeight.w100),
       ),
       "color": selectedTheme.disabledBackground,
@@ -92,6 +98,7 @@ class _LoginModalState extends State<LoginModal> {
     FooterState.ResendOTP: {
       "child": Text(
         "Resend OTP",
+        textScaleFactor: 1.0,
         style: TextStyle(color: selectedTheme.textColor, fontSize: 20, fontWeight: FontWeight.w100),
       ),
       "color": selectedTheme.activeBackground,
@@ -111,6 +118,7 @@ class _LoginModalState extends State<LoginModal> {
   dynamic footerText;
 
   bool loginFormIsValid;
+  double textScaleFactor;
 
   final _loginFormKey = GlobalKey<FormState>();
 
@@ -123,6 +131,7 @@ class _LoginModalState extends State<LoginModal> {
   @override
   Widget build(BuildContext context) {
     screenSize = MediaQuery.of(context).size;
+    textScaleFactor = 1 / MediaQuery.of(context).textScaleFactor;
 
     final double dialogWidth = screenSize.width * 0.8;
     final double dialogHeight = screenSize.height * 0.35;
@@ -277,7 +286,8 @@ class _LoginModalState extends State<LoginModal> {
         alignment: Alignment.center,
         child: Text(
           "Login",
-          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
+          style: TextStyle(
+              color: Colors.white, fontSize: 20 * textScaleFactor, fontWeight: FontWeight.w400),
         ),
       ),
     );
@@ -287,7 +297,6 @@ class _LoginModalState extends State<LoginModal> {
     return Container(
       height: screenSize.height * 0.06,
       child: TextFormField(
-
         enabled: customerIdTextFieldEnabled,
         onChanged: (_customerId) {
           if (currentFooterState == FooterState.ValidatedCredentialsResultWrong)
@@ -308,8 +317,11 @@ class _LoginModalState extends State<LoginModal> {
           // _loginFormKey.
         },
         style: TextStyle(
-            height: 1.0, letterSpacing: 7.0, fontSize: 20.0, color: selectedTheme.primaryColor),
-        cursorColor: Colors.black38, 
+            height: 1.0,
+            letterSpacing: 7.0,
+            fontSize: 20.0 * textScaleFactor,
+            color: selectedTheme.primaryColor),
+        cursorColor: Colors.black38,
         decoration: InputDecoration(
           contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
           filled: true,
@@ -359,9 +371,12 @@ class _LoginModalState extends State<LoginModal> {
         cursorColor: Colors.black38,
         autocorrect: false,
         style: TextStyle(
-            height: 1.0, letterSpacing: 7.0, fontSize: 20.0, color: selectedTheme.primaryColor),
+            height: 1.0,
+            letterSpacing: 7.0,
+            fontSize: 20.0 * textScaleFactor,
+            color: selectedTheme.primaryColor),
         decoration: InputDecoration(
-           contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
+          contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
           filled: true,
           fillColor: selectedTheme.activeBackground.withOpacity(0.2),
           counterText: "",
@@ -436,7 +451,7 @@ class _LoginModalState extends State<LoginModal> {
                 children: <Widget>[
                   Text(
                     "OTP sent to " + mobileNoController.text,
-                    style: TextStyle(fontSize: 20, color: Colors.grey[500]),
+                    style: TextStyle(fontSize: 20 * textScaleFactor, color: Colors.grey[500]),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 22.0, right: 22.0, top: 22.0),
@@ -450,7 +465,8 @@ class _LoginModalState extends State<LoginModal> {
                       textInputType: TextInputType.numberWithOptions(decimal: false, signed: false),
                       animationType: AnimationType.fade,
                       backgroundColor: Colors.transparent,
-                      textStyle: TextStyle(fontSize: 35, color: selectedTheme.primaryText),
+                      textStyle: TextStyle(
+                          fontSize: 35 * textScaleFactor, color: selectedTheme.primaryText),
                       pinTheme: PinTheme(
                           shape: PinCodeFieldShape.box,
                           disabledColor: Colors.grey[300],
@@ -501,7 +517,7 @@ class _LoginModalState extends State<LoginModal> {
                             Text("Resend in ",
                                 style: TextStyle(
                                     color: Colors.grey[500],
-                                    fontSize: 20,
+                                    fontSize: 20 * textScaleFactor,
                                     fontWeight: FontWeight.w300)),
                             RotateAnimatedTextKit(
                               duration: Duration(milliseconds: 600),
@@ -524,7 +540,7 @@ class _LoginModalState extends State<LoginModal> {
                                 return index.toString().padLeft(2, '0');
                               }).reversed.toList(),
                               textStyle: TextStyle(
-                                  fontSize: 20.0,
+                                  fontSize: 20.0 * textScaleFactor,
                                   fontFamily: 'Lato',
                                   color: Colors.grey[500],
                                   fontWeight: FontWeight.w300),
