@@ -17,7 +17,7 @@ class LoginModal extends StatefulWidget {
 }
 
 class _LoginModalState extends State<LoginModal> {
-  Size screenSize;
+  Size displaySize;
   FooterState currentFooterState = FooterState.Default;
   TextEditingController customerIdController =
       TextEditingController(); //text: '46888'); //text: '46888'
@@ -38,7 +38,6 @@ class _LoginModalState extends State<LoginModal> {
     FooterState.Default: {
       "child": Text(
         "Continue",
-        textScaleFactor: 1.0,
         style: TextStyle(
             color: selectedTheme.disabledText.withOpacity(0.5),
             fontSize: 20,
@@ -49,7 +48,6 @@ class _LoginModalState extends State<LoginModal> {
     FooterState.ValidCredentialsEntered: {
       "child": Text(
         "Continue",
-        textScaleFactor: 1.0,
         style: TextStyle(color: selectedTheme.textColor, fontSize: 20, fontWeight: FontWeight.w100),
       ),
       "color": selectedTheme.activeBackground,
@@ -64,7 +62,6 @@ class _LoginModalState extends State<LoginModal> {
     FooterState.ValidatedCredentialsResultWrong: {
       "child": Text(
         "Invalid Customer Id / Mobile No",
-        textScaleFactor: 1.0,
         style: TextStyle(color: Colors.red, fontSize: 20, fontWeight: FontWeight.w100),
       ),
       "color": selectedTheme.disabledBackground,
@@ -72,7 +69,6 @@ class _LoginModalState extends State<LoginModal> {
     FooterState.OTPEntryPending: {
       "child": Text(
         "Continue",
-        textScaleFactor: 1.0,
         style: TextStyle(
             color: selectedTheme.disabledText.withOpacity(0.5),
             fontSize: 20,
@@ -90,7 +86,6 @@ class _LoginModalState extends State<LoginModal> {
     FooterState.OTPEnteredResultWrong: {
       "child": Text(
         "Invalid OTP",
-        textScaleFactor: 1.0,
         style: TextStyle(color: Colors.red, fontSize: 20, fontWeight: FontWeight.w100),
       ),
       "color": selectedTheme.disabledBackground,
@@ -98,7 +93,6 @@ class _LoginModalState extends State<LoginModal> {
     FooterState.ResendOTP: {
       "child": Text(
         "Resend OTP",
-        textScaleFactor: 1.0,
         style: TextStyle(color: selectedTheme.textColor, fontSize: 20, fontWeight: FontWeight.w100),
       ),
       "color": selectedTheme.activeBackground,
@@ -130,11 +124,13 @@ class _LoginModalState extends State<LoginModal> {
 
   @override
   Widget build(BuildContext context) {
-    screenSize = MediaQuery.of(context).size;
-    textScaleFactor = 1 / MediaQuery.of(context).textScaleFactor;
-
-    final double dialogWidth = screenSize.width * 0.8;
-    final double dialogHeight = screenSize.height * 0.35;
+    displaySize = MediaQuery.of(context).size;
+    // textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0? 1.0:0.85/MediaQuery.of(context).textScaleFactor;
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0
+        ? 1.0
+        : 0.85 / MediaQuery.of(context).textScaleFactor;
+    final double dialogWidth = displaySize.width * 0.8;
+    final double dialogHeight = displaySize.height * 0.35;
 
     Dialog loginDialog = Dialog(
       shape: RoundedRectangleBorder(
@@ -249,25 +245,27 @@ class _LoginModalState extends State<LoginModal> {
     );
   }
 
-  Align _titleCloseButton() {
-    return Align(
-      alignment: Alignment(0.95, -0.93),
-      child: InkWell(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(
-            Icons.close,
-            color: Colors.black,
-          ),
-        ),
-      ),
-    );
+  Container _titleCloseButton() {
+    return Container();
+    // return Align(
+    //   alignment: Alignment(0.95, -0.93),
+    //   child: InkWell(
+    //     onTap: () {
+    //       Navigator.pop(context);
+    //     },
+    //     child: Container(
+    //       decoration: BoxDecoration(
+    //         color: Colors.grey[100],
+    //         borderRadius: BorderRadius.circular(12),
+    //       ),
+    //       child: Icon(
+    //         Icons.close,
+    //         color: Colors.black,
+    //         size: displaySize.height*0.025,
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   Container _modalHeader() {
@@ -295,7 +293,7 @@ class _LoginModalState extends State<LoginModal> {
 
   Container _customerIdTextField() {
     return Container(
-      height: screenSize.height * 0.06,
+      height: displaySize.height * 0.06,
       child: TextFormField(
         enabled: customerIdTextFieldEnabled,
         onChanged: (_customerId) {
@@ -350,7 +348,7 @@ class _LoginModalState extends State<LoginModal> {
 
   Container _mobileNoTextField() {
     return Container(
-      height: screenSize.height * 0.06,
+      height: displaySize.height * 0.06,
       child: TextFormField(
         onChanged: (_mobileNo) {
           if (currentFooterState == FooterState.ValidatedCredentialsResultWrong)
@@ -406,8 +404,8 @@ class _LoginModalState extends State<LoginModal> {
   }
 
   Widget _containerBody(String _activeContainerName) {
-    final double dialogWidth = screenSize.width * 0.8;
-    final double dialogHeight = screenSize.height * 0.50;
+    final double dialogWidth = displaySize.width * 0.8;
+    final double dialogHeight = displaySize.height * 0.50;
     Widget container;
 
     container = _activeContainerName == 'login'
@@ -471,8 +469,8 @@ class _LoginModalState extends State<LoginModal> {
                           shape: PinCodeFieldShape.box,
                           disabledColor: Colors.grey[300],
                           borderRadius: BorderRadius.circular(20),
-                          fieldHeight: 60,
-                          fieldWidth: 60,
+                          fieldHeight: displaySize.height * 0.07,
+                          fieldWidth: displaySize.width * 0.15,
                           borderWidth: 1.5,
                           selectedColor: selectedTheme.activeBackground.withOpacity(0.3),
                           selectedFillColor: selectedTheme.activeBackground,

@@ -53,7 +53,7 @@ class Utils {
     return output;
   }
 
-  static String showAsMoney(String money, {precision:2}) {
+  static String showAsMoney(String money, {precision: 2}) {
     if (money == null)
       return "Rs. 0";
     else {
@@ -88,10 +88,22 @@ class Utils {
     return dueInDaysText;
   }
 
-  static String clipStringTo(String actualString, int maxSize) {
+  static String clipStringTo(String actualString, int maxSize, {overflowWith: ". "}) {
     if (actualString.length >= maxSize)
-      return actualString.substring(0, maxSize - 3) + ". . .";
+      return actualString.substring(0, maxSize - 3) + overflowWith + overflowWith + overflowWith;
     else
       return actualString;
+  }
+
+  static double getTextScaleFactor(double currentTextScaleFactor) {
+    double textScaleFactor;
+
+    if (currentTextScaleFactor < 0) {
+      //ignore: unused_local_variable
+      double difference = 1.0 - currentTextScaleFactor;
+
+    }
+
+    return textScaleFactor;
   }
 }

@@ -126,7 +126,6 @@ class _SupportState extends State<Support> {
               return FadeIn(
                 GestureDetector(
                   onTap: () {
-                    print("changed");
 
                     setState(() {
                       selectedIssueTypeId = issueTypes[index]["id"];

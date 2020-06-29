@@ -27,6 +27,7 @@ class _MakePaymentState extends State<MakePayment> {
 
   @override
   void initState() {
+     //ignore: missing_return
     SystemChannels.lifecycle.setMessageHandler((msg) {
       // debugPrint('SystemChannels> $msg');
       if (msg == AppLifecycleState.resumed.toString()) {

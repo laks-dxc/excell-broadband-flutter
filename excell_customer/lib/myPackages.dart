@@ -41,9 +41,11 @@ class _MyPackagesState extends State<MyPackages> {
     super.initState();
   }
 
+  double textScaleFactor;
   @override
   Widget build(BuildContext context) {
     displaySize = MediaQuery.of(context).size;
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0? 1.0:0.85/MediaQuery.of(context).textScaleFactor;
 
     return connections != null ? showData() : showLoader();
   }
@@ -108,13 +110,13 @@ class _MyPackagesState extends State<MyPackages> {
   connectionListItemContainer(connectionListItem) {
     return Container(
       width: displaySize.width,
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.0 * textScaleFactor),
       child: Container(
           decoration: BoxDecoration(
               color: selectedTheme.activeBackground.withOpacity(0.5),
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0*textScaleFactor),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -125,17 +127,19 @@ class _MyPackagesState extends State<MyPackages> {
                           overflow: TextOverflow.clip,
                           style: TextStyle(
                               color: selectedTheme.primaryColor,
-                              fontSize: 21,
+                              fontSize: 21 * textScaleFactor,
                               fontWeight: FontWeight.w600)),
                       Text(connectionListItem["ip_addr"],
                           style: TextStyle(
-                              color: selectedTheme.primaryColor.withOpacity(0.8), fontSize: 20)),
+                              color: selectedTheme.primaryColor.withOpacity(0.8),
+                              fontSize: 20 * textScaleFactor)),
                     ],
                   ),
                   SizedBox(height: 20),
                   Text(connectionListItem["pkgdetail"],
                       style: TextStyle(
-                          color: selectedTheme.primaryColor.withOpacity(0.8), fontSize: 20))
+                          color: selectedTheme.primaryColor.withOpacity(0.8),
+                          fontSize: 20 * textScaleFactor))
                 ],
               ))),
     );

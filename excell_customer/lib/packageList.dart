@@ -38,12 +38,14 @@ class _PackageListState extends State<PackageList> {
   }
 
   // String _selectedCity;
-
+  double textScaleFactor;
   @override
   Widget build(BuildContext context) {
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0
+        ? 1.0
+        : 0.85 / MediaQuery.of(context).textScaleFactor;
     return Scaffold(
-        backgroundColor: selectedTheme.scaffoldBgColor,
-
+      backgroundColor: selectedTheme.scaffoldBgColor,
       appBar: AppBar(
           title: Text("Excell Packages"), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
           ),
@@ -55,7 +57,7 @@ class _PackageListState extends State<PackageList> {
                 ? TypeAheadFormField(
                     textFieldConfiguration: TextFieldConfiguration(
                       autofocus: true,
-                      style: TextStyle(fontSize: 22),
+                      style: TextStyle(fontSize: 22 * textScaleFactor),
                       controller: this._typeAheadController,
                       decoration: InputDecoration(
                         border: UnderlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
@@ -66,7 +68,7 @@ class _PackageListState extends State<PackageList> {
                         labelText: "Select City",
                         labelStyle: TextStyle(
                             height: 1.0,
-                            fontSize: 22,
+                            fontSize: 22 * textScaleFactor,
                             letterSpacing: 1.0,
                             color: Color(0xff112c75)),
                       ),
@@ -79,7 +81,7 @@ class _PackageListState extends State<PackageList> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           suggestion,
-                          style: TextStyle(fontSize: 20, color: Colors.grey[400]),
+                          style: TextStyle(fontSize: 20 * textScaleFactor, color: Colors.grey[400]),
                         ),
                       );
                     },
@@ -203,11 +205,9 @@ class _PackageListState extends State<PackageList> {
         Text(label),
         Text(
           value,
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16 * textScaleFactor),
         )
       ],
     );
   }
 }
-
-

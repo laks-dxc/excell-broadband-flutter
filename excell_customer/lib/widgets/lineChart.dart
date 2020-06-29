@@ -1,4 +1,5 @@
 import 'package:ExcellCustomer/animation/fadeIn.dart';
+import 'package:ExcellCustomer/helpers/Utils.dart';
 import 'package:ExcellCustomer/models/customer.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -260,6 +261,40 @@ Hari
       maxX: double.parse(_results.length.toString()),
       minY: minY,
       maxY: maxY,
+      lineTouchData: LineTouchData(
+        touchTooltipData: LineTouchTooltipData(
+          tooltipRoundedRadius: 8,
+          getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
+            var now = new DateTime.now();
+
+            String monthName = [
+              '',
+              'Jan',
+              'Feb',
+              'Mar',
+              'Apr',
+              'May',
+              'Jun',
+              'Jul',
+              'Aug',
+              'Sep',
+              'Oct',
+              'Nov',
+              'Dec'
+            ][now.month];
+            return lineBarsSpot.map((lineBarSpot) {
+              return LineTooltipItem(
+                monthName +
+                    '-' +
+                    (lineBarSpot.x.floor()).toString() +
+                    '\n' +
+                    Utils.mbToSize(lineBarSpot.y.toString()),
+                const TextStyle(color: Colors.black, fontWeight: FontWeight.normal),
+              );
+            }).toList();
+          },
+        ),
+      ),
       lineBarsData: [
         LineChartBarData(
           spots: List.generate(_results.length, (index) => _results[index]),
@@ -268,7 +303,7 @@ Hari
             const Color(0xff23b6e6),
             const Color(0xff02d39a),
           ],
-          barWidth: 2,
+          barWidth: 1.5,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,
@@ -276,6 +311,7 @@ Hari
           belowBarData: BarAreaData(
             show: true,
             // spotsLine: BarAreaSpotsLine(show:true),
+
             colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
           ),
         ),

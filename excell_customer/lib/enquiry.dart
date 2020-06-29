@@ -28,9 +28,8 @@ class _EnquiryState extends State<Enquiry> {
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _purposeController = TextEditingController();
 
-  double logoOpacity = 0.3;
+  double logoOpacity = 0.01;
 
   List<dynamic> excellLocationsList;
 
@@ -55,9 +54,13 @@ class _EnquiryState extends State<Enquiry> {
   }
 
   Size displaySize;
+  double textScaleFactor;
   @override
   Widget build(BuildContext context) {
     displaySize = MediaQuery.of(context).size;
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0
+        ? 1.0
+        : 0.85 / MediaQuery.of(context).textScaleFactor;
 
     return Scaffold(
         backgroundColor: selectedTheme.scaffoldBgColor,
@@ -75,13 +78,13 @@ class _EnquiryState extends State<Enquiry> {
           ),
           Positioned(
               child: Opacity(
-                  opacity: currentScreen == EnquiryScreenMode.ThankYou ? 1.0 : 0.3, // logoOpacity,
+                  opacity: currentScreen == EnquiryScreenMode.ThankYou ? 1.0 : 0.15, // logoOpacity,
                   child: Image.asset(
-                    'assets/logo_pink.png',
+                    'assets/logo_blue.png',
                     width: 200,
                     height: 200,
                   )),
-              top: displaySize.height * 0.05,
+              top: displaySize.height * 0.15,
               left: displaySize.width * 0.25),
           getCurrentScreen()
         ]));
@@ -116,11 +119,18 @@ class _EnquiryState extends State<Enquiry> {
         );
         break;
       case EnquiryScreenMode.ThankYou:
-        return FadeIn(
-          thankYouScreen(),
-          1.0,
-          distance: 20,
-          direction: Direction.y,
+        return Column(
+          children: <Widget>[
+            SizedBox(
+              height: 80,
+            ),
+            FadeIn(
+              thankYouScreen(),
+              1.0,
+              distance: 20,
+              direction: Direction.y,
+            ),
+          ],
         );
         break;
       default:
@@ -144,7 +154,8 @@ class _EnquiryState extends State<Enquiry> {
               Center(
                 child: Text(
                   "Your enquiry is registered. Thank you!!",
-                  style: TextStyle(fontSize: 20, color: selectedTheme.primaryText),
+                  style:
+                      TextStyle(fontSize: 20 * textScaleFactor, color: selectedTheme.primaryText),
                 ),
               ),
               Align(
@@ -189,7 +200,7 @@ class _EnquiryState extends State<Enquiry> {
         ),
         Text(
           "Address :",
-          style: TextStyle(fontSize: 22),
+          style: TextStyle(fontSize: 22 * textScaleFactor),
         ),
         SizedBox(
           height: 15,
@@ -198,7 +209,7 @@ class _EnquiryState extends State<Enquiry> {
             keyboardType: TextInputType.multiline,
             controller: _addressController,
             inputFormatters: [],
-            style: TextStyle(fontSize: 22),
+            style: TextStyle(fontSize: 22 * textScaleFactor),
             minLines: 5,
             maxLines: 10,
             decoration: InputDecoration(
@@ -214,11 +225,13 @@ class _EnquiryState extends State<Enquiry> {
                 child: Icon(
                   Icons.edit_location,
                   color: selectedTheme.primaryColor.withOpacity(0.2),
-                  size: 30,
+                  size: 30 * textScaleFactor,
                 ),
               ),
-              labelStyle:
-                  TextStyle(fontSize: 22, letterSpacing: 1.0, color: selectedTheme.primaryColor),
+              labelStyle: TextStyle(
+                  fontSize: 22 * textScaleFactor,
+                  letterSpacing: 1.0,
+                  color: selectedTheme.primaryColor),
             )),
         SizedBox(
           height: 15,
@@ -226,7 +239,7 @@ class _EnquiryState extends State<Enquiry> {
         TypeAheadFormField(
             textFieldConfiguration: TextFieldConfiguration(
               autofocus: false,
-              style: TextStyle(fontSize: 22),
+              style: TextStyle(fontSize: 22 * textScaleFactor),
               controller: this._cityController,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
@@ -236,7 +249,10 @@ class _EnquiryState extends State<Enquiry> {
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
                 labelText: "City",
                 labelStyle: TextStyle(
-                    height: 1.0, fontSize: 22, letterSpacing: 1.0, color: Color(0xff112c75)),
+                    height: 1.0,
+                    fontSize: 22 * textScaleFactor,
+                    letterSpacing: 1.0,
+                    color: Color(0xff112c75)),
               ),
             ),
             suggestionsCallback: (pattern) {
@@ -247,7 +263,7 @@ class _EnquiryState extends State<Enquiry> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   suggestion,
-                  style: TextStyle(fontSize: 20, color: Colors.grey[400]),
+                  style: TextStyle(fontSize: 20 * textScaleFactor, color: Colors.grey[400]),
                 ),
               );
             },
@@ -270,7 +286,7 @@ class _EnquiryState extends State<Enquiry> {
             ? TypeAheadFormField(
                 textFieldConfiguration: TextFieldConfiguration(
                   autofocus: false,
-                  style: TextStyle(fontSize: 22),
+                  style: TextStyle(fontSize: 22 * textScaleFactor),
                   controller: this._cityController,
                   decoration: InputDecoration(
                     border: UnderlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
@@ -280,7 +296,10 @@ class _EnquiryState extends State<Enquiry> {
                     floatingLabelBehavior: FloatingLabelBehavior.auto,
                     labelText: "Sub Area",
                     labelStyle: TextStyle(
-                        height: 1.0, fontSize: 22, letterSpacing: 1.0, color: Color(0xff112c75)),
+                        height: 1.0,
+                        fontSize: 22 * textScaleFactor,
+                        letterSpacing: 1.0,
+                        color: Color(0xff112c75)),
                   ),
                 ),
                 suggestionsCallback: (pattern) {
@@ -291,7 +310,7 @@ class _EnquiryState extends State<Enquiry> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       suggestion,
-                      style: TextStyle(fontSize: 20, color: Colors.grey[400]),
+                      style: TextStyle(fontSize: 20 * textScaleFactor, color: Colors.grey[400]),
                     ),
                   );
                 },
@@ -321,14 +340,15 @@ class _EnquiryState extends State<Enquiry> {
             }),
             raisedButton("Continue", () {
               Customer.createEnquiry(
-                name: _nameController.text.trim(),
-                mobile: _mobileController.text.trim(),
-                email: _emailController.text.trim(),
-                address: _addressController.text.trim(),
-                city: _cityController.text.trim(),
-                areaId: areaId,
-                subAreaId: subAreaId,
-              ).then((value) {
+                      name: _nameController.text.trim(),
+                      mobile: _mobileController.text.trim(),
+                      email: _emailController.text.trim(),
+                      address: _addressController.text.trim(),
+                      city: _cityController.text.trim(),
+                      areaId: areaId,
+                      subAreaId: subAreaId,
+                      purpose: selectedPurpose)
+                  .then((value) {
                 if (value == 200)
                   setState(() {
                     currentScreen = EnquiryScreenMode.ThankYou;
@@ -344,52 +364,116 @@ class _EnquiryState extends State<Enquiry> {
     );
   }
 
+  String selectedPurpose;
+
   basicInfoForm() {
+    List<dynamic> purposeList = [
+      {"id": "Home", "messages": "Home"},
+      {"id": "Office", "messages": "Office"}
+    ];
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
         children: <Widget>[
           SizedBox(
             height: 10,
           ),
           Text(
-            "Enquiry Purpose:",//.capitalize(),
-            style: TextStyle(fontSize: 22),
+            "Enquiry Purpose:", //.capitalize(),
+            style: TextStyle(fontSize: 22 * textScaleFactor),
           ),
           SizedBox(
             height: 15,
           ),
-          TextFormField(
-              keyboardType: TextInputType.text,
-              controller: _purposeController,
-              inputFormatters: [],
-              style: TextStyle(fontSize: 22),
-              decoration: InputDecoration(
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide(width: 0.0),
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                filled: true,
-                fillColor: selectedTheme.enabledBackground.withOpacity(0.6),
-                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                labelText: "Purpose",
-                suffixIcon: Padding(
-                  padding: const EdgeInsets.only(right: 16.0),
-                  child: Icon(
-                    Icons.speaker_notes,
-                    color: selectedTheme.primaryColor.withOpacity(0.2),
-                    size: 30,
-                  ),
-                ),
-                labelStyle:
-                    TextStyle(fontSize: 22, letterSpacing: 1.0, color: selectedTheme.primaryColor),
-              )),
+          Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: selectedTheme.activeBackground.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(15.0),
+              // border:
+              // Border.fromBorderSide()
+              // Border.all(
+              //   width: 1,
+              //   color: selectedTheme.primaryGradientColors[0],
+              // ),
+            ),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: List.generate(purposeList.length, (index) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedPurpose = purposeList[index]["id"];
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        padding: EdgeInsets.all(8.0),
+                        // decoration: selectedPurpose == purposeList[index]["id"]
+                        //     ? BoxDecoration(
+                        //         color: selectedTheme.activeBackground.withOpacity(0.4),
+                        //         borderRadius: BorderRadius.circular(15.0),
+                        //         border: Border.all(
+                        //             width: 1, color: selectedTheme.primaryGradientColors[0]))
+                        //     : BoxDecoration(
+                        //         color: selectedTheme.activeBackground.withOpacity(0.1),
+                        //         borderRadius: BorderRadius.circular(15.0),
+                        //         border: Border.all(width: 1, color: Colors.grey[400])),
+                        child: Row(
+                          children: <Widget>[
+                            AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
+                              decoration: selectedPurpose == purposeList[index]["id"]
+                                  ? BoxDecoration(
+                                      color: selectedTheme.activeBackground,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        width: 1.0,
+                                      ))
+                                  : BoxDecoration(
+                                      color: selectedTheme.activeBackground.withOpacity(0.5),
+                                      shape: BoxShape.circle,
+                                    ),
+                              width: 40.0,
+                              height: 40.0,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: selectedPurpose == purposeList[index]["id"]
+                                      ? FadeIn(
+                                          Icon(
+                                            Icons.check,
+                                            size: 24,
+                                            color: selectedTheme.primaryColor,
+                                          ),
+                                          0.2,
+                                          translate: false,
+                                        )
+                                      : null,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 20.0),
+                            Text(
+                              purposeList[index]["messages"],
+                              style: TextStyle(
+                                  color: selectedTheme.primaryText, fontSize: 24 * textScaleFactor),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                })),
+          ),
           SizedBox(
             height: 15,
           ),
           Text(
             "Contact Info:",
-            style: TextStyle(fontSize: 22),
+            style: TextStyle(fontSize: 22 * textScaleFactor),
           ),
           SizedBox(
             height: 15,
@@ -398,7 +482,7 @@ class _EnquiryState extends State<Enquiry> {
               keyboardType: TextInputType.text,
               controller: _nameController,
               inputFormatters: [],
-              style: TextStyle(fontSize: 22),
+              style: TextStyle(fontSize: 22 * textScaleFactor),
               decoration: InputDecoration(
                 border: UnderlineInputBorder(
                     borderSide: BorderSide(width: 0.0),
@@ -415,14 +499,16 @@ class _EnquiryState extends State<Enquiry> {
                     size: 30,
                   ),
                 ),
-                labelStyle:
-                    TextStyle(fontSize: 22, letterSpacing: 1.0, color: selectedTheme.primaryColor),
+                labelStyle: TextStyle(
+                    fontSize: 22 * textScaleFactor,
+                    letterSpacing: 1.0,
+                    color: selectedTheme.primaryColor),
               )),
           SizedBox(
             height: 15,
           ),
           TextFormField(
-              style: TextStyle(fontSize: 22),
+              style: TextStyle(fontSize: 22 * textScaleFactor),
               keyboardType: TextInputType.number,
               controller: _mobileController,
               maxLength: 10,
@@ -443,14 +529,16 @@ class _EnquiryState extends State<Enquiry> {
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
                 labelText: "Mobile No.",
                 counterText: "",
-                labelStyle:
-                    TextStyle(fontSize: 22, letterSpacing: 1.0, color: selectedTheme.primaryColor),
+                labelStyle: TextStyle(
+                    fontSize: 22 * textScaleFactor,
+                    letterSpacing: 1.0,
+                    color: selectedTheme.primaryColor),
               )),
           SizedBox(
             height: 15,
           ),
           TextFormField(
-              style: TextStyle(fontSize: 22),
+              style: TextStyle(fontSize: 22 * textScaleFactor),
               keyboardType: TextInputType.emailAddress,
               controller: _emailController,
               decoration: InputDecoration(
@@ -469,12 +557,14 @@ class _EnquiryState extends State<Enquiry> {
                 fillColor: selectedTheme.enabledBackground.withOpacity(0.6),
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
                 labelText: "Email",
-                labelStyle:
-                    TextStyle(fontSize: 22, letterSpacing: 1.0, color: selectedTheme.primaryColor),
+                labelStyle: TextStyle(
+                    fontSize: 22 * textScaleFactor,
+                    letterSpacing: 1.0,
+                    color: selectedTheme.primaryColor),
               )),
           SizedBox(height: 25),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               raisedButton("Back", () {
                 setState(() {
@@ -485,10 +575,9 @@ class _EnquiryState extends State<Enquiry> {
                 String _name = _nameController.text.trim();
                 String _email = _emailController.text.trim();
                 String _mobile = _mobileController.text.trim();
-                String _purpose = _purposeController.text.trim();
 
-                if (_purpose == "") {
-                  showErrorMessage("Please enter the purpose of your enquiry");
+                if (selectedPurpose == "" || selectedPurpose == null) {
+                  showErrorMessage("Please select the purpose of your enquiry");
                   return;
                 }
 
@@ -526,25 +615,25 @@ class _EnquiryState extends State<Enquiry> {
         children: <Widget>[
           Text(
             "Welcome.",
-            style: TextStyle(fontSize: 24),
+            style: TextStyle(fontSize: 24 * textScaleFactor),
           ),
           SizedBox(height: 25),
           Text(
             "Thank you for your interest in Excell Broadband.",
-            style: TextStyle(fontSize: 24),
+            style: TextStyle(fontSize: 24 * textScaleFactor),
           ),
           SizedBox(height: 25),
           Text(
             "The enquiry form has been created to provide the best customer assistance possible.",
             textAlign: TextAlign.start,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 24 * textScaleFactor,
             ),
           ),
           SizedBox(height: 25),
           Text(
             "Please provide as much of this information as you can.",
-            style: TextStyle(fontSize: 24),
+            style: TextStyle(fontSize: 24 * textScaleFactor),
           ),
           SizedBox(height: 25),
           Row(
@@ -575,7 +664,7 @@ class _EnquiryState extends State<Enquiry> {
             child: Center(
                 child: Text(
               title,
-              style: TextStyle(fontSize: 18.0),
+              style: TextStyle(fontSize: 18.0 * textScaleFactor),
             ))),
         onPressed: action,
         shape: RoundedRectangleBorder(
@@ -607,7 +696,8 @@ class _EnquiryState extends State<Enquiry> {
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     text,
-                    style: TextStyle(fontSize: 15, color: selectedTheme.primaryColor),
+                    style: TextStyle(
+                        fontSize: 15 * textScaleFactor, color: selectedTheme.primaryColor),
                   ),
                 ),
               ),

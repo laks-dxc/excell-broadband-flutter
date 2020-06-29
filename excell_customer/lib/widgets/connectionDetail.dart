@@ -34,9 +34,13 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
 */
 
   Size displaySize;
-
+  double textScaleFactor;
   @override
   Widget build(BuildContext context) {
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0
+        ? 1.0
+        : 0.85 / MediaQuery.of(context).textScaleFactor;
+
     displaySize = MediaQuery.of(context).size;
     return ListView(children: <Widget>[
       Padding(
@@ -46,10 +50,10 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
               color: selectedTheme.activeBackground.withOpacity(0.2),
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0 * textScaleFactor),
             child: Column(
               children: <Widget>[
-                tileItem("Package", Utils.clipStringTo( connectionDetailItem["pkgname"],20)),
+                tileItem("Package", Utils.clipStringTo(connectionDetailItem["pkgname"], 20)),
                 tileItem("Plan", connectionDetailItem["pkgdetail"]),
               ],
             ),
@@ -99,18 +103,18 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: Center(
             child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(12.0 * textScaleFactor),
                 child: !showUtilization
                     ? RaisedButton(
                         textColor: Colors.white,
                         color: selectedTheme.primaryGradientColors[1],
                         child: Container(
                             height: 40,
-                            width: displaySize.width * 0.25,
+                            width: displaySize.width * 0.45,
                             child: Center(
                                 child: Text(
                               "Utilization Analysis",
-                              style: TextStyle(fontSize: 18.0),
+                              style: TextStyle(fontSize: 18.0 * textScaleFactor),
                             ))),
                         onPressed: () {
                           setState(() {
@@ -176,8 +180,6 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
 
     if (totalDataLimit != 0.0 && consumedData > totalDataLimit) consumedData = totalDataLimit;
 
-// print('again and again');
-
     if (consumedFactor == 0.0001 && totalDataLimit > 0)
       Timer(Duration(seconds: 1), () {
         setState(() {
@@ -185,10 +187,6 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
         });
       });
     String consumedString = '';
-
-    // print("consumedData " + "$consumedData");
-
-
 
     if (consumedData == null)
       consumedString = "0.00 of " + Utils.bytesToSize(totalDataLimit.toString()) + " consumed ";
@@ -198,18 +196,16 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
           Utils.bytesToSize(totalDataLimit.toString()) +
           " used ";
 
-
-    if(totalDataLimit == 0.0 && consumedData != null)
-      consumedString =  Utils.bytesToSize(consumedData.toString()) + " consumed ";
-
-
+    if (totalDataLimit == 0.0 && consumedData != null)
+      consumedString = Utils.bytesToSize(consumedData.toString()) + " consumed ";
+    double containerHeight = displaySize.height * 0.065;
     return Stack(
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
             width: displaySize.width,
-            height: 75.0,
+            height: containerHeight,
             decoration: BoxDecoration(
                 color: selectedTheme.enabledBackground,
                 borderRadius: BorderRadius.all(Radius.circular(15.0))),
@@ -220,7 +216,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
           child: AnimatedContainer(
             duration: Duration(seconds: 1),
             width: consumedFactor * displaySize.width,
-            height: 75.0,
+            height: containerHeight,
             decoration: BoxDecoration(
                 color: selectedTheme.primaryColor.withOpacity(0.3), //Colors.green[100],
                 borderRadius: BorderRadius.all(Radius.circular(15.0))),
@@ -235,13 +231,13 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
               Center(
                 child: Text(consumedString,
                     style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 20 * textScaleFactor,
                         color: selectedTheme.primaryColor,
                         fontWeight: FontWeight.w500)),
               ),
             ],
           ),
-          height: 75.0,
+          height: containerHeight,
           decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(15.0))),
         ),
       ],
@@ -252,21 +248,24 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
     return Padding(
       padding: const EdgeInsets.only(top: 4.0, bottom: 8),
       child: Container(
-          padding: EdgeInsets.all(24.0),
+          padding: EdgeInsets.all(16.0 * textScaleFactor),
           decoration: BoxDecoration(
-              color: selectedTheme.enabledBackground, borderRadius: BorderRadius.circular(15)),
+              color: selectedTheme.activeBackground.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(15)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(label,
                   style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 22 * textScaleFactor,
                       color: selectedTheme.primaryColor.withOpacity(0.5),
                       fontWeight: FontWeight.w200)),
               Text(
                 value,
                 style: TextStyle(
-                    fontSize: 22, color: selectedTheme.primaryColor, fontWeight: FontWeight.w500),
+                    fontSize: 22 * textScaleFactor,
+                    color: selectedTheme.primaryColor,
+                    fontWeight: FontWeight.w500),
               )
             ],
           )),

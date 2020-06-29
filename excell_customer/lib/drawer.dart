@@ -38,6 +38,7 @@ class _DrawerPageState extends State<DrawerPage> {
         Payment()),
     ScreenHiddenDrawer(
         ItemHiddenMenu(
+
           name: "Packages",
           colorLineSelected: selectedTheme.appBarColor,
           baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
@@ -66,6 +67,7 @@ ScreenHiddenDrawer(
 
   @override
   Widget build(BuildContext context) {
+
     return HiddenDrawerMenu(
       initPositionSelected: 0,
       screens: itens,

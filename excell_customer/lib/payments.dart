@@ -58,8 +58,11 @@ class _PaymentState extends State<Payment> {
     super.initState();
   }
 
+  double textScaleFactor;
   @override
   Widget build(BuildContext context) {
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0? 1.0:0.85/MediaQuery.of(context).textScaleFactor;
+
     return Container(
       child: dataLoaded ? showData() : showLoader(),
     );
@@ -78,7 +81,7 @@ class _PaymentState extends State<Payment> {
             child: Column(
               children: <Widget>[
                 tileItem("Bill Date", Utils.formatDateString(paymentDetail["last_bill_date"])),
-                tileItem("Due in ", Utils.formatDateString(paymentDetail["due_bill_date"])),
+                tileItem("Due Date ", Utils.formatDateString(paymentDetail["due_bill_date"])),
                 tileItem("Amount", Utils.showAsMoney(amountDue)),
               ],
             ),
@@ -117,21 +120,24 @@ class _PaymentState extends State<Payment> {
     return Padding(
       padding: const EdgeInsets.only(top: 4.0, bottom: 8),
       child: Container(
-          padding: EdgeInsets.all(24.0),
+          padding: EdgeInsets.all(16.0 * textScaleFactor),
           decoration: BoxDecoration(
-              color: selectedTheme.enabledBackground, borderRadius: BorderRadius.circular(15)),
+              color: selectedTheme.activeBackground.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(15)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(label,
                   style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 22 * textScaleFactor,
                       color: selectedTheme.primaryColor.withOpacity(0.5),
                       fontWeight: FontWeight.w200)),
               Text(
                 value,
                 style: TextStyle(
-                    fontSize: 22, color: selectedTheme.primaryColor, fontWeight: FontWeight.w500),
+                    fontSize: 22 * textScaleFactor,
+                    color: selectedTheme.primaryColor,
+                    fontWeight: FontWeight.w500),
               )
             ],
           )),
@@ -149,11 +155,11 @@ class _PaymentState extends State<Payment> {
                 child: Center(
                     child: Text(
                   "Pay Now",
-                  style: TextStyle(fontSize: 18.0),
+                  style: TextStyle(
+                      color: Colors.grey.withOpacity(0.8), fontSize: 22.0 * textScaleFactor),
                 ))),
             onPressed: () {
               print("printint");
-     
             },
             shape: new RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(30.0),
@@ -168,10 +174,10 @@ class _PaymentState extends State<Payment> {
                 child: Center(
                     child: Text(
                   "Pay Now",
-                  style: TextStyle(fontSize: 24.0),
+                  style: TextStyle(fontSize: 22.0 * textScaleFactor),
                 ))),
             onPressed: () {
-                       Navigator.push(context,
+              Navigator.push(context,
                   MaterialPageRoute(builder: (BuildContext context) => MakePayment(pgMsg)));
             },
             shape: new RoundedRectangleBorder(
@@ -190,7 +196,9 @@ class _PaymentState extends State<Payment> {
           child: Center(
             child: Text(value,
                 style: TextStyle(
-                    fontSize: 22, color: selectedTheme.primaryColor, fontWeight: FontWeight.w600)),
+                    fontSize: 22 * textScaleFactor,
+                    color: selectedTheme.primaryColor,
+                    fontWeight: FontWeight.w600)),
           )),
     );
   }
