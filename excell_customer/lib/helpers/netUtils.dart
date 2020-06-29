@@ -31,7 +31,6 @@ class NetUtils {
       String transformedValue = await httpCientResponse.transform(convert.utf8.decoder).join();
 
       apiResponse = await convert.jsonDecode(transformedValue);
-
       status = apiResponse['resonse']['status'];
       response = {"status": status, "result": apiResponse['resonse']['result']};
     } catch (ex) {

@@ -19,13 +19,10 @@ dependencies:
   hidden_drawer_menu: ^1.1.4
   fl_chart: ^0.10.0
   toggle_switch: "^0.1.4"
-  date_format: ^1.0.8  
+  date_format: ^1.0.8
   bot_toast: ^3.0.0
   flutter_typeahead: ^1.8.3
-
-
-  
-  
+  firebase_messaging: ^6.0.16
 
 dev_dependencies:
   flutter_test:
@@ -39,4 +36,3 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
-

@@ -180,8 +180,6 @@ class _LoginModalState extends State<LoginModal> {
                       activeContainerBody = "OTP";
                       pinsEnabled = true;
                     });
-
-                    print("OTP: $receivedOTP");
                   } else {
                     _setFooterState(FooterState.ValidatedCredentialsResultWrong);
                     setState(() {
@@ -247,25 +245,6 @@ class _LoginModalState extends State<LoginModal> {
 
   Container _titleCloseButton() {
     return Container();
-    // return Align(
-    //   alignment: Alignment(0.95, -0.93),
-    //   child: InkWell(
-    //     onTap: () {
-    //       Navigator.pop(context);
-    //     },
-    //     child: Container(
-    //       decoration: BoxDecoration(
-    //         color: Colors.grey[100],
-    //         borderRadius: BorderRadius.circular(12),
-    //       ),
-    //       child: Icon(
-    //         Icons.close,
-    //         color: Colors.black,
-    //         size: displaySize.height*0.025,
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
   Container _modalHeader() {
@@ -489,6 +468,8 @@ class _LoginModalState extends State<LoginModal> {
                           });
 
                           _setFooterState(FooterState.OTPEnteredResultCorrect);
+
+                          Customer.saveFBToken(customerIdController.text, mobileNoController.text);
 
                           Customer.details(customerIdController.text, mobileNoController.text)
                               .then((bool detailsReceived) {

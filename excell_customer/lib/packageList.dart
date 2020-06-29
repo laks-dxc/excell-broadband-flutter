@@ -41,6 +41,7 @@ class _PackageListState extends State<PackageList> {
   double textScaleFactor;
   @override
   Widget build(BuildContext context) {
+    
     textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0
         ? 1.0
         : 0.85 / MediaQuery.of(context).textScaleFactor;

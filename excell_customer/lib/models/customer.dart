@@ -43,6 +43,24 @@ class Customer {
     return await StorageUtils.hasKey(StorageKey.CutomerName);
   }
 
+  static Future<void> saveFBToken(String custId, String mobileNo) async {
+// http://app.excellbroadband.com/api/index.php
+
+    dynamic body = {
+      "name": "saveFBToken",
+      "param": {
+        "customerId": custId,
+        "mobileNo": mobileNo,
+        "fbToken": await StorageUtils.getStorageItem(StorageKey.FBToken),
+        "appVersion": "1.0",
+        "mobileOs": "Android"
+      }
+    };
+
+    await NetUtils.apiPostWithToken(body);
+    print("FBToken Saved");
+  }
+
   static Future<bool> details(String custId, String mobileNo) async {
     Map<String, dynamic> customerDetailsResponse = await NetUtils.apiPostWithToken({
       "name": "getCustomerDetails",
@@ -223,7 +241,7 @@ class Customer {
         "area_id": areaId,
         "sub_area_id": subAreaId,
         "purpose": purpose,
-        "source":"App"
+        "source": "App"
       }
     });
 
