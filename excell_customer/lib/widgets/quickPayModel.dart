@@ -208,25 +208,27 @@ class __QuickPayModalState extends State<QuickPayModal> {
     );
   }
 
-  Align _titleCloseButton() {
-    return Align(
-      alignment: Alignment(0.95, -0.93),
-      child: InkWell(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(
-            Icons.close,
-            color: Colors.black,
-          ),
-        ),
-      ),
-    );
+  Widget _titleCloseButton() {
+    return Container();
+
+    // return Align(
+    //   alignment: Alignment(0.95, -0.93),
+    //   child: InkWell(
+    //     onTap: () {
+    //       Navigator.pop(context);
+    //     },
+    //     child: Container(
+    //       decoration: BoxDecoration(
+    //         color: Colors.grey[100],
+    //         borderRadius: BorderRadius.circular(12),
+    //       ),
+    //       child: Icon(
+    //         Icons.close,
+    //         color: Colors.black,
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   Container _modalHeader() {
@@ -333,6 +335,7 @@ class __QuickPayModalState extends State<QuickPayModal> {
         focusNode: focusCustomerId,
         keyboardType: TextInputType.number,
         controller: customerIdController,
+        maxLength: 8,
         autocorrect: false,
         autofocus: true,
         textInputAction: TextInputAction.next,
@@ -343,6 +346,7 @@ class __QuickPayModalState extends State<QuickPayModal> {
             height: 1.0, letterSpacing: 7.0, fontSize: 20.0, color: selectedTheme.primaryColor),
         cursorColor: Colors.black38,
         decoration: InputDecoration(
+          counterText: "",
           contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
           filled: true,
           fillColor: selectedTheme.activeBackground.withOpacity(0.2),

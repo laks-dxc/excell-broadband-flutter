@@ -28,7 +28,7 @@ class _DrawerPageState extends State<DrawerPage> {
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Dashboard()),
-        ScreenHiddenDrawer(
+    ScreenHiddenDrawer(
         ItemHiddenMenu(
           name: "Payment",
           colorLineSelected: selectedTheme.appBarColor,
@@ -38,14 +38,12 @@ class _DrawerPageState extends State<DrawerPage> {
         Payment()),
     ScreenHiddenDrawer(
         ItemHiddenMenu(
-
           name: "Packages",
           colorLineSelected: selectedTheme.appBarColor,
           baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         MyPackages()),
-    
     ScreenHiddenDrawer(
         ItemHiddenMenu(
           name: "Support",
@@ -54,7 +52,7 @@ class _DrawerPageState extends State<DrawerPage> {
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Support()),
-ScreenHiddenDrawer(
+    ScreenHiddenDrawer(
         ItemHiddenMenu(
           name: "Profile",
           colorLineSelected: selectedTheme.appBarColor,
@@ -62,12 +60,10 @@ ScreenHiddenDrawer(
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Profile())
-
   ];
 
   @override
   Widget build(BuildContext context) {
-
     return HiddenDrawerMenu(
       initPositionSelected: 0,
       screens: itens,

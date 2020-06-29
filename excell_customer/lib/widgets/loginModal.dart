@@ -287,6 +287,7 @@ class _LoginModalState extends State<LoginModal> {
         focusNode: focusCustomerId,
         keyboardType: TextInputType.number,
         controller: customerIdController,
+        maxLength: 8,
         autocorrect: false,
         autofocus: true,
         textInputAction: TextInputAction.next,
@@ -300,6 +301,8 @@ class _LoginModalState extends State<LoginModal> {
             color: selectedTheme.primaryColor),
         cursorColor: Colors.black38,
         decoration: InputDecoration(
+          counterText: "",
+          // counterStyle: TextStyle(fontSize: 0),
           contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
           filled: true,
           fillColor: selectedTheme.activeBackground.withOpacity(0.2),

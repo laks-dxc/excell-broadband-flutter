@@ -23,6 +23,8 @@ dependencies:
   bot_toast: ^3.0.0
   flutter_typeahead: ^1.8.3
   firebase_messaging: ^6.0.16
+  carousel_slider: ^2.2.1
+  cached_network_image: ^2.2.0+1
 
 dev_dependencies:
   flutter_test:

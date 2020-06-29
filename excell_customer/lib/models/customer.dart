@@ -3,6 +3,16 @@ import 'package:ExcellCustomer/helpers/storageUtils.dart';
 import 'package:ExcellCustomer/models/enum.dart';
 
 class Customer {
+  static Future<List> banners() async {
+    Map<String, dynamic> cmsBannersResponse =
+        await NetUtils.apiPostWithToken({"name": "getCMSBanners", "param": {}});
+
+    if (cmsBannersResponse["status"] == 200)
+      return cmsBannersResponse["result"]["banners"];
+    else
+      return [];
+  }
+
   static Future<Map<String, dynamic>> authenticate(String custId, String mobileNo) async {
     Map<String, dynamic> authenticatedResponse = await NetUtils.apiPostWithoutToken({
       "name": "generateToken",
