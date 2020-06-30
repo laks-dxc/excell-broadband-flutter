@@ -1,9 +1,14 @@
-import 'package:ExcellCustomer/models/customer.dart';
+import 'dart:async';
+
+import 'package:ExcellCustomer/helpers/appStyles.dart';
+import 'package:ExcellCustomer/models/AppTheme.dart';
+import 'package:ExcellCustomer/models/enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+import '../payments.dart';
 
 void main() => runApp(MakePayment(''));
 
@@ -17,9 +22,11 @@ class MakePayment extends StatefulWidget {
 }
 
 class _MakePaymentState extends State<MakePayment> {
+  static AppThemeData selectedTheme = AppStyles.getTheme(AppTheme.Light);
+
   String msg = '';
   double amount = 00.0;
-
+  bool isResumed = false;
   _MakePaymentState(msg) {
     print('msg ' + msg);
     if (msg != '') _getNewActivity({"MSG": msg});
@@ -27,34 +34,13 @@ class _MakePaymentState extends State<MakePayment> {
 
   @override
   void initState() {
-     //ignore: missing_return
+    //ignore: missing_return
     SystemChannels.lifecycle.setMessageHandler((msg) {
-      // debugPrint('SystemChannels> $msg');
       if (msg == AppLifecycleState.resumed.toString()) {
-        Customer.paymentDue().then((due) {
-          msg = due["msg"];
-          amount = double.parse(due["amount"]);
+        setState(() {
+          isResumed = true;
         });
-        // var body = {
-        //   "name": "getCustomerDue",
-        //   "param": {"customerId": "46888"}
-        // };
-
-        // codeHelpers.httpPost(body, needAuth: true).then((paymentResponse) {
-        //   paymentResponse
-        //       .transform(convert.utf8.decoder)
-        //       .join()
-        //       .then((paymentsRaw) {
-        //     final paymentDetail = convert.jsonDecode(paymentsRaw);
-        //     setState(() {
-        //       msg = paymentDetail["resonse"]["result"]["msg"];
-        //       amount = paymentDetail["resonse"]["result"]["amount"];
-        //       // print(paymentDetail["resonse"]["result"]);
-        //     });
-        //   });
-        // });
       }
-      // return
     });
 
     super.initState();
@@ -70,42 +56,51 @@ class _MakePaymentState extends State<MakePayment> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Image.asset('assets/login_bg.png'),
-          Center(
-            child: Column(
-              children: <Widget>[
-                Image.asset(
-                  'assets/logo_white.png',
-                  height: 200,
-                  width: 200,
-                ),
-                MaterialButton(
-                  child: amount == null
-                      ? SpinKitCircle(size: 30, color: Colors.grey)
-                      : Text(
-                          '₹ ' + amount.toString(),
-                          style: TextStyle(fontSize: 20, letterSpacing: 2.0),
-                        ),
-                  elevation: 5.0,
-                  height: 48.0,
-                  minWidth: 250.0,
-                  color: amount == null || amount != 0
-                      ? Color.fromRGBO(95, 32, 97, 5)
-                      : Color.fromRGBO(0, 32, 97, 5),
-                  textColor: Colors.white,
-                  onPressed: () {
-                    msg != '' && amount > 0.0 ? _getNewActivity({"MSG": msg}) : doNothing();
-                  },
-                ),
-              ],
+    if (isResumed) {
+      Timer(Duration(milliseconds: 100), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => Scaffold(
+              backgroundColor: selectedTheme.scaffoldBgColor,
+              appBar: AppBar(
+                  title: Text("Payment"), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
+                  ),
+              body: Payment(),
             ),
           ),
-        ],
-      ),
-    );
+        );
+      });
+      return Scaffold(body: SpinKitCircle(size: 30, color: Colors.grey));
+    } else
+      return Scaffold(body: SpinKitCircle(size: 30, color: Colors.grey));
+
+    // Scaffold(
+    //   body: Stack(
+    //     children: <Widget>[
+    //       Image.asset('assets/login_bg.png'),
+    //       Center(
+    //         child: MaterialButton(
+    //           child: amount == null
+    //               ? SpinKitCircle(size: 30, color: Colors.grey)
+    //               : Text(
+    //                   '₹ ' + amount.toString(),
+    //                   style: TextStyle(fontSize: 20, letterSpacing: 2.0),
+    //                 ),
+    //           elevation: 5.0,
+    //           height: 48.0,
+    //           minWidth: 250.0,
+    //           color: selectedTheme.appBarColor,
+    //           textColor: Colors.white,
+    //           onPressed: () {
+    //             msg != '' && amount > 0.0 ? _getNewActivity({"MSG": msg}) : doNothing();
+    //           },
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+
+    // );
   }
 
   void doNothing() {}

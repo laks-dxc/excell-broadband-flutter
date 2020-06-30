@@ -1,5 +1,6 @@
 import 'package:ExcellCustomer/widgets/makePayment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'helpers/Utils.dart';
@@ -27,6 +28,24 @@ class _PaymentState extends State<Payment> {
 
   @override
   void initState() {
+    //ignore: missing_return
+    SystemChannels.lifecycle.setMessageHandler((msg) {
+      // debugPrint('SystemChannels> $msg');
+
+      if (msg == AppLifecycleState.resumed.toString()) {
+        print("in resumed of payments");
+        setState(() {
+          dataLoaded = false;
+        });
+        customerPayments();
+      }
+    });
+    customerPayments();
+
+    super.initState();
+  }
+
+  void customerPayments() {
     Customer.connectionsList().then((_connections) {
       setState(() {
         connections = _connections;
@@ -60,8 +79,6 @@ class _PaymentState extends State<Payment> {
         }
       });
     });
-
-    super.initState();
   }
 
   double textScaleFactor;
@@ -188,7 +205,7 @@ class _PaymentState extends State<Payment> {
                   style: TextStyle(fontSize: 22.0 * textScaleFactor),
                 ))),
             onPressed: () {
-              Navigator.push(context,
+              Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (BuildContext context) => MakePayment(pgMsg)));
             },
             shape: new RoundedRectangleBorder(
