@@ -1,3 +1,4 @@
+import 'package:ExcellCustomer/viewInvoice.dart';
 import 'package:ExcellCustomer/widgets/makePayment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -84,6 +85,7 @@ class _PaymentState extends State<Payment> {
   double textScaleFactor;
   @override
   Widget build(BuildContext context) {
+    displaySize = MediaQuery.of(context).size;
     textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0
         ? 1.0
         : 0.85 / MediaQuery.of(context).textScaleFactor;
@@ -137,11 +139,13 @@ class _PaymentState extends State<Payment> {
           height: 30,
         ),
         Padding(
-            padding: EdgeInsets.only(left: 100, right: 100),
-            child: paymentButton(double.parse(amountDue) > 0)),
-        SizedBox(
-          height: 10,
-        ),
+            padding: EdgeInsets.only(left: 8, right: 8),
+            child:
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                //   children: <Widget>[paymentButton(double.parse(amountDue) > 0), invoiceButton()],
+                // )
+                Center(child: paymentButton(double.parse(amountDue) > 0))),
       ]),
     );
   }
@@ -181,7 +185,7 @@ class _PaymentState extends State<Payment> {
             disabledColor: selectedTheme.disabledBackground,
             child: Container(
                 height: 50,
-                width: 200,
+                width: displaySize.width * 0.3,
                 child: Center(
                     child: Text(
                   "Pay Now",
@@ -198,7 +202,7 @@ class _PaymentState extends State<Payment> {
             color: selectedTheme.primaryGradientColors[1],
             child: Container(
                 height: 50,
-                width: 200,
+                width: displaySize.width * 0.3,
                 child: Center(
                     child: Text(
                   "Pay Now",
@@ -212,6 +216,30 @@ class _PaymentState extends State<Payment> {
               borderRadius: new BorderRadius.circular(30.0),
             ),
           );
+  }
+
+  Widget invoiceButton() {
+    return RaisedButton(
+      textColor: Colors.white,
+      color: selectedTheme.primaryGradientColors[1],
+      child: Container(
+          height: 50,
+          width: displaySize.width * 0.3,
+          child: Center(
+              child: Text(
+            "Invoice",
+            style: TextStyle(fontSize: 22.0 * textScaleFactor),
+          ))),
+      onPressed: () {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => ViewInvoice(paymentDetail["invoiceNo"])));
+      },
+      shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(30.0),
+      ),
+    );
   }
 
   Widget centerTextTile(value) {

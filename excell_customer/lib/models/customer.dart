@@ -13,6 +13,23 @@ class Customer {
       return [];
   }
 
+  static Future<String> invoice(String invoiceNo) async {
+    dynamic invoiceBody = {
+      "name": "getPdfInvoice",
+      "param": {
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId),
+        "invoiceNo": invoiceNo
+      }
+    };
+
+    Map<String, dynamic> pdfResponse = await NetUtils.apiPostWithToken(invoiceBody);
+
+    if (pdfResponse["status"] == 200)
+      return pdfResponse["result"]["filecontent"];
+    else
+      return "File Not Found";
+  }
+
   static Future<Map<String, dynamic>> authenticate(String custId, String mobileNo) async {
     Map<String, dynamic> authenticatedResponse = await NetUtils.apiPostWithoutToken({
       "name": "generateToken",

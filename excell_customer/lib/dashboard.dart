@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:ExcellCustomer/payments.dart';
@@ -43,8 +44,11 @@ class _DashboardState extends State<Dashboard> {
 
         if (_tempImgLst.length > 0) _tempImgLst.insert(0, 'assets/slide1.png');
       }
-      setState(() {
-        imgList = _tempImgLst;
+
+      Timer(Duration(seconds: 3), () {
+        setState(() {
+          imgList = _tempImgLst;
+        });
       });
     });
 
@@ -117,7 +121,16 @@ class _DashboardState extends State<Dashboard> {
         ),
         SizedBox(height: 20),
         imgList.length == 0
-            ? FadeIn(Image.asset("assets/slide1.png"), 1.2, translate: false)
+            ? FadeIn(
+                AspectRatio(
+                  aspectRatio: 2.0,
+                  child: Image.asset(
+                    "assets/slide1.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                1.2,
+                translate: false)
             : CarouselSlider(
                 options: CarouselOptions(
                   viewportFraction: 1.0,
