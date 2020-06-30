@@ -191,18 +191,21 @@ class _DashboardState extends State<Dashboard> {
       child: InkWell(
         onTap: () {
           Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => Scaffold(
-                backgroundColor: selectedTheme.scaffoldBgColor,
-                appBar: AppBar(
-                    title: Text(targetTitle),
-                    backgroundColor: selectedTheme.appBarColor //(0xff112c75),
-                    ),
-                body: target,
-              ),
-            ),
-          );
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => Scaffold(
+                  backgroundColor: selectedTheme.scaffoldBgColor,
+                  appBar: AppBar(
+                      title: Text(targetTitle),
+                      backgroundColor: selectedTheme.appBarColor //(0xff112c75),
+                      ),
+                  body: target,
+                ),
+              ));
+
+          // SimpleHiddenDrawerProvider.of(context).controllers.setPositionSelected(1);
+          // SimpleHiddenDrawerProvider.of(context).
+          // setSelectedMenuPosition(1);
         },
         child: Container(
           decoration: BoxDecoration(

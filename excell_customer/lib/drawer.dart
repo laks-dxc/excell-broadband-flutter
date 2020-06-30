@@ -23,7 +23,6 @@ class _DrawerPageState extends State<DrawerPage> {
     ScreenHiddenDrawer(
         ItemHiddenMenu(
           name: "Home",
-
           colorLineSelected: selectedTheme.appBarColor,
           baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
@@ -46,14 +45,11 @@ class _DrawerPageState extends State<DrawerPage> {
         ),
         MyPackages()),
     ScreenHiddenDrawer(
-
         ItemHiddenMenu(
-
           name: "Support",
           colorLineSelected: selectedTheme.appBarColor,
           baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
-          
         ),
         Support()),
     ScreenHiddenDrawer(
@@ -65,10 +61,11 @@ class _DrawerPageState extends State<DrawerPage> {
         ),
         Profile())
   ];
-
+  GlobalKey key = new GlobalKey();
   @override
   Widget build(BuildContext context) {
     return HiddenDrawerMenu(
+      actionsAppBar: <Widget>[],
       initPositionSelected: 0,
       screens: itens,
       // curveAnimation: Curves.easeInOutExpo,
