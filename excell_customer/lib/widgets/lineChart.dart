@@ -59,13 +59,17 @@ class _UtilLineChartState extends State<UtilLineChart> {
                   top: 0,
                   bottom: 0),
               child: results != null && results.length > 0
-                  ? FadeIn(
-                      LineChart(
-                        mainData(results),
-                      ),
-                      0.1,
-                      translate: false,
-                    )
+                  ? results.length > 1
+                      ? FadeIn(
+                          LineChart(
+                            mainData(results),
+                          ),
+                          0.1,
+                          translate: false,
+                        )
+                      : Container(
+                          child: Center(child: Text("Data not sufficient for chart")),
+                        )
                   : Container(
                       child: Center(child: Text("No Data")),
                     ),
@@ -116,7 +120,7 @@ class _UtilLineChartState extends State<UtilLineChart> {
       1,
       2,
     ];
-    print(maxX.toString() + " maxX");
+
     if (maxX == 3.0)
       stepValues = [2];
     else if (maxX == 4.0)
