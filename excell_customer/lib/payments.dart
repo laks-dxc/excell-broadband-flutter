@@ -41,9 +41,10 @@ class _PaymentState extends State<Payment> {
               if (double.parse(amountDue) > 0) {
                 billDueInDaysString = Utils.getDueInDaysText(paymentDetail["due_bill_date"]);
               }
-
-              dataLoaded = true;
             }
+            setState(() {
+              dataLoaded = true;
+            });
           });
         } else {
           Customer.paymentDue().then((_amountDueResponse) {
