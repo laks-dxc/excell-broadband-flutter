@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:ExcellCustomer/payments.dart';
+import 'package:ExcellCustomer/support.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,6 +13,7 @@ import 'helpers/storageUtils.dart';
 import 'models/AppTheme.dart';
 import 'models/customer.dart';
 import 'models/enum.dart';
+import 'myPackages.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -127,82 +130,125 @@ class _DashboardState extends State<Dashboard> {
                 items: imgList.map((item) => Container(child: carouselItem(item))).toList(),
               ),
         SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: tileContainer(
-              image: Image.asset('assets/22.png'),
-              title: "Payments",
-              subTitle:
-                  "Make your bill payments easily using \n Credit, Debit, Wallet & UPI options."),
-        ),
-        SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
-          child: tileContainer(
-              image: Image.asset('assets/33.png'),
-              title: "Utilization",
-              subTitle:
-                  "Be on top of your internet utilization \n and monitor your daily consumption."),
-        ),
-        SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
-          child: tileContainer(
+        FadeIn(
+          tileContainer(
               image: Image.asset(
-                'assets/11.png',
-                // color: Colors.white,
+                'assets/22_db.png',
+                width: 30,
+                height: 30,
+              ),
+              title: "Payments",
+              subTitle: "Pay your bills easily with Credit, \nDebit, Wallet & UPI Options.",
+              // "Make your bill payments easily using \n Credit, Debit, Wallet & UPI options.",
+              padding: const EdgeInsets.all(8.0),
+              target: Payment(),
+              targetTitle: "Payments"),
+          1.0,
+          direction: Direction.x,
+          distance: -25,
+        ),
+        SizedBox(height: 10),
+        FadeIn(
+          tileContainer(
+              image: Image.asset(
+                'assets/33_db.png',
+              ),
+              title: "Utilization",
+              subTitle: "Know your usage analytics  ",
+              // "Be on top of your internet utilization \n and monitor your daily consumption.",
+              padding: const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
+              target: MyPackages(),
+              targetTitle: "My Packages"),
+          1.0,
+          direction: Direction.x,
+          distance: 25,
+        ),
+        SizedBox(height: 10),
+        FadeIn(
+          tileContainer(
+              image: Image.asset(
+                'assets/support.png',
               ),
               title: "Support",
-              subTitle: "Reach our support team for any \n connection or billing related issues."),
-        )
+              subTitle:
+                  // "Reach our support team for any \n connection or billing related issues.",
+                  "Reach our support personnel for \nany connectivity or billing related issues",
+              padding: const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
+              target: Support(),
+              targetTitle: "Support"),
+          1.0,
+          direction: Direction.x,
+          distance: -25,
+        ),
       ],
     );
   }
 
-  Widget tileContainer({Image image, title, subTitle}) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
-          color: selectedTheme.activeBackground.withOpacity(0.5),
-          border: Border.all(width: 0.35, color: selectedTheme.primaryColor)),
-      height: displaySize.height * 0.12,
-      width: displaySize.width,
-      child: Row(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15.0),
-                bottomLeft: Radius.circular(15.0),
+  Widget tileContainer(
+      {Image image, title, subTitle, EdgeInsets padding, target, String targetTitle}) {
+    return Padding(
+      padding: padding,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => Scaffold(
+                backgroundColor: selectedTheme.scaffoldBgColor,
+                appBar: AppBar(
+                    title: Text(targetTitle),
+                    backgroundColor: selectedTheme.appBarColor //(0xff112c75),
+                    ),
+                body: target,
               ),
-              color: selectedTheme.primaryColor,
             ),
-            width: displaySize.width * 0.25,
-            height: displaySize.height * 0.12,
-            child: image,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: TextStyle(
-                      fontSize: 24 * textScaleFactor,
-                      color: selectedTheme.primaryColor,
-                      fontWeight: FontWeight.w400),
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15.0),
+              color: selectedTheme.activeBackground.withOpacity(0.5),
+              border: Border.all(width: 0.35, color: selectedTheme.primaryColor)),
+          height: displaySize.height * 0.12,
+          width: displaySize.width,
+          child: Row(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15.0),
+                    bottomLeft: Radius.circular(15.0),
+                  ),
+                  color: selectedTheme.primaryColor,
                 ),
-                Text(
-                  subTitle,
-                  maxLines: 3,
-                  style: TextStyle(fontSize: 16 * textScaleFactor),
-                )
-              ],
-            ),
+                width: displaySize.width * 0.25,
+                height: displaySize.height * 0.12,
+                child: image,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Text(
+                      title,
+                      style: TextStyle(
+                          fontSize: 24 * textScaleFactor,
+                          color: selectedTheme.primaryColor,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    Text(
+                      subTitle,
+                      maxLines: 3,
+                      style: TextStyle(fontSize: 16 * textScaleFactor),
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

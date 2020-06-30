@@ -186,6 +186,4 @@ class _HomeState extends State<Home> {
       ],
     );
   }
-
-  void showFancyCustomDialog(BuildContext context) {}
 }

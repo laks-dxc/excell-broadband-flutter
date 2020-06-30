@@ -32,6 +32,6 @@ enum StorageKey {
 
 enum TicketsScreenMode { CreateTicket, ViewTickets, Loading }
 
-enum MyPackagesScreenMode { List, Detail }
+enum MyPackagesScreenMode { List, Detail, NoPackages }
 
 enum EnquiryScreenMode { WelcomeScreen, BasicDetail, AddressDetail, ThankYou }

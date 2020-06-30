@@ -31,9 +31,10 @@ class _MyPackagesState extends State<MyPackages> {
         if (connections.length == 1) {
           myPackagesScreenMode = MyPackagesScreenMode.Detail;
           activeIP = connections[0]["ip_addr"];
-          print("activeIP " + activeIP);
-        } else {
+        } else if (connections.length > 1) {
           myPackagesScreenMode = MyPackagesScreenMode.List;
+        } else {
+          myPackagesScreenMode = MyPackagesScreenMode.NoPackages;
         }
       });
     });
@@ -45,7 +46,9 @@ class _MyPackagesState extends State<MyPackages> {
   @override
   Widget build(BuildContext context) {
     displaySize = MediaQuery.of(context).size;
-    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0? 1.0:0.85/MediaQuery.of(context).textScaleFactor;
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0
+        ? 1.0
+        : 0.85 / MediaQuery.of(context).textScaleFactor;
 
     return connections != null ? showData() : showLoader();
   }
@@ -57,7 +60,59 @@ class _MyPackagesState extends State<MyPackages> {
   }
 
   showData() {
-    return connections.length > 1 ? connectionsListScreen() : ConnectionDetail(connections[0]);
+    return connections.length > 1
+        ? connectionsListScreen()
+        : connections.length == 0 ? noConnectionsPage() : ConnectionDetail(connections[0]);
+  }
+
+  Widget noConnectionsPage() {
+    return Container(
+      child: Column(children: [
+        SizedBox(
+          height: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            width: displaySize.width,
+            height: 80.0,
+            child: Stack(children: [
+              Center(
+                child: Text(
+                  "No active packages found",
+                  style: TextStyle(fontSize: 20, color: selectedTheme.primaryText),
+                ),
+              ),
+              Align(
+                  alignment: Alignment(1.1, 1.0),
+                  child: Icon(Icons.cancel, size: 90, color: Colors.red.withOpacity(0.5))),
+            ]),
+            padding: EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+                color: Colors.red[200], //selectedTheme.activeBackground.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(15.0),
+                border: Border.all(width: 1, color: selectedTheme.primaryGradientColors[0])),
+          ),
+        ),
+        // SizedBox(height: 50),
+        // RaisedButton(
+        //   textColor: Colors.grey,
+        //   color: Colors.grey[500],
+        //   child: Container(
+        //       height: 50,
+        //       width: 250,
+        //       child: Center(
+        //           child: Text(
+        //         "Request Activation",
+        //         style: TextStyle(fontSize: 18.0),
+        //       ))),
+        //   onPressed: () {},
+        //   shape: new RoundedRectangleBorder(
+        //     borderRadius: new BorderRadius.circular(30.0),
+        //   ),
+        // )
+      ]),
+    );
   }
 
   connectionsListScreen() {
@@ -116,7 +171,7 @@ class _MyPackagesState extends State<MyPackages> {
               color: selectedTheme.activeBackground.withOpacity(0.5),
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: Padding(
-              padding: EdgeInsets.all(16.0*textScaleFactor),
+              padding: EdgeInsets.all(16.0 * textScaleFactor),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

@@ -22,7 +22,8 @@ class _DrawerPageState extends State<DrawerPage> {
   final List<ScreenHiddenDrawer> itens = [
     ScreenHiddenDrawer(
         ItemHiddenMenu(
-          name: "Dashboard",
+          name: "Home",
+
           colorLineSelected: selectedTheme.appBarColor,
           baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
@@ -45,11 +46,14 @@ class _DrawerPageState extends State<DrawerPage> {
         ),
         MyPackages()),
     ScreenHiddenDrawer(
+
         ItemHiddenMenu(
+
           name: "Support",
           colorLineSelected: selectedTheme.appBarColor,
           baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
+          
         ),
         Support()),
     ScreenHiddenDrawer(

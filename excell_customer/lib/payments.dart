@@ -31,22 +31,27 @@ class _PaymentState extends State<Payment> {
       setState(() {
         connections = _connections;
 
-        if (connections.length > 0) {
-          setState(() {
-            paymentDetail = connections[0];
-          });
+        if (connections.length >= 1) {
+          paymentDetail = connections[0];
+          Customer.paymentDue().then((_amountDueResponse) {
+            if (_amountDueResponse != null) {
+              amountDue = _amountDueResponse["amount"];
+              pgMsg = _amountDueResponse["msg"];
 
+              if (double.parse(amountDue) > 0) {
+                billDueInDaysString = Utils.getDueInDaysText(paymentDetail["due_bill_date"]);
+              }
+
+              dataLoaded = true;
+            }
+          });
+        } else {
           Customer.paymentDue().then((_amountDueResponse) {
             print(_amountDueResponse.toString());
             if (_amountDueResponse != null) {
               setState(() {
                 amountDue = _amountDueResponse["amount"];
                 pgMsg = _amountDueResponse["msg"];
-
-                if (double.parse(amountDue) > 0) {
-                  billDueInDaysString = Utils.getDueInDaysText(paymentDetail["due_bill_date"]);
-                }
-
                 dataLoaded = true;
               });
             }
@@ -61,7 +66,9 @@ class _PaymentState extends State<Payment> {
   double textScaleFactor;
   @override
   Widget build(BuildContext context) {
-    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0? 1.0:0.85/MediaQuery.of(context).textScaleFactor;
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0
+        ? 1.0
+        : 0.85 / MediaQuery.of(context).textScaleFactor;
 
     return Container(
       child: dataLoaded ? showData() : showLoader(),
@@ -80,15 +87,20 @@ class _PaymentState extends State<Payment> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: <Widget>[
-                tileItem("Bill Date", Utils.formatDateString(paymentDetail["last_bill_date"])),
-                tileItem("Due Date ", Utils.formatDateString(paymentDetail["due_bill_date"])),
+                paymentDetail == null
+                    ? tileItem("Bill Date", "")
+                    : tileItem(
+                        "Bill Date", Utils.formatDateString(paymentDetail["last_bill_date"])),
+                paymentDetail == null
+                    ? tileItem("Due Date ", "")
+                    : tileItem("Due Date ", Utils.formatDateString(paymentDetail["due_bill_date"])),
                 tileItem("Amount", Utils.showAsMoney(amountDue)),
               ],
             ),
           ),
         ),
         SizedBox(height: 10),
-        double.parse(amountDue) > 0
+        double.parse(amountDue) > 0 && paymentDetail != null
             ? Container(
                 decoration: BoxDecoration(
                     color: selectedTheme.activeBackground.withOpacity(0.2),
@@ -158,9 +170,7 @@ class _PaymentState extends State<Payment> {
                   style: TextStyle(
                       color: Colors.grey.withOpacity(0.8), fontSize: 22.0 * textScaleFactor),
                 ))),
-            onPressed: () {
-              print("printint");
-            },
+            onPressed: () {},
             shape: new RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(30.0),
             ),
