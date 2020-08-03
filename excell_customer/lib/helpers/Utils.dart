@@ -10,15 +10,17 @@ class Utils {
       output = '0.00 GB';
     } else {
       double bytesInDouble = double.parse(bytesString);
+      // print("bytesString " + bytesString);
+      // print("bytesInDouble " + bytesInDouble.toString());
 
-      if (bytesInDouble == 0.0) output = '';
+      if (bytesInDouble == 0.0)
+        output = '';
+      else {
+        var i = (Math.log(bytesInDouble) / Math.log(1024)).floor();
 
-      var i = (Math.log(bytesInDouble) / Math.log(1024)).floor();
-
-      if (i == 0) output = bytesInDouble.toString() + ' ' + sizes[i];
-      output = (bytesInDouble / Math.pow(1024, i)).toStringAsFixed(2) +
-          ' ' +
-          sizes[i];
+        if (i == 0) output = bytesInDouble.toString() + ' ' + sizes[i];
+        output = (bytesInDouble / Math.pow(1024, i)).toStringAsFixed(2) + ' ' + sizes[i];
+      }
     }
 
     return output;
@@ -33,7 +35,7 @@ class Utils {
   }
 
   static String mbToSize(String mbString) {
-    var sizes = ['KB', 'MB', 'GB', 'TB'];
+    // var sizes = ['KB', 'MB', 'GB', 'TB'];
 
     String output = '';
     print("mbString s " + mbString);
@@ -42,20 +44,20 @@ class Utils {
     } else {
       double mbDouble = double.parse(mbString) * 1024 * 1024;
       output = bytesToSize(mbDouble.toString());
-
-      // if (mbDouble == 0)
-      //   output = '0.00';
-      // else {
-      //   // if(mbDouble < 1) mbDouble =
-      //   var i = (Math.log(mbDouble) / Math.log(1024)).floor();
-
-      //   if (i == 0) output = mbDouble.toString() + ' ' + sizes[i];
-
-      //   output =
-      //       (mbDouble / Math.pow(1024, i)).toStringAsFixed(2) + ' ' + sizes[i];
     }
 
     return output;
+
+    // if (mbDouble == 0)
+    //   output = '0.00';
+    // else {
+    //   // if(mbDouble < 1) mbDouble =
+    //   var i = (Math.log(mbDouble) / Math.log(1024)).floor();
+
+    //   if (i == 0) output = mbDouble.toString() + ' ' + sizes[i];
+
+    //   output =
+    //       (mbDouble / Math.pow(1024, i)).toStringAsFixed(2) + ' ' + sizes[i];
   }
 
   static String showAsMoney(String money, {precision: 2}) {
@@ -68,8 +70,11 @@ class Utils {
   }
 
   static String formatDateString(String unformaatedDate) {
-    return formatDate(
-        DateTime.parse(unformaatedDate), [dd, '-', M, '-', 'yyyy']);
+    return formatDate(DateTime.parse(unformaatedDate), [dd, '-', M, '-', 'yyyy']);
+  }
+
+  static String formatDateTimeString(String unformaatedDate) {
+    return formatDate(DateTime.parse(unformaatedDate), [dd, '-', M, '-', 'yyyy', ' ', 'hh', ':', 'mm']);
   }
 
   static String getDueInDaysText(String _dueDate) {
@@ -94,13 +99,9 @@ class Utils {
     return dueInDaysText;
   }
 
-  static String clipStringTo(String actualString, int maxSize,
-      {overflowWith: ". "}) {
+  static String clipStringTo(String actualString, int maxSize, {overflowWith: ". "}) {
     if (actualString.length >= maxSize)
-      return actualString.substring(0, maxSize - 3) +
-          overflowWith +
-          overflowWith +
-          overflowWith;
+      return actualString.substring(0, maxSize - 3) + overflowWith + overflowWith + overflowWith;
     else
       return actualString;
   }
