@@ -207,7 +207,7 @@ class Customer {
 
   static Future<List<dynamic>> connectionsList() async {
     List<dynamic> connectionsList;
-    final Map<String, dynamic> connectionsListResponse = await NetUtils.apiPostWithToken({
+    final Map<String, dynamic> connectionsListResponse = await NetUtilsDev.apiPostWithToken({
       "name": "getConnectionsList",
       "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId)}
     });
@@ -217,6 +217,20 @@ class Customer {
     }
 
     return connectionsList;
+  }
+
+  static Future<List<dynamic>> topupList(pkgnum) async {
+    List<dynamic> topupList;
+    final Map<String, dynamic> connectionsListResponse = await NetUtilsDev.apiPostWithToken({
+      "name": "gettopupPackages",
+      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "pkgnum": pkgnum}
+    });
+
+    if (connectionsListResponse["status"] == 200) {
+      topupList = connectionsListResponse["result"]["topuplist"];
+    }
+
+    return topupList;
   }
 
   static Future<dynamic> paymentDue() async {

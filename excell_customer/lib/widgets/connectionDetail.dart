@@ -5,6 +5,7 @@ import 'package:ExcellCustomer/helpers/Utils.dart';
 import 'package:ExcellCustomer/helpers/appStyles.dart';
 import 'package:ExcellCustomer/models/AppTheme.dart';
 import 'package:ExcellCustomer/models/enum.dart';
+import 'package:ExcellCustomer/topupsList.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
@@ -37,18 +38,14 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
   double textScaleFactor;
   @override
   Widget build(BuildContext context) {
-    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0
-        ? 1.0
-        : 0.85 / MediaQuery.of(context).textScaleFactor;
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0 ? 1.0 : 0.85 / MediaQuery.of(context).textScaleFactor;
 
     displaySize = MediaQuery.of(context).size;
     return ListView(children: <Widget>[
       Padding(
         padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
         child: Container(
-          decoration: BoxDecoration(
-              color: selectedTheme.activeBackground.withOpacity(0.2),
-              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: Padding(
             padding: EdgeInsets.all(8.0 * textScaleFactor),
             child: Column(
@@ -63,9 +60,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
       Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Container(
-          decoration: BoxDecoration(
-              color: selectedTheme.activeBackground.withOpacity(0.2),
-              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -89,18 +84,58 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
       Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Container(
-          decoration: BoxDecoration(
-              color: selectedTheme.activeBackground.withOpacity(0.2),
-              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: utilizationTile(),
         ),
       ),
       Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Container(
+            decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(12.0 * textScaleFactor),
+                child: RaisedButton(
+                  textColor: Colors.white,
+                  color: selectedTheme.primaryGradientColors[1],
+                  child: Container(
+                      height: 40,
+                      width: displaySize.width * 0.45,
+                      child: Center(
+                          child: Text(
+                        "Buy Topup",
+                        style: TextStyle(fontSize: 18.0 * textScaleFactor),
+                      ))),
+                  onPressed: () {
+                    if (connectionDetailItem["topup_eligibility"] == 1) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => TopupsList(connectionDetailItem["pkgnum"]),
+                        ),
+                      );
+                    } else if (connectionDetailItem["topup_eligibility"] == 0) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => new Dialog(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text(connectionDetailItem["topupeligibility_note"]),
+                                ),
+                              ));
+                    }
+                  },
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(30.0),
+                  ),
+                ),
+              ),
+            ),
+          )),
+      Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Container(
-          decoration: BoxDecoration(
-              color: selectedTheme.activeBackground.withOpacity(0.2),
-              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: Center(
             child: Padding(
                 padding: EdgeInsets.all(12.0 * textScaleFactor),
@@ -119,8 +154,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
                         onPressed: () {
                           setState(() {
                             showUtilization = true;
-                            usedUtilzationContainer =
-                                UtilLineChart(connectionDetailItem["ip_addr"]);
+                            usedUtilzationContainer = UtilLineChart(connectionDetailItem["ip_addr"]);
                           });
                         },
                         shape: new RoundedRectangleBorder(
@@ -140,9 +174,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
                             icons: [Icons.show_chart, Icons.list],
                             onToggle: (index) {
                               setState(() {
-                                usedUtilzationContainer = index == 1
-                                    ? UtilDataTable(connectionDetailItem["ip_addr"])
-                                    : UtilLineChart(connectionDetailItem["ip_addr"]);
+                                usedUtilzationContainer = index == 1 ? UtilDataTable(connectionDetailItem["ip_addr"]) : UtilLineChart(connectionDetailItem["ip_addr"]);
                               });
 
                               // print('switched to: $index');
@@ -157,9 +189,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
         child: usedUtilzationContainer != null
             ? Container(
                 height: 500,
-                decoration: BoxDecoration(
-                    color: selectedTheme.activeBackground.withOpacity(0.2),
-                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: usedUtilzationContainer,
@@ -191,13 +221,9 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
     if (consumedData == null)
       consumedString = "0.00 of " + Utils.bytesToSize(totalDataLimit.toString()) + " consumed ";
     else
-      consumedString = Utils.bytesToSize(consumedData.toString()) +
-          " of " +
-          Utils.bytesToSize(totalDataLimit.toString()) +
-          " used ";
+      consumedString = Utils.bytesToSize(consumedData.toString()) + " of " + Utils.bytesToSize(totalDataLimit.toString()) + " used ";
 
-    if (totalDataLimit == 0.0 && consumedData != null)
-      consumedString = Utils.bytesToSize(consumedData.toString()) + " consumed ";
+    if (totalDataLimit == 0.0 && consumedData != null) consumedString = Utils.bytesToSize(consumedData.toString()) + " consumed ";
     double containerHeight = displaySize.height * 0.065;
     return Stack(
       children: <Widget>[
@@ -206,9 +232,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
           child: Container(
             width: displaySize.width,
             height: containerHeight,
-            decoration: BoxDecoration(
-                color: selectedTheme.enabledBackground,
-                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+            decoration: BoxDecoration(color: selectedTheme.enabledBackground, borderRadius: BorderRadius.all(Radius.circular(15.0))),
           ),
         ),
         Padding(
@@ -229,11 +253,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
             children: [
               SizedBox(height: 15),
               Center(
-                child: Text(consumedString,
-                    style: TextStyle(
-                        fontSize: 20 * textScaleFactor,
-                        color: selectedTheme.primaryColor,
-                        fontWeight: FontWeight.w500)),
+                child: Text(consumedString, style: TextStyle(fontSize: 20 * textScaleFactor, color: selectedTheme.primaryColor, fontWeight: FontWeight.w500)),
               ),
             ],
           ),
@@ -249,23 +269,14 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
       padding: const EdgeInsets.only(top: 4.0, bottom: 8),
       child: Container(
           padding: EdgeInsets.all(16.0 * textScaleFactor),
-          decoration: BoxDecoration(
-              color: selectedTheme.activeBackground.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(15)),
+          decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.5), borderRadius: BorderRadius.circular(15)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(label,
-                  style: TextStyle(
-                      fontSize: 22 * textScaleFactor,
-                      color: selectedTheme.primaryColor.withOpacity(0.5),
-                      fontWeight: FontWeight.w200)),
+              Text(label, style: TextStyle(fontSize: 22 * textScaleFactor, color: selectedTheme.primaryColor.withOpacity(0.5), fontWeight: FontWeight.w200)),
               Text(
                 value,
-                style: TextStyle(
-                    fontSize: 22 * textScaleFactor,
-                    color: selectedTheme.primaryColor,
-                    fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 22 * textScaleFactor, color: selectedTheme.primaryColor, fontWeight: FontWeight.w500),
               )
             ],
           )),
