@@ -19,36 +19,40 @@ class ReceiptsList extends StatelessWidget {
     displaySize = MediaQuery.of(context).size;
     textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0 ? 1.0 : 0.85 / MediaQuery.of(context).textScaleFactor;
 
-    return ListView(
-      children: List.generate(receiptsList.length, (index) {
-        return FadeIn(
-          InkWell(
-            onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (BuildContext context) => Scaffold(
-              //       backgroundColor: selectedTheme.scaffoldBgColor,
-              //       appBar: AppBar(title: Text(receiptsList[index]["pkgname"]), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
-              //           ),
-              //       body: ConnectionDetail(
-              //         receiptsList[index],
-              //       ),
-              //     ),
-              //   ),
-              // );
-            },
-            child: receiptItem(receiptsList[index]),
-          ),
-          0.5,
-          direction: Direction.y,
-          distance: -15.0,
-        );
-      }),
+    return Container(
+      decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.circular(15)),
+      child: ListView(
+        children: List.generate(receiptsList.length, (index) {
+          return FadeIn(
+            InkWell(
+              onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (BuildContext context) => Scaffold(
+                //       backgroundColor: selectedTheme.scaffoldBgColor,
+                //       appBar: AppBar(title: Text(receiptsList[index]["pkgname"]), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
+                //           ),
+                //       body: ConnectionDetail(
+                //         receiptsList[index],
+                //       ),
+                //     ),
+                //   ),
+                // );
+              },
+              child: receiptItem(receiptsList[index]),
+            ),
+            0.5,
+            direction: Direction.y,
+            distance: -15.0,
+          );
+        }),
+      ),
     );
   }
 
   receiptItem(receiptListItem) {
+    // print("receiptListItem " + receiptListItem.toString());
     return Container(
       width: displaySize.width,
       padding: EdgeInsets.all(8.0 * textScaleFactor),
@@ -62,12 +66,12 @@ class ReceiptsList extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(Utils.formatDateTimeString(receiptListItem["paymentDate"]), style: TextStyle(color: selectedTheme.primaryColor.withOpacity(0.8), fontSize: 20 * textScaleFactor)),
+                      Text(Utils.formatDateTimeString(receiptListItem["paymentdate"]), style: TextStyle(color: selectedTheme.primaryColor.withOpacity(0.8), fontSize: 20 * textScaleFactor)),
                       Text(Utils.showAsMoney(receiptListItem["amount"]), style: TextStyle(color: selectedTheme.primaryColor, fontSize: 21 * textScaleFactor, fontWeight: FontWeight.w600)),
                     ],
                   ),
                   SizedBox(height: 10),
-                  Text("Reference No: " + receiptListItem["paymentInfo"], style: TextStyle(color: selectedTheme.primaryColor.withOpacity(0.5), fontSize: 15 * textScaleFactor)),
+                  Text("Reference No: " + receiptListItem["paymentinfo"], style: TextStyle(color: selectedTheme.primaryColor.withOpacity(0.5), fontSize: 15 * textScaleFactor)),
                 ],
               ))),
     );

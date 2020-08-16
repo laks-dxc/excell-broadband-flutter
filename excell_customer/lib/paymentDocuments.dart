@@ -23,8 +23,8 @@ class _PaymentDocumentsState extends State<PaymentDocuments> {
   Size displaySize;
   double textScaleFactor;
   static AppThemeData selectedTheme = AppStyles.getTheme(AppTheme.Light);
-  List<dynamic> invoicesList;
-  List<dynamic> recepitsList;
+  List<dynamic> invoicesList = [];
+  List<dynamic> recepitsList = [];
 
   bool invoicesDataLoaded = false;
   bool receiptsDataLoaded = false;
@@ -33,15 +33,16 @@ class _PaymentDocumentsState extends State<PaymentDocuments> {
   void initState() {
     Customer.getInvoices().then((invoices) {
       setState(() {
-        invoicesDataLoaded = true;
         invoicesList = invoices['result']['invoices'];
+        print("invoicesList " + invoicesList.toString());
+        invoicesDataLoaded = true;
       });
     });
     Customer.getReceipts().then((receipts) {
       setState(() {
-        receiptsDataLoaded = true;
         recepitsList = receipts['result']['paymentreceipts'];
-        // print('receipts  ' + receipts.toString());
+
+        receiptsDataLoaded = true;
       });
     });
     super.initState();
@@ -57,37 +58,35 @@ class _PaymentDocumentsState extends State<PaymentDocuments> {
         title: Text("My Invoices"),
         backgroundColor: selectedTheme.appBarColor,
       ),
-      body: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: FadeIn(
-                    ToggleSwitch(
-                        initialLabelIndex: 1,
-                        minWidth: displaySize.width * 0.25,
-                        cornerRadius: 20,
-                        activeBgColor: selectedTheme.primaryColor,
-                        activeTextColor: Colors.white,
-                        inactiveBgColor: Colors.grey[300], //gradientColors[1],
-                        inactiveTextColor: Colors.black87,
-                        labels: ['Invoices', 'Receipts'],
-                        icons: [Icons.list, Icons.list],
-                        onToggle: (index) {
-                          setState(() {
-                            // print(index.toString() + " is index");
-                            showDocs = index == 0 ? 'Invoice' : 'receipts';
-                          });
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: FadeIn(
+                ToggleSwitch(
+                    initialLabelIndex: 1,
+                    minWidth: displaySize.width * 0.25,
+                    cornerRadius: 20,
+                    activeBgColor: selectedTheme.primaryColor,
+                    activeTextColor: Colors.white,
+                    inactiveBgColor: Colors.grey[300], //gradientColors[1],
+                    inactiveTextColor: Colors.black87,
+                    labels: ['Invoices', 'Receipts'],
+                    icons: [Icons.list, Icons.list],
+                    onToggle: (index) {
+                      setState(() {
+                        // print(index.toString() + " is index");
+                        showDocs = index == 0 ? 'Invoice' : 'receipts';
+                      });
 
-                          // print('switched to: $index');
-                        }),
-                    0.5,
-                    translate: false),
-              ),
-              showDocs == 'Invoice' ? invoicesDataLoaded ? Expanded(child: InvoicesList(invoicesList)) : showLoader() : receiptsDataLoaded ? Expanded(child: ReceiptsList(recepitsList)) : showLoader(),
-            ],
-          )),
+                      // print('switched to: $index');
+                    }),
+                0.5,
+                translate: false),
+          ),
+          showDocWidget()
+        ],
+      ),
     );
 
     // Column(
@@ -116,6 +115,18 @@ class _PaymentDocumentsState extends State<PaymentDocuments> {
   //   //   ],
   //   // );
   // }
+
+  showDocWidget() {
+    if (showDocs == 'Invoice') {
+      if (invoicesDataLoaded)
+        return Expanded(child: InvoicesList(invoicesList));
+      else
+        return showLoader();
+    } else if (receiptsDataLoaded) {
+      return Expanded(child: ReceiptsList(recepitsList));
+    } else
+      return showLoader();
+  }
 
   showLoader() {
     return Center(

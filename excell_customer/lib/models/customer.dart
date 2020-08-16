@@ -8,6 +8,7 @@ class Customer {
   static Future<String> getInvoice(String invoiceNo) async {
     dynamic getInvoiceBody = {
       "name": "getPdfInvoice",
+      // "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "invoiceNo": invoiceNo}
       "param": {"customerId": "46888", "invoiceNo": invoiceNo}
     };
 
@@ -133,7 +134,7 @@ class Customer {
     });
 
     bool detailsReceived;
-
+    print("customerDetailsResponse " + customerDetailsResponse.toString());
     if (customerDetailsResponse["status"] == 200) {
       Map<String, dynamic> custDetails = customerDetailsResponse["result"];
 

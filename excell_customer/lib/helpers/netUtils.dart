@@ -7,8 +7,7 @@ import 'package:ExcellCustomer/models/enum.dart';
 class NetUtils {
   static String _url = 'https://app.excellbroadband.com/api/index.php';
 
-  static Future<Map<String, dynamic>> apiPostWithToken(body,
-      {String resultField = 'result', String token}) async {
+  static Future<Map<String, dynamic>> apiPostWithToken(body, {String resultField = 'result', String token}) async {
     Map<String, dynamic> apiResponse = {};
     Map<String, dynamic> response = {};
 
@@ -19,19 +18,19 @@ class NetUtils {
     request.headers.set('content-type', 'application/json');
     request.headers.set('Source', 'Android');
 
-    String _token = await StorageUtils.hasKey(StorageKey.UserToken)
-        ? await StorageUtils.getStorageItem(StorageKey.UserToken)
-        : token;
+    String _token = await StorageUtils.hasKey(StorageKey.UserToken) ? await StorageUtils.getStorageItem(StorageKey.UserToken) : token;
 
     try {
       request.headers.set('Authorization', 'Excell ' + _token);
 
       request.add(convert.utf8.encode(convert.jsonEncode(body)));
       HttpClientResponse httpCientResponse = await request.close();
-      String transformedValue =
-          await httpCientResponse.transform(convert.utf8.decoder).join();
+      String transformedValue = await httpCientResponse.transform(convert.utf8.decoder).join();
 
       apiResponse = await convert.jsonDecode(transformedValue);
+
+      print("apiResponse " + apiResponse.toString());
+
       status = apiResponse['resonse']['status'];
       response = {"status": status, "result": apiResponse['resonse']['result']};
     } catch (ex) {
@@ -58,8 +57,7 @@ class NetUtils {
       request.headers.set('Source', 'Android');
       request.add(convert.utf8.encode(convert.jsonEncode(body)));
       HttpClientResponse httpCientResponse = await request.close();
-      String transformedValue =
-          await httpCientResponse.transform(convert.utf8.decoder).join();
+      String transformedValue = await httpCientResponse.transform(convert.utf8.decoder).join();
       apiResponse = await convert.jsonDecode(transformedValue);
 
       if (apiResponse['resonse'] == null) {
@@ -67,10 +65,7 @@ class NetUtils {
         response = {"status": status, "result": null};
       } else {
         status = apiResponse['resonse']['status'];
-        response = {
-          "status": status,
-          "result": apiResponse['resonse']['result']
-        };
+        response = {"status": status, "result": apiResponse['resonse']['result']};
       }
     } catch (ex) {
       status = -1;

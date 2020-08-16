@@ -43,6 +43,7 @@ class _InvoicesListState extends State<InvoicesList> {
   );
 
   Widget openInvoiceFooterText = Text("Open Invoice");
+  static AppThemeData selectedTheme = AppStyles.getTheme(AppTheme.Light);
 
   bool fileDownloading = false;
 
@@ -51,25 +52,33 @@ class _InvoicesListState extends State<InvoicesList> {
     InvoicesList.displaySize = MediaQuery.of(context).size;
     InvoicesList.textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0 ? 1.0 : 0.85 / MediaQuery.of(context).textScaleFactor;
 
-    return ListView(
-      children: List.generate(widget.invoicesList.length, (index) {
-        return FadeIn(
-          invoiceItem(widget.invoicesList[index]),
-          0.5,
-          direction: Direction.y,
-          distance: -15.0,
-        );
-      }),
+    return Container(
+      decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.circular(15)),
+      child: ListView(
+        children: List.generate(widget.invoicesList.length, (index) {
+          return FadeIn(
+            Container(
+              // decoration: BoxDecoration(color: selectedTheme.activeBackground, borderRadius: BorderRadius.circular(15)),
+              padding: EdgeInsets.only(top: 10, bottom: 10, left: 8, right: 8),
+              child: invoiceItem(widget.invoicesList[index]),
+            ),
+            0.5,
+            direction: Direction.y,
+            distance: -15.0,
+          );
+        }),
+      ),
     );
   }
 
   invoiceItem(invoiceListItem) {
+    // print("invoiceListItem " + invoiceListItem.toString());
     return Container(
       width: InvoicesList.displaySize.width,
-      padding: EdgeInsets.all(8.0 * InvoicesList.textScaleFactor),
+      // padding: EdgeInsets.all(8.0 * InvoicesList.textScaleFactor),
+      decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.5), borderRadius: BorderRadius.circular(15)),
       child: Container(
           decoration: BoxDecoration(
-            color: InvoicesList.selectedTheme.activeBackground.withOpacity(0.5),
             borderRadius: BorderRadius.all(Radius.circular(15.0)),
           ),
           child: Padding(
@@ -80,20 +89,20 @@ class _InvoicesListState extends State<InvoicesList> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(Utils.formatDateTimeString(invoiceListItem["invoiceDate"]), style: TextStyle(color: InvoicesList.selectedTheme.primaryColor.withOpacity(0.8), fontSize: 20 * InvoicesList.textScaleFactor)),
-                      Text(Utils.showAsMoney(invoiceListItem["invoiceAmount"]), style: TextStyle(color: InvoicesList.selectedTheme.primaryColor, fontSize: 21 * InvoicesList.textScaleFactor, fontWeight: FontWeight.w600)),
+                      Text(Utils.formatDateTimeString(invoiceListItem["invoicedate"].toString()), style: TextStyle(color: InvoicesList.selectedTheme.primaryColor.withOpacity(0.8), fontSize: 20 * InvoicesList.textScaleFactor)),
+                      Text(Utils.showAsMoney(invoiceListItem["invoiceamount"].toString()), style: TextStyle(color: InvoicesList.selectedTheme.primaryColor, fontSize: 21 * InvoicesList.textScaleFactor, fontWeight: FontWeight.w600)),
                     ],
                   ),
                   SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Reference No: " + invoiceListItem["invoiceNo"], style: TextStyle(color: InvoicesList.selectedTheme.primaryColor.withOpacity(0.5), fontSize: 15 * InvoicesList.textScaleFactor)),
+                      Text("Reference No: " + invoiceListItem["invoiceno"].toString(), style: TextStyle(color: InvoicesList.selectedTheme.primaryColor.withOpacity(0.5), fontSize: 15 * InvoicesList.textScaleFactor)),
                       InkWell(
                           onTap: () async {
                             var status = await Permission.storage.status;
                             if (status.isGranted) {
-                              Dialog errorDialog = Dialog(
+                              Dialog notEligibleDialog = Dialog(
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)), //this right here
                                 child: Container(
                                   color: Colors.transparent,
@@ -105,10 +114,10 @@ class _InvoicesListState extends State<InvoicesList> {
                                 ),
                               );
 
-                              showDialog(barrierDismissible: false, context: context, builder: (BuildContext context) => errorDialog);
+                              showDialog(barrierDismissible: false, context: context, builder: (BuildContext context) => notEligibleDialog);
 
                               //
-                              await Customer.getInvoice(invoiceListItem["invoiceNo"]).then((filePath) async {
+                              await Customer.getInvoice(invoiceListItem["invoiceno"]).then((filePath) async {
                                 Navigator.pop(context);
                                 await OpenFile.open(filePath);
                               });

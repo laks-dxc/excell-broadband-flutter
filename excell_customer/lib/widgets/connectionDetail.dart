@@ -111,7 +111,12 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (BuildContext context) => TopupsList(connectionDetailItem["pkgnum"]),
+                          builder: (BuildContext context) => Scaffold(
+                            backgroundColor: selectedTheme.scaffoldBgColor,
+                            appBar: AppBar(title: Text("Select Topup"), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
+                                ),
+                            body: TopupsList(connectionDetailItem["pkgnum"].toString()),
+                          ),
                         ),
                       );
                     } else if (connectionDetailItem["topup_eligibility"] == 0) {

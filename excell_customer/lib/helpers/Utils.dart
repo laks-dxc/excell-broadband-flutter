@@ -74,6 +74,7 @@ class Utils {
   }
 
   static String formatDateTimeString(String unformaatedDate) {
+    if (unformaatedDate == null || unformaatedDate == "") return "";
     return formatDate(DateTime.parse(unformaatedDate), [dd, '-', M, '-', 'yyyy', ' ', 'hh', ':', 'mm']);
   }
 
