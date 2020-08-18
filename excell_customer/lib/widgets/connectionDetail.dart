@@ -27,7 +27,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
   Widget usedUtilzationContainer;
 
   _ConnectionDetailState(this.connectionDetailItem);
-  double consumedFactor = 0.0001;
+  num consumedFactor = 0.0001;
   bool showUtilization = false;
 
 /*
@@ -57,30 +57,45 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
           ),
         ),
       ),
-      Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Container(
-          decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: <Widget>[
-                tileItem("Plan Data", Utils.bytesToSize(connectionDetailItem["datalimit"])),
-                connectionDetailItem["paybonus"] != null
-                    ? tileItem("Pay Bonus", Utils.bytesToSize(connectionDetailItem["paybonus"]))
-                    : SizedBox(
-                        width: 0,
-                      ),
-                connectionDetailItem["topup"] != null
-                    ? tileItem("Top Up", Utils.bytesToSize(connectionDetailItem["topup"]))
-                    : SizedBox(
-                        width: 0,
-                      ),
-              ],
+      connectionDetailItem["datalimit"] != null
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: <Widget>[
+                      tileItem("Plan Data", Utils.bytesToSize(connectionDetailItem["datalimit"])),
+                      connectionDetailItem["paybonus"] != null
+                          ? tileItem("Pay Bonus", Utils.bytesToSize(connectionDetailItem["paybonus"]))
+                          : SizedBox(
+                              width: 0,
+                            ),
+                      connectionDetailItem["topup_total_gb"] != "0"
+                          ? tileItem("Total Top Ups", double.parse(connectionDetailItem["topup_total_gb"].toString()).toStringAsFixed(2) + " GB")
+                          : SizedBox(
+                              width: 0,
+                            ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: <Widget>[
+                      tileItem("Plan Type", "Unlimited"),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
       Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Container(
@@ -120,12 +135,13 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
                         ),
                       );
                     } else if (connectionDetailItem["topup_eligibility"] == 0) {
+                      print("topupeligibility_note " + connectionDetailItem["topupeligibility_note"]);
                       showDialog(
                           context: context,
                           builder: (BuildContext context) => new Dialog(
                                 child: Padding(
                                   padding: const EdgeInsets.all(12.0),
-                                  child: Text(connectionDetailItem["topupeligibility_note"]),
+                                  child: Text(connectionDetailItem["topupeligibility_note"].toString().replaceAll("|", "\n")),
                                 ),
                               ));
                     }
@@ -206,30 +222,41 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
   }
 
   Widget utilizationTile() {
-    double planData = Utils.convertToDouble(connectionDetailItem["datalimit"]);
-    double consumedData = Utils.convertToDouble(connectionDetailItem["data"]);
-    double payBonus = Utils.convertToDouble(connectionDetailItem["paybonus"]);
-    double topup = Utils.convertToDouble(connectionDetailItem["topup"]);
+    num consumedData;
+    num totalDataLimit;
 
-    double totalDataLimit = planData + payBonus + topup;
+    bool isUnlimited = connectionDetailItem["datalimit"] == null;
+    String consumedString = '';
 
-    if (totalDataLimit != 0.0 && consumedData > totalDataLimit) consumedData = totalDataLimit;
+    consumedData = connectionDetailItem["data"] == null ? 0 : int.parse(connectionDetailItem["data"]);
+    print("consumedData " + consumedData.toString());
 
-    if (consumedFactor == 0.0001 && totalDataLimit > 0)
+    if (consumedFactor == 0.0001 && !isUnlimited) {
+      totalDataLimit = connectionDetailItem["grand_total"];
+
+      totalDataLimit = totalDataLimit == 0 ? 1 : totalDataLimit;
+      consumedData = consumedData == 0 ? 1 : consumedData;
+
       Timer(Duration(seconds: 1), () {
         setState(() {
           consumedFactor = (consumedData / totalDataLimit);
         });
       });
-    String consumedString = '';
+    }
+    if (isUnlimited)
+      consumedString = Utils.bytesToSize(consumedData.toString()) + " consumed ";
+    else {
+      totalDataLimit = connectionDetailItem["grand_total"];
 
-    if (consumedData == null)
-      consumedString = "0.00 of " + Utils.bytesToSize(totalDataLimit.toString()) + " consumed ";
-    else
-      consumedString = Utils.bytesToSize(consumedData.toString()) + " of " + Utils.bytesToSize(totalDataLimit.toString()) + " used ";
+      if (consumedData == 0)
+        consumedString = "0.00 GB of " + Utils.bytesToSize(totalDataLimit.toString()) + " consumed ";
+      else {
+        consumedString = Utils.bytesToSize(consumedData.toString()) + " of " + Utils.bytesToSize(totalDataLimit.toString()) + " used ";
+      }
+    }
 
-    if (totalDataLimit == 0.0 && consumedData != null) consumedString = Utils.bytesToSize(consumedData.toString()) + " consumed ";
-    double containerHeight = displaySize.height * 0.065;
+    double containerHeight = displaySize.height * 0.070;
+
     return Stack(
       children: <Widget>[
         Padding(

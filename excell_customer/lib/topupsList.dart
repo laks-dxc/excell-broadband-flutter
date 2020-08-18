@@ -1,3 +1,4 @@
+import 'package:ExcellCustomer/helpers/Utils.dart';
 import 'package:ExcellCustomer/widgets/makePayment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -23,6 +24,9 @@ class _TopupsListState extends State<TopupsList> {
   static Size displaySize;
   String selectedTopupName;
   String paymentstring;
+  String taxAmount;
+  String basePrice;
+  String totalPrice;
   double textScaleFactor;
 
   bool topupsLoaded = false;
@@ -65,11 +69,14 @@ class _TopupsListState extends State<TopupsList> {
                         padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                         // padding: EdgeInsets.all(8.0),
                         child: InkWell(
-                            child: tileItem(this.topups[index]["pkg"], " Rs. " + this.topups[index]["price"].toString()),
+                            child: tileItem(this.topups[index]["pkg"], Utils.showAsMoney(this.topups[index]["baseprice"].toString())),
                             onTap: () {
                               setState(() {
                                 selectedTopupName = this.topups[index]["pkg"];
                                 paymentstring = this.topups[index]["paymentstring"];
+                                taxAmount = (double.parse(this.topups[index]["tax"]) * double.parse(this.topups[index]["baseprice"].toString()) * 0.01).toString();
+                                basePrice = this.topups[index]["baseprice"].toString();
+                                totalPrice = this.topups[index]["price"].toString();
                               });
                             }),
                       );
@@ -192,9 +199,58 @@ class _TopupsListState extends State<TopupsList> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Buy " + selectedTopupName),
-          content: Text(
-            "Are you sure want to proceceed ?",
+          title: Text(
+            selectedTopupName,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: Container(
+            height: displaySize.height * 0.15,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Price",
+                    ),
+                    Text(
+                      Utils.showAsMoney(basePrice.toString()),
+                    )
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Tax",
+                    ),
+                    Text(
+                      Utils.showAsMoney(taxAmount.toString()),
+                    )
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Total",
+                      style: TextStyle(color: selectedTheme.appBarColor, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      Utils.showAsMoney(totalPrice.toString()),
+                      style: TextStyle(color: selectedTheme.appBarColor, fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+                SizedBox(height: 25),
+                Text(
+                  "Are you sure you want to continue?",
+                ),
+              ],
+            ),
           ),
           actions: <Widget>[
             FlatButton(

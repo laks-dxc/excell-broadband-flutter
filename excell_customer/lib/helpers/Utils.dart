@@ -6,7 +6,7 @@ class Utils {
     var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     String output = '';
 
-    if (bytesString == null || bytesString == '0.0') {
+    if (bytesString == null || bytesString == '0.0' || bytesString == '0') {
       output = '0.00 GB';
     } else {
       double bytesInDouble = double.parse(bytesString);
