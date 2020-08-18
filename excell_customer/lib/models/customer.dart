@@ -8,28 +8,10 @@ class Customer {
   static Future<String> getInvoice(String invoiceNo) async {
     dynamic getInvoiceBody = {
       "name": "getPdfInvoice",
-      // "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "invoiceNo": invoiceNo}
-      "param": {"customerId": "46888", "invoiceNo": invoiceNo}
+      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "invoiceNo": invoiceNo}
     };
 
-    // dynamic invoiceResponse =
-
     return await NetUtilsDev.apiPostWithTokenReturnPDF(getInvoiceBody);
-
-    // return invoiceResponse;
-
-    //   if (response.contentLength == 0){
-    //     return;
-    //   }
-    //   Directory tempDir = await getTemporaryDirectory();
-    //   String tempPath = tempDir.path;
-    //   File file = new File('$tempPath/$userId.png');
-    //   await file.writeAsBytes(response.bodyBytes);
-    //   displayImage(file);
-    // }
-    // catch (value) {
-    //   print(value);
-    // }
   }
 
   static Future<Map<String, dynamic>> getInvoices() async {
@@ -50,6 +32,18 @@ class Customer {
     };
     Map<String, dynamic> invoicesResponse = await NetUtilsDev.apiPostWithToken(getReceiptBody);
     return invoicesResponse;
+  }
+
+  static Future<List<dynamic>> getConnectionLogs(pkgnum) async {
+    dynamic connectionDataLogsBody = {
+      "name": "getConnectionDataLogs",
+      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "pkgnum": pkgnum}
+    };
+    Map<String, dynamic> connectionDataLogs = await NetUtilsDev.apiPostWithToken(connectionDataLogsBody);
+    if (connectionDataLogs["status"] == 200)
+      return connectionDataLogs["result"]["connectiondatalogs"];
+    else
+      return [];
   }
 
   static Future<List> banners() async {

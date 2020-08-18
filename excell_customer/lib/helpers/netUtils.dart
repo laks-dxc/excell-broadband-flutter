@@ -29,7 +29,7 @@ class NetUtils {
 
       apiResponse = await convert.jsonDecode(transformedValue);
 
-      print("apiResponse " + apiResponse.toString());
+      // print("apiResponse " + apiResponse.toString());
 
       status = apiResponse['resonse']['status'];
       response = {"status": status, "result": apiResponse['resonse']['result']};

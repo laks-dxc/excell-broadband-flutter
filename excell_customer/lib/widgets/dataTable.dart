@@ -38,7 +38,7 @@ class _UtilDataTableState extends State<UtilDataTable> {
                 DataColumn(
                     label: Text('Date '),
                     onSort: (a, b) {
-                      print(b.toString());
+                      // print(b.toString());
                     }),
                 DataColumn(label: Text('Total'), numeric: true),
                 DataColumn(label: Text('Download'), numeric: true),
@@ -54,31 +54,15 @@ class _UtilDataTableState extends State<UtilDataTable> {
   _getDataRow() async {
     List<dynamic> usageReport = await Customer.getSmartUtilData(ipAddr);
 
-    
     List<DataRow> dataTableRowsLocal = [];
 
     var now = new DateTime.now();
 
-    String monthName = [
-      '',
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ][now.month];
+    String monthName = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][now.month];
 
     usageReport.forEach((element) {
       DataRow dataRow = DataRow(cells: [
-        DataCell(FadeIn(Text(element["date"].toString().substring(8) + "-" + monthName), 1.0,
-            distance: -5.0)),
+        DataCell(FadeIn(Text(element["date"].toString().substring(8) + "-" + monthName), 1.0, distance: -5.0)),
         DataCell(FadeIn(
           Text(Utils.mbToSize(element["total"].toString())),
           1.0,

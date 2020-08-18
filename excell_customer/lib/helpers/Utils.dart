@@ -38,7 +38,7 @@ class Utils {
     // var sizes = ['KB', 'MB', 'GB', 'TB'];
 
     String output = '';
-    print("mbString s " + mbString);
+    // print("mbString s " + mbString);
     if (mbString == null) {
       output = '0.00';
     } else {

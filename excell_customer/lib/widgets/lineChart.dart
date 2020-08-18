@@ -101,21 +101,7 @@ class _UtilLineChartState extends State<UtilLineChart> {
   LineChartData mainData(_results) {
     var now = new DateTime.now();
 
-    String monthName = [
-      '',
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ][now.month];
+    String monthName = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][now.month];
     List<int> stepValues = [
       1,
       2,
@@ -220,11 +206,9 @@ Hari
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          textStyle:
-              const TextStyle(color: Color(0xff68737d), fontWeight: FontWeight.bold, fontSize: 12),
+          textStyle: const TextStyle(color: Color(0xff68737d), fontWeight: FontWeight.bold, fontSize: 12),
           getTitles: (value) {
-            if (stepValues.indexOf(value.toInt()) != -1)
-              return value.toInt().toString() + "-" + monthName;
+            if (stepValues.indexOf(value.toInt()) != -1) return value.toInt().toString() + "-" + monthName;
 
             return '';
           },
@@ -271,28 +255,10 @@ Hari
           getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
             var now = new DateTime.now();
 
-            String monthName = [
-              '',
-              'Jan',
-              'Feb',
-              'Mar',
-              'Apr',
-              'May',
-              'Jun',
-              'Jul',
-              'Aug',
-              'Sep',
-              'Oct',
-              'Nov',
-              'Dec'
-            ][now.month];
+            String monthName = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][now.month];
             return lineBarsSpot.map((lineBarSpot) {
               return LineTooltipItem(
-                monthName +
-                    '-' +
-                    (lineBarSpot.x.floor()).toString() +
-                    '\n' +
-                    Utils.mbToSize(lineBarSpot.y.toString()),
+                monthName + '-' + (lineBarSpot.x.floor()).toString() + '\n' + Utils.mbToSize(lineBarSpot.y.toString()),
                 const TextStyle(color: Colors.black, fontWeight: FontWeight.normal),
               );
             }).toList();
@@ -347,8 +313,7 @@ Hari
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          textStyle:
-              const TextStyle(color: Color(0xff68737d), fontWeight: FontWeight.bold, fontSize: 16),
+          textStyle: const TextStyle(color: Color(0xff68737d), fontWeight: FontWeight.bold, fontSize: 16),
           getTitles: (value) {
             switch (value.toInt()) {
               case 2:
@@ -384,8 +349,7 @@ Hari
           margin: 12,
         ),
       ),
-      borderData:
-          FlBorderData(show: true, border: Border.all(color: const Color(0xff37434d), width: 1)),
+      borderData: FlBorderData(show: true, border: Border.all(color: const Color(0xff37434d), width: 1)),
       minX: 0,
       maxX: 21,
       minY: 0,
@@ -452,8 +416,8 @@ Hari
       flSpots.add(FlSpot(x, y));
     });
 
-    print("_maxY" + " " + _maxY.toString());
-    print("_minY" + " " + _minY.toString());
+    // print("_maxY" + " " + _maxY.toString());
+    // print("_minY" + " " + _minY.toString());
 
     setState(() {
       results = flSpots;

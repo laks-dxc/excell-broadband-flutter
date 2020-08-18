@@ -117,7 +117,7 @@ class _InvoicesListState extends State<InvoicesList> {
                               showDialog(barrierDismissible: false, context: context, builder: (BuildContext context) => notEligibleDialog);
 
                               //
-                              await Customer.getInvoice(invoiceListItem["invoiceno"]).then((filePath) async {
+                              await Customer.getInvoice(invoiceListItem["invoiceno"].toString()).then((filePath) async {
                                 Navigator.pop(context);
                                 await OpenFile.open(filePath);
                               });
