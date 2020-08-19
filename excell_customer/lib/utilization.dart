@@ -71,7 +71,7 @@ class _UtilizationState extends State<Utilization> {
                         icons: [Icons.show_chart, Icons.list, Icons.menu],
                         onToggle: (index) {
                           setState(() {
-                            usedUtilzationContainer = index == 0 ? UtilLineChart(connectionDetailItem["ip_addr"]) : index == 1 ? SingleChildScrollView(child: UtilDataTable(connectionDetailItem["ip_addr"])) : Timeline(connectionDetailItem["pkgnum"].toString());
+                            usedUtilzationContainer = index == 0 ? UtilLineChart(connectionDetailItem["ip_addr"]) : index == 1 ? SingleChildScrollView(child: UtilDataTable(connectionDetailItem["ip_addr"])) : Timeline(connectionDetailItem);
                           });
                         }),
                   ),
