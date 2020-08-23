@@ -259,12 +259,14 @@ class Customer {
   }
 
   static Future<List<dynamic>> getSmartUtilData(ipAddr) async {
-    final Map<String, dynamic> utilizationResponse = await NetUtils.apiPostWithToken({
+    final Map<String, dynamic> utilizationResponse = await NetUtilsDev.apiPostWithToken({
       "name": "getUsageReport",
       "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "ip": ipAddr}
     });
 
     // List<dynamic> a = ;
+
+    print(utilizationResponse["result"]["usagereport"].toString());
 
     return utilizationResponse["result"]["usagereport"];
   }

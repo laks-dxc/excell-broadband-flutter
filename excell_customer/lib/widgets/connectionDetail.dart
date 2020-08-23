@@ -214,14 +214,14 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
       });
     }
     if (isUnlimited)
-      consumedString = Utils.bytesToSize(consumedData.toString()) + " consumed ";
+      consumedString = "Total " + Utils.bytesToSize(consumedData.toString()) + " consumed ";
     else {
       totalDataLimit = connectionDetailItem["grand_total"];
 
       if (consumedData == 0)
         consumedString = "0.00 GB of " + Utils.bytesToSize(totalDataLimit.toString()) + " consumed ";
       else {
-        consumedString = Utils.bytesToSize(consumedData.toString()) + " of " + Utils.bytesToSize(totalDataLimit.toString()) + " used ";
+        consumedString = "Total " + Utils.bytesToSize(consumedData.toString()) + " of " + Utils.bytesToSize(totalDataLimit.toString()) + " used ";
       }
     }
 
@@ -259,7 +259,7 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
               ),
               SizedBox(height: 5),
               connectionDetailItem["postfup_total"].toString() != "0"
-                  ? Text("* Total includes " + Utils.bytesToSize(connectionDetailItem["postfup_total"].toString()) + " of post FUP utilization", style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12, color: selectedTheme.appBarColor))
+                  ? Text("* Includes " + Utils.bytesToSize(connectionDetailItem["postfup_total"].toString()) + " of post FUP utilization", style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12, color: selectedTheme.appBarColor))
                   : SizedBox(
                       height: 0,
                     )

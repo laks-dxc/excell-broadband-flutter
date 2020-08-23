@@ -25,6 +25,7 @@ class _TopupsListState extends State<TopupsList> {
   String selectedTopupName;
   String paymentstring;
   String taxAmount;
+  String taxLabel;
   String basePrice;
   String totalPrice;
   double textScaleFactor;
@@ -75,6 +76,7 @@ class _TopupsListState extends State<TopupsList> {
                                 selectedTopupName = this.topups[index]["pkg"];
                                 paymentstring = this.topups[index]["paymentstring"];
                                 taxAmount = (double.parse(this.topups[index]["tax"]) * double.parse(this.topups[index]["baseprice"].toString()) * 0.01).toString();
+                                taxLabel = "Tax (" + topups[index]["tax"] + " % )";
                                 basePrice = this.topups[index]["baseprice"].toString();
                                 totalPrice = this.topups[index]["price"].toString();
                               });
@@ -224,7 +226,7 @@ class _TopupsListState extends State<TopupsList> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Tax",
+                      taxLabel,
                     ),
                     Text(
                       Utils.showAsMoney(taxAmount.toString()),
