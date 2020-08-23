@@ -19,7 +19,7 @@ class PaymentDocuments extends StatefulWidget {
 }
 
 class _PaymentDocumentsState extends State<PaymentDocuments> {
-  String showDocs = 'Invoices';
+  String showDocs;
   Size displaySize;
   double textScaleFactor;
   static AppThemeData selectedTheme = AppStyles.getTheme(AppTheme.Light);
@@ -34,7 +34,7 @@ class _PaymentDocumentsState extends State<PaymentDocuments> {
     Customer.getInvoices().then((invoices) {
       setState(() {
         invoicesList = invoices['result']['invoices'];
-        print("invoicesList " + invoicesList.toString());
+        // print("invoicesList " + invoicesList.toString());
         invoicesDataLoaded = true;
       });
     });
@@ -55,7 +55,7 @@ class _PaymentDocumentsState extends State<PaymentDocuments> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Invoices"),
+        title: Text("Invoices & Receipts"),
         backgroundColor: selectedTheme.appBarColor,
       ),
       body: Column(
@@ -64,7 +64,7 @@ class _PaymentDocumentsState extends State<PaymentDocuments> {
             padding: const EdgeInsets.all(18.0),
             child: FadeIn(
                 ToggleSwitch(
-                    initialLabelIndex: 1,
+                    initialLabelIndex: 0,
                     minWidth: displaySize.width * 0.25,
                     cornerRadius: 20,
                     activeBgColor: selectedTheme.primaryColor,
@@ -117,7 +117,7 @@ class _PaymentDocumentsState extends State<PaymentDocuments> {
   // }
 
   showDocWidget() {
-    if (showDocs == 'Invoice') {
+    if (showDocs == 'Invoice' || showDocs == null) {
       if (invoicesDataLoaded)
         return Expanded(child: InvoicesList(invoicesList));
       else

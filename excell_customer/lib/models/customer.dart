@@ -1,5 +1,5 @@
 import 'package:ExcellCustomer/helpers/netUtils.dart';
-import 'package:ExcellCustomer/helpers/netUtils.dev.dart';
+// import 'package:ExcellCustomer/helpers/netUtils.dev.dart';
 
 import 'package:ExcellCustomer/helpers/storageUtils.dart';
 import 'package:ExcellCustomer/models/enum.dart';
@@ -11,7 +11,8 @@ class Customer {
       "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "invoiceNo": invoiceNo}
     };
 
-    return await NetUtilsDev.apiPostWithTokenReturnPDF(getInvoiceBody);
+    // return await NetUtilsDev.apiPostWithTokenReturnPDF(getInvoiceBody);
+    return await NetUtils.apiPostWithTokenReturnPDF(getInvoiceBody);
   }
 
   static Future<Map<String, dynamic>> getInvoices() async {
@@ -20,7 +21,8 @@ class Customer {
       "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId)}
     };
 
-    Map<String, dynamic> invoicesResponse = await NetUtilsDev.apiPostWithToken(getInvoiceBody);
+    // Map<String, dynamic> invoicesResponse = await NetUtilsDev.apiPostWithToken(getInvoiceBody);
+    Map<String, dynamic> invoicesResponse = await NetUtils.apiPostWithToken(getInvoiceBody);
 
     return invoicesResponse;
   }
@@ -30,7 +32,9 @@ class Customer {
       "name": "getAllPayreceipts",
       "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId)}
     };
-    Map<String, dynamic> invoicesResponse = await NetUtilsDev.apiPostWithToken(getReceiptBody);
+    Map<String, dynamic> invoicesResponse = await NetUtils.apiPostWithToken(getReceiptBody);
+
+    // Map<String, dynamic> invoicesResponse = await NetUtilsDev.apiPostWithToken(getReceiptBody);
     return invoicesResponse;
   }
 
@@ -39,7 +43,8 @@ class Customer {
       "name": "getConnectionDataLogs",
       "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "pkgnum": pkgnum}
     };
-    Map<String, dynamic> connectionDataLogs = await NetUtilsDev.apiPostWithToken(connectionDataLogsBody);
+    Map<String, dynamic> connectionDataLogs = await NetUtils.apiPostWithToken(connectionDataLogsBody);
+    // Map<String, dynamic> connectionDataLogs = await NetUtilsDev.apiPostWithToken(connectionDataLogsBody);
     if (connectionDataLogs["status"] == 200)
       return connectionDataLogs["result"]["connectiondatalogs"];
     else
@@ -202,7 +207,9 @@ class Customer {
 
   static Future<List<dynamic>> connectionsList() async {
     List<dynamic> connectionsList;
-    final Map<String, dynamic> connectionsListResponse = await NetUtilsDev.apiPostWithToken({
+
+    // final Map<String, dynamic> connectionsListResponse = await NetUtilsDev.apiPostWithToken({
+    final Map<String, dynamic> connectionsListResponse = await NetUtils.apiPostWithToken({
       "name": "getConnectionsList",
       "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId)}
     });
@@ -216,7 +223,9 @@ class Customer {
 
   static Future<List<dynamic>> topupList(pkgnum) async {
     List<dynamic> topupList;
-    final Map<String, dynamic> connectionsListResponse = await NetUtilsDev.apiPostWithToken({
+
+    // final Map<String, dynamic> connectionsListResponse = await NetUtilsDev.apiPostWithToken({
+    final Map<String, dynamic> connectionsListResponse = await NetUtils.apiPostWithToken({
       "name": "gettopupPackages",
       "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "pkgnum": pkgnum}
     });
@@ -259,7 +268,8 @@ class Customer {
   }
 
   static Future<List<dynamic>> getSmartUtilData(ipAddr) async {
-    final Map<String, dynamic> utilizationResponse = await NetUtilsDev.apiPostWithToken({
+    // final Map<String, dynamic> utilizationResponse = await NetUtilsDev.apiPostWithToken({
+    final Map<String, dynamic> utilizationResponse = await NetUtils.apiPostWithToken({
       "name": "getUsageReport",
       "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "ip": ipAddr}
     });
