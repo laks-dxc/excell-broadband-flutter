@@ -76,7 +76,7 @@ class _TopupsListState extends State<TopupsList> {
                                 selectedTopupName = this.topups[index]["pkg"];
                                 paymentstring = this.topups[index]["paymentstring"];
                                 taxAmount = (double.parse(this.topups[index]["tax"]) * double.parse(this.topups[index]["baseprice"].toString()) * 0.01).toString();
-                                taxLabel = "Tax (" + topups[index]["tax"] + " % )";
+                                taxLabel = "GST (" + topups[index]["tax"] + " % )";
                                 basePrice = this.topups[index]["baseprice"].toString();
                                 totalPrice = this.topups[index]["price"].toString();
                               });

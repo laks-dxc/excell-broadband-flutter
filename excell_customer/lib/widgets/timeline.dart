@@ -164,7 +164,33 @@ data_pack_notes: Post FUP Data
               isLast: index == connectionLogs.length - 1,
               alignment: TimelineAlign.left,
               lineX: 0.25,
-              indicatorStyle: IndicatorStyle(width: 40, color: selectedTheme.activeBackground, iconStyle: IconStyle(iconData: Icons.thumb_up, fontSize: 26, color: selectedTheme.primaryColor)),
+              indicatorStyle: IndicatorStyle(
+                  height: 50,
+                  width: 40,
+                  color: selectedTheme.activeBackground,
+                  indicator: Container(
+                    // width: 350,
+                    child: Image.asset(
+                      'assets/bonus_hand.png',
+                      fit: BoxFit.contain,
+                      // scale: 0.25,
+                      height: 32,
+                      width: 32,
+                    ),
+                    decoration: BoxDecoration(
+                      color: selectedTheme.activeBackground,
+                      shape: BoxShape.circle,
+                      // image: DecorationImage(
+                      //   scale: 0.05,
+                      //   fit: BoxFit.scaleDown,
+                      //   image: AssetImage(
+                      //     'assets/bonus.png',
+                      //   ),
+                      // ),
+                    ),
+                    // child: ,
+                  ),
+                  iconStyle: IconStyle(iconData: Icons.thumb_up, fontSize: 26, color: selectedTheme.primaryColor)),
               rightChild: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
@@ -314,7 +340,7 @@ data_pack_notes: Post FUP Data
                       Text(Utils.formatDateTimeString(connectionLogs[index]["data_pack_date"].toString())), //.split(" ")[0].toString()),
 
                       Text(
-                        connectionLogs[index]["data_pack_notes"].toString().replaceAll("[", "").replaceAll("]", ""),
+                        connectionLogs[index]["data_pack_notes"].toString().replaceAll("[", "").replaceAll("]", "") + ".",
                         style: TextStyle(color: selectedTheme.primaryText),
                       ),
 
