@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:launch_review/launch_review.dart';
 
 import 'helpers/appStyles.dart';
 import 'helpers/storageUtils.dart';
@@ -26,24 +27,10 @@ class _ProfileState extends State<Profile> {
   }
 
   void getProfileFields() {
-    StorageUtils.getStorageItems([
-      StorageKey.CutomerName,
-      StorageKey.MobileNo,
-      StorageKey.AltContactNo,
-      StorageKey.City,
-      StorageKey.Emailid,
-      StorageKey.Address,
-      StorageKey.City,
-      StorageKey.State
-    ]).then((storageValues) {
-      mobileNos =
-          storageValues[StorageKey.MobileNo] + ", " + storageValues[StorageKey.AltContactNo];
+    StorageUtils.getStorageItems([StorageKey.CutomerName, StorageKey.MobileNo, StorageKey.AltContactNo, StorageKey.City, StorageKey.Emailid, StorageKey.Address, StorageKey.City, StorageKey.State]).then((storageValues) {
+      mobileNos = storageValues[StorageKey.MobileNo] + ", " + storageValues[StorageKey.AltContactNo];
 
-      fullAddress = storageValues[StorageKey.Address].replaceAll(",", ", ").trim() +
-          ", " +
-          storageValues[StorageKey.City] +
-          ", " +
-          storageValues[StorageKey.State];
+      fullAddress = storageValues[StorageKey.Address].replaceAll(",", ", ").trim() + ", " + storageValues[StorageKey.City] + ", " + storageValues[StorageKey.State];
 
       setState(() {
         customerName = storageValues[StorageKey.CutomerName];
@@ -66,15 +53,13 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     displaySize = MediaQuery.of(context).size;
-    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0? 1.0:0.85/MediaQuery.of(context).textScaleFactor;
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0 ? 1.0 : 0.85 / MediaQuery.of(context).textScaleFactor;
 
     return ListView(
       children: <Widget>[
         SizedBox(height: 10),
         Container(
-          decoration: BoxDecoration(
-              color: selectedTheme.enabledBackground.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(15)),
+          decoration: BoxDecoration(color: selectedTheme.enabledBackground.withOpacity(0.3), borderRadius: BorderRadius.circular(15)),
           child: Padding(
             padding: EdgeInsets.all(16.0 * textScaleFactor),
             child: Column(
@@ -88,20 +73,22 @@ class _ProfileState extends State<Profile> {
           ),
         ),
         SizedBox(height: 10),
-        Container(
-          decoration: BoxDecoration(
-              color: selectedTheme.enabledBackground.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(15)),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: _profileItem("Rate us", Icons.star),
+        InkWell(
+          onTap: () {
+            print("tapped launch");
+            LaunchReview.launch();
+          },
+          child: Container(
+            decoration: BoxDecoration(color: selectedTheme.enabledBackground.withOpacity(0.3), borderRadius: BorderRadius.circular(15)),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: _profileItem("Rate us", Icons.star),
+            ),
           ),
         ),
         SizedBox(height: 10),
         Container(
-          decoration: BoxDecoration(
-              color: selectedTheme.enabledBackground.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(15)),
+          decoration: BoxDecoration(color: selectedTheme.enabledBackground.withOpacity(0.3), borderRadius: BorderRadius.circular(15)),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: InkWell(
@@ -127,14 +114,12 @@ class _ProfileState extends State<Profile> {
                               SizedBox(height: 10),
                               Text(
                                 "Dark Mode",
-                                style: TextStyle(
-                                    color: Colors.grey[200], fontSize: 32.0 * textScaleFactor),
+                                style: TextStyle(color: Colors.grey[200], fontSize: 32.0 * textScaleFactor),
                               ),
                               SizedBox(height: 10),
                               Text(
                                 "Coming Soon..",
-                                style: TextStyle(
-                                    color: Colors.grey[200], fontSize: 20.0 * textScaleFactor),
+                                style: TextStyle(color: Colors.grey[200], fontSize: 20.0 * textScaleFactor),
                               ),
                             ],
                           ),
@@ -163,8 +148,7 @@ class _ProfileState extends State<Profile> {
                 ))),
             onPressed: () {
               StorageUtils.clearStorage().then((bool cleared) {
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (BuildContext context) => Home()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => Home()));
               });
             },
             shape: new RoundedRectangleBorder(
@@ -200,10 +184,7 @@ class _ProfileState extends State<Profile> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     text,
-                    style: TextStyle(
-                        fontSize: 22 * textScaleFactor,
-                        color: selectedTheme.primaryColor,
-                        fontWeight: FontWeight.w500),
+                    style: TextStyle(fontSize: 22 * textScaleFactor, color: selectedTheme.primaryColor, fontWeight: FontWeight.w500),
                   ),
                 )),
             Align(

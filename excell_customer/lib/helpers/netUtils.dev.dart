@@ -11,7 +11,9 @@ import 'package:path_provider/path_provider.dart';
 
 class NetUtilsDev {
   static String platform = Platform.isIOS ? "IOS" : "Android";
-  static String _url = 'http://development.excellbroadband.com/api/index.php';
+  // static String _url = 'http://development.excellbroadband.com/api/index.php';
+
+  static String _url = 'http://development.excellbroadband.com/api/beta/index.php';
 
   static Future<Map<String, dynamic>> apiPostWithToken(body, {String resultField = 'result', String token}) async {
     Map<String, dynamic> apiResponse = {};

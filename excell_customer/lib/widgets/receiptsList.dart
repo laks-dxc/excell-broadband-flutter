@@ -71,7 +71,9 @@ class ReceiptsList extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 10),
-                  Text("Reference No: " + receiptListItem["paymentinfo"], style: TextStyle(color: selectedTheme.primaryColor.withOpacity(0.5), fontSize: 15 * textScaleFactor)),
+                  receiptListItem["paymentinfo"] == null
+                      ? Text("Payment By: " + receiptListItem["paymentby"], style: TextStyle(color: selectedTheme.primaryColor.withOpacity(0.5), fontSize: 15 * textScaleFactor))
+                      : Text("Reference No: " + receiptListItem["paymentinfo"], style: TextStyle(color: selectedTheme.primaryColor.withOpacity(0.5), fontSize: 15 * textScaleFactor)),
                 ],
               ))),
     );

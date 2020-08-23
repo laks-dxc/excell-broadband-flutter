@@ -5,7 +5,8 @@ import 'package:ExcellCustomer/helpers/storageUtils.dart';
 import 'package:ExcellCustomer/models/enum.dart';
 
 class NetUtils {
-  static String _url = 'https://app.excellbroadband.com/api/index.php';
+  // static String _url = 'https://app.excellbroadband.com/api/index.php';
+  static String _url = 'http://development.excellbroadband.com/api/beta/index.php';
 
   static Future<Map<String, dynamic>> apiPostWithToken(body, {String resultField = 'result', String token}) async {
     Map<String, dynamic> apiResponse = {};
