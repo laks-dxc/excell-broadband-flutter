@@ -1,4 +1,5 @@
 import 'dart:async';
+// import 'dart:html';
 
 import 'package:ExcellCustomer/helpers/appStyles.dart';
 import 'package:ExcellCustomer/models/AppTheme.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../payments.dart';
+// import 'dart:io' show Platform;
 
 void main() => runApp(MakePayment(''));
 

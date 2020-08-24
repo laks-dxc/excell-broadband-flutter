@@ -34,7 +34,7 @@ class _PaymentState extends State<Payment> {
       // debugPrint('SystemChannels> $msg');
 
       if (msg == AppLifecycleState.resumed.toString()) {
-        print("in resumed of payments");
+        // print("in resumed of payments");
         setState(() {
           dataLoaded = false;
         });
