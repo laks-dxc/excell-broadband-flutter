@@ -25,6 +25,12 @@ dependencies:
   firebase_messaging: ^6.0.16
   carousel_slider: ^2.2.1
   cached_network_image: ^2.2.0+1
+  path_provider: ^1.6.11
+  open_file: ^3.0.1
+  permission_handler: ^5.0.1+1
+  timeline_tile: ^0.1.2
+  launch_review: ^2.0.0
+  
 
 dev_dependencies:
   flutter_test:

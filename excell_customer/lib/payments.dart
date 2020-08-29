@@ -1,4 +1,3 @@
-import 'package:ExcellCustomer/viewInvoice.dart';
 import 'package:ExcellCustomer/widgets/makePayment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'helpers/Utils.dart';
 import 'helpers/appStyles.dart';
+import 'paymentDocuments.dart';
 import 'models/AppTheme.dart';
 import 'models/customer.dart';
 import 'models/enum.dart';
@@ -34,7 +34,7 @@ class _PaymentState extends State<Payment> {
       // debugPrint('SystemChannels> $msg');
 
       if (msg == AppLifecycleState.resumed.toString()) {
-        print("in resumed of payments");
+        // print("in resumed of payments");
         setState(() {
           dataLoaded = false;
         });
@@ -86,9 +86,7 @@ class _PaymentState extends State<Payment> {
   @override
   Widget build(BuildContext context) {
     displaySize = MediaQuery.of(context).size;
-    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0
-        ? 1.0
-        : 0.85 / MediaQuery.of(context).textScaleFactor;
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0 ? 1.0 : 0.85 / MediaQuery.of(context).textScaleFactor;
 
     return Container(
       child: dataLoaded ? showData() : showLoader(),
@@ -100,21 +98,26 @@ class _PaymentState extends State<Payment> {
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       child: ListView(children: [
         Container(
-          decoration: BoxDecoration(
-              color: selectedTheme.activeBackground.withOpacity(0.2),
-              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: <Widget>[
-                paymentDetail == null
-                    ? tileItem("Bill Date", "")
-                    : tileItem(
-                        "Bill Date", Utils.formatDateString(paymentDetail["last_bill_date"])),
-                paymentDetail == null
-                    ? tileItem("Due Date ", "")
-                    : tileItem("Due Date ", Utils.formatDateString(paymentDetail["due_bill_date"])),
+                paymentDetail == null ? tileItem("Bill Date", "") : tileItem("Bill Date", Utils.formatDateString(paymentDetail["last_bill_date"])),
+                paymentDetail == null ? tileItem("Due Date ", "") : tileItem("Due Date ", Utils.formatDateString(paymentDetail["due_bill_date"])),
                 tileItem("Amount", Utils.showAsMoney(amountDue)),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 10),
+        Container(
+          decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                paymentDetail == null ? tileItem("Next Bill Date ", "") : tileItem("Next Bill Date ", Utils.formatDateString(paymentDetail["next_bill_date"])),
               ],
             ),
           ),
@@ -122,9 +125,7 @@ class _PaymentState extends State<Payment> {
         SizedBox(height: 10),
         double.parse(amountDue) > 0 && paymentDetail != null
             ? Container(
-                decoration: BoxDecoration(
-                    color: selectedTheme.activeBackground.withOpacity(0.2),
-                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -139,13 +140,14 @@ class _PaymentState extends State<Payment> {
           height: 30,
         ),
         Padding(
-            padding: EdgeInsets.only(left: 8, right: 8),
-            child:
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //   children: <Widget>[paymentButton(double.parse(amountDue) > 0), invoiceButton()],
-                // )
-                Center(child: paymentButton(double.parse(amountDue) > 0))),
+          padding: EdgeInsets.only(left: 8, right: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[paymentButton(double.parse(amountDue) > 0), invoiceButton()],
+          ),
+          // Center(child:
+          // )
+        ),
       ]),
     );
   }
@@ -155,23 +157,14 @@ class _PaymentState extends State<Payment> {
       padding: const EdgeInsets.only(top: 4.0, bottom: 8),
       child: Container(
           padding: EdgeInsets.all(16.0 * textScaleFactor),
-          decoration: BoxDecoration(
-              color: selectedTheme.activeBackground.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(15)),
+          decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.5), borderRadius: BorderRadius.circular(15)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(label,
-                  style: TextStyle(
-                      fontSize: 22 * textScaleFactor,
-                      color: selectedTheme.primaryColor.withOpacity(0.5),
-                      fontWeight: FontWeight.w200)),
+              Text(label, style: TextStyle(fontSize: 22 * textScaleFactor, color: selectedTheme.primaryColor.withOpacity(0.5), fontWeight: FontWeight.w200)),
               Text(
                 value,
-                style: TextStyle(
-                    fontSize: 22 * textScaleFactor,
-                    color: selectedTheme.primaryColor,
-                    fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 22 * textScaleFactor, color: selectedTheme.primaryColor, fontWeight: FontWeight.w500),
               )
             ],
           )),
@@ -189,8 +182,7 @@ class _PaymentState extends State<Payment> {
                 child: Center(
                     child: Text(
                   "Pay Now",
-                  style: TextStyle(
-                      color: Colors.grey.withOpacity(0.8), fontSize: 22.0 * textScaleFactor),
+                  style: TextStyle(color: Colors.grey.withOpacity(0.8), fontSize: 22.0 * textScaleFactor),
                 ))),
             onPressed: () {},
             shape: new RoundedRectangleBorder(
@@ -209,8 +201,7 @@ class _PaymentState extends State<Payment> {
                   style: TextStyle(fontSize: 22.0 * textScaleFactor),
                 ))),
             onPressed: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (BuildContext context) => MakePayment(pgMsg)));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MakePayment(pgMsg)));
             },
             shape: new RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(30.0),
@@ -227,14 +218,11 @@ class _PaymentState extends State<Payment> {
           width: displaySize.width * 0.3,
           child: Center(
               child: Text(
-            "Invoice",
+            "My Invoices",
             style: TextStyle(fontSize: 22.0 * textScaleFactor),
           ))),
       onPressed: () {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => ViewInvoice(paymentDetail["invoiceNo"])));
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => PaymentDocuments()));
       },
       shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(30.0),
@@ -247,14 +235,9 @@ class _PaymentState extends State<Payment> {
       padding: const EdgeInsets.only(top: 4.0, bottom: 8),
       child: Container(
           padding: EdgeInsets.all(24.0),
-          decoration: BoxDecoration(
-              color: selectedTheme.activeBackground, borderRadius: BorderRadius.circular(15)),
+          decoration: BoxDecoration(color: selectedTheme.activeBackground, borderRadius: BorderRadius.circular(15)),
           child: Center(
-            child: Text(value,
-                style: TextStyle(
-                    fontSize: 22 * textScaleFactor,
-                    color: selectedTheme.primaryColor,
-                    fontWeight: FontWeight.w600)),
+            child: Text(value, style: TextStyle(fontSize: 22 * textScaleFactor, color: selectedTheme.primaryColor, fontWeight: FontWeight.w600)),
           )),
     );
   }
