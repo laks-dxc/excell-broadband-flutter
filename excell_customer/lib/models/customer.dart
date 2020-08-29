@@ -1,11 +1,59 @@
 import 'package:ExcellCustomer/helpers/netUtils.dart';
+import 'package:ExcellCustomer/helpers/netUtils.dev.dart';
+// import 'package:ExcellCustomer/helpers/netUtils.dev.dart';
+
 import 'package:ExcellCustomer/helpers/storageUtils.dart';
 import 'package:ExcellCustomer/models/enum.dart';
 
 class Customer {
+  static Future<String> getInvoice(String invoiceNo) async {
+    dynamic getInvoiceBody = {
+      "name": "getPdfInvoice",
+      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "invoiceNo": invoiceNo}
+    };
+
+    // return await NetUtilsDev.apiPostWithTokenReturnPDF(getInvoiceBody);
+    return await NetUtils.apiPostWithTokenReturnPDF(getInvoiceBody);
+  }
+
+  static Future<Map<String, dynamic>> getInvoices() async {
+    dynamic getInvoiceBody = {
+      "name": "getAllInvoices",
+      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId)}
+    };
+
+    // Map<String, dynamic> invoicesResponse = await NetUtilsDev.apiPostWithToken(getInvoiceBody);
+    Map<String, dynamic> invoicesResponse = await NetUtils.apiPostWithToken(getInvoiceBody);
+
+    return invoicesResponse;
+  }
+
+  static Future<Map<String, dynamic>> getReceipts() async {
+    dynamic getReceiptBody = {
+      "name": "getAllPayreceipts",
+      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId)}
+    };
+    Map<String, dynamic> invoicesResponse = await NetUtils.apiPostWithToken(getReceiptBody);
+
+    // Map<String, dynamic> invoicesResponse = await NetUtilsDev.apiPostWithToken(getReceiptBody);
+    return invoicesResponse;
+  }
+
+  static Future<List<dynamic>> getConnectionLogs(pkgnum) async {
+    dynamic connectionDataLogsBody = {
+      "name": "getConnectionDataLogs",
+      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "pkgnum": pkgnum}
+    };
+    Map<String, dynamic> connectionDataLogs = await NetUtils.apiPostWithToken(connectionDataLogsBody);
+    // Map<String, dynamic> connectionDataLogs = await NetUtilsDev.apiPostWithToken(connectionDataLogsBody);
+    if (connectionDataLogs["status"] == 200)
+      return connectionDataLogs["result"]["connectiondatalogs"];
+    else
+      return [];
+  }
+
   static Future<List> banners() async {
-    Map<String, dynamic> cmsBannersResponse =
-        await NetUtils.apiPostWithToken({"name": "getCMSBanners", "param": {}});
+    Map<String, dynamic> cmsBannersResponse = await NetUtils.apiPostWithToken({"name": "getCMSBanners", "param": {}});
 
     if (cmsBannersResponse["status"] == 200)
       return cmsBannersResponse["result"]["banners"];
@@ -16,10 +64,7 @@ class Customer {
   static Future<String> invoice(String invoiceNo) async {
     dynamic invoiceBody = {
       "name": "getPdfInvoice",
-      "param": {
-        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId),
-        "invoiceNo": invoiceNo
-      }
+      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "invoiceNo": invoiceNo}
     };
 
     Map<String, dynamic> pdfResponse = await NetUtils.apiPostWithToken(invoiceBody);
@@ -75,13 +120,7 @@ class Customer {
 
     dynamic body = {
       "name": "saveFBToken",
-      "param": {
-        "customerId": custId,
-        "mobileNo": mobileNo,
-        "fbToken": await StorageUtils.getStorageItem(StorageKey.FBToken),
-        "appVersion": "1.0",
-        "mobileOs": "Android"
-      }
+      "param": {"customerId": custId, "mobileNo": mobileNo, "fbToken": await StorageUtils.getStorageItem(StorageKey.FBToken), "appVersion": "1.0", "mobileOs": "Android"}
     };
 
     await NetUtils.apiPostWithToken(body);
@@ -95,7 +134,7 @@ class Customer {
     });
 
     bool detailsReceived;
-
+    print("customerDetailsResponse " + customerDetailsResponse.toString());
     if (customerDetailsResponse["status"] == 200) {
       Map<String, dynamic> custDetails = customerDetailsResponse["result"];
 
@@ -162,17 +201,15 @@ class Customer {
   static Future<int> createTicket(int issueTypeId, String issueTypeDesc) async {
     final Map<dynamic, dynamic> ticketCreatedtResponse = await NetUtils.apiPostWithToken({
       "name": "addCustTicket",
-      "param": {
-        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId),
-        "messageId": issueTypeId.toString(),
-        "message": issueTypeDesc
-      }
+      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "messageId": issueTypeId.toString(), "message": issueTypeDesc}
     });
     return ticketCreatedtResponse["status"];
   }
 
   static Future<List<dynamic>> connectionsList() async {
     List<dynamic> connectionsList;
+
+    // final Map<String, dynamic> connectionsListResponse = await NetUtilsDev.apiPostWithToken({
     final Map<String, dynamic> connectionsListResponse = await NetUtils.apiPostWithToken({
       "name": "getConnectionsList",
       "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId)}
@@ -183,6 +220,22 @@ class Customer {
     }
 
     return connectionsList;
+  }
+
+  static Future<List<dynamic>> topupList(pkgnum) async {
+    List<dynamic> topupList;
+
+    // final Map<String, dynamic> connectionsListResponse = await NetUtilsDev.apiPostWithToken({
+    final Map<String, dynamic> connectionsListResponse = await NetUtils.apiPostWithToken({
+      "name": "gettopupPackages",
+      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "pkgnum": pkgnum}
+    });
+
+    if (connectionsListResponse["status"] == 200) {
+      topupList = connectionsListResponse["result"]["topuplist"];
+    }
+
+    return topupList;
   }
 
   static Future<dynamic> paymentDue() async {
@@ -216,12 +269,15 @@ class Customer {
   }
 
   static Future<List<dynamic>> getSmartUtilData(ipAddr) async {
+    // final Map<String, dynamic> utilizationResponse = await NetUtilsDev.apiPostWithToken({
     final Map<String, dynamic> utilizationResponse = await NetUtils.apiPostWithToken({
       "name": "getUsageReport",
       "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "ip": ipAddr}
     });
 
     // List<dynamic> a = ;
+
+    print(utilizationResponse["result"]["usagereport"].toString());
 
     return utilizationResponse["result"]["usagereport"];
   }
@@ -246,30 +302,12 @@ class Customer {
     return getLocationsResponse["result"]["locations"];
   }
 
-  static Future<int> createEnquiry(
-      {String name,
-      String mobile,
-      String email,
-      String address,
-      int areaId,
-      String city,
-      int subAreaId,
-      String purpose = ""}) async {
+  static Future<int> createEnquiry({String name, String mobile, String email, String address, int areaId, String city, int subAreaId, String purpose = ""}) async {
     dynamic enquiryCreateResponse;
 
     enquiryCreateResponse = await NetUtils.apiPostWithoutToken({
       "name": "addEnquiry",
-      "param": {
-        "name": name,
-        "mobile": mobile,
-        "email": email,
-        "address": address,
-        "city": city,
-        "area_id": areaId,
-        "sub_area_id": subAreaId,
-        "purpose": purpose,
-        "source": "App"
-      }
+      "param": {"name": name, "mobile": mobile, "email": email, "address": address, "city": city, "area_id": areaId, "sub_area_id": subAreaId, "purpose": purpose, "source": "App"}
     });
 
     return int.parse(enquiryCreateResponse["status"].toString());

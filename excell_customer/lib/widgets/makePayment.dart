@@ -1,24 +1,29 @@
 import 'dart:async';
+// import 'dart:html';
 
 import 'package:ExcellCustomer/helpers/appStyles.dart';
 import 'package:ExcellCustomer/models/AppTheme.dart';
 import 'package:ExcellCustomer/models/enum.dart';
+import 'package:ExcellCustomer/topupsList.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../payments.dart';
+// import 'dart:io' show Platform;
 
 void main() => runApp(MakePayment(''));
 
 class MakePayment extends StatefulWidget {
   static const platform = const MethodChannel("test_activity");
   final String msg;
-  MakePayment(this.msg);
+  final String source;
+  final String pkgnum;
+  MakePayment(this.msg, {this.source, this.pkgnum});
 
   @override
-  _MakePaymentState createState() => _MakePaymentState(this.msg);
+  _MakePaymentState createState() => _MakePaymentState(this.msg, source: this.source, pkgnum: this.pkgnum);
 }
 
 class _MakePaymentState extends State<MakePayment> {
@@ -26,9 +31,14 @@ class _MakePaymentState extends State<MakePayment> {
 
   String msg = '';
   double amount = 00.0;
+  String source = "not set";
+  String pkgnum;
   bool isResumed = false;
-  _MakePaymentState(msg) {
-    print('msg ' + msg);
+
+  _MakePaymentState(msg, {source, pkgnum}) {
+    // print('msg ' + msg);
+    this.source = source;
+    this.pkgnum = pkgnum;
     if (msg != '') _getNewActivity({"MSG": msg});
   }
 
@@ -56,6 +66,7 @@ class _MakePaymentState extends State<MakePayment> {
 
   @override
   Widget build(BuildContext context) {
+    print("souce " + source);
     if (isResumed) {
       Timer(Duration(milliseconds: 100), () {
         Navigator.pushReplacement(
@@ -63,10 +74,9 @@ class _MakePaymentState extends State<MakePayment> {
           MaterialPageRoute(
             builder: (BuildContext context) => Scaffold(
               backgroundColor: selectedTheme.scaffoldBgColor,
-              appBar: AppBar(
-                  title: Text("Payment"), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
+              appBar: AppBar(title: source == "topups" ? Text("Select Topup") : Text("Payment"), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
                   ),
-              body: Payment(),
+              body: source == "topups" ? TopupsList(pkgnum) : Payment(),
             ),
           ),
         );

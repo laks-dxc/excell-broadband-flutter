@@ -46,9 +46,7 @@ class _MyPackagesState extends State<MyPackages> {
   @override
   Widget build(BuildContext context) {
     displaySize = MediaQuery.of(context).size;
-    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0
-        ? 1.0
-        : 0.85 / MediaQuery.of(context).textScaleFactor;
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0 ? 1.0 : 0.85 / MediaQuery.of(context).textScaleFactor;
 
     return connections != null ? showData() : showLoader();
   }
@@ -60,9 +58,7 @@ class _MyPackagesState extends State<MyPackages> {
   }
 
   showData() {
-    return connections.length > 1
-        ? connectionsListScreen()
-        : connections.length == 0 ? noConnectionsPage() : ConnectionDetail(connections[0]);
+    return connections.length > 1 ? connectionsListScreen() : connections.length == 0 ? noConnectionsPage() : ConnectionDetail(connections[0]);
   }
 
   Widget noConnectionsPage() {
@@ -83,15 +79,10 @@ class _MyPackagesState extends State<MyPackages> {
                   style: TextStyle(fontSize: 20, color: selectedTheme.primaryText),
                 ),
               ),
-              Align(
-                  alignment: Alignment(1.1, 1.0),
-                  child: Icon(Icons.cancel, size: 90, color: Colors.red.withOpacity(0.5))),
+              Align(alignment: Alignment(1.1, 1.0), child: Icon(Icons.cancel, size: 90, color: Colors.red.withOpacity(0.5))),
             ]),
             padding: EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-                color: Colors.red[200], //selectedTheme.activeBackground.withOpacity(0.4),
-                borderRadius: BorderRadius.circular(15.0),
-                border: Border.all(width: 1, color: selectedTheme.primaryGradientColors[0])),
+            decoration: BoxDecoration(color: selectedTheme.inActiveBackground, borderRadius: BorderRadius.circular(15.0), border: Border.all(width: 1, color: selectedTheme.primaryGradientColors[0])),
           ),
         ),
         // SizedBox(height: 50),
@@ -122,8 +113,11 @@ class _MyPackagesState extends State<MyPackages> {
           padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
           child: Container(
             decoration: BoxDecoration(
-                color: selectedTheme.activeBackground.withOpacity(0.2),
-                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+              color: selectedTheme.activeBackground.withOpacity(0.2),
+              borderRadius: BorderRadius.all(
+                Radius.circular(15.0),
+              ),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -136,9 +130,7 @@ class _MyPackagesState extends State<MyPackages> {
                           MaterialPageRoute(
                             builder: (BuildContext context) => Scaffold(
                               backgroundColor: selectedTheme.scaffoldBgColor,
-                              appBar: AppBar(
-                                  title: Text(connections[index]["pkgname"]),
-                                  backgroundColor: selectedTheme.appBarColor //(0xff112c75),
+                              appBar: AppBar(title: Text(connections[index]["pkgname"]), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
                                   ),
                               body: ConnectionDetail(
                                 connections[index],
@@ -163,13 +155,12 @@ class _MyPackagesState extends State<MyPackages> {
   }
 
   connectionListItemContainer(connectionListItem) {
+    print('connectionListItem["status"]  ' + connectionListItem["status"].toString());
     return Container(
       width: displaySize.width,
       padding: EdgeInsets.all(8.0 * textScaleFactor),
       child: Container(
-          decoration: BoxDecoration(
-              color: selectedTheme.activeBackground.withOpacity(0.5),
-              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          decoration: BoxDecoration(color: connectionListItem["status"].toString() == 'Active' ? selectedTheme.activeBackground : selectedTheme.inActiveBackground, borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: Padding(
               padding: EdgeInsets.all(16.0 * textScaleFactor),
               child: Column(
@@ -178,23 +169,18 @@ class _MyPackagesState extends State<MyPackages> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(Utils.clipStringTo(connectionListItem["pkgname"], 18),
-                          overflow: TextOverflow.clip,
-                          style: TextStyle(
-                              color: selectedTheme.primaryColor,
-                              fontSize: 21 * textScaleFactor,
-                              fontWeight: FontWeight.w600)),
-                      Text(connectionListItem["ip_addr"],
-                          style: TextStyle(
-                              color: selectedTheme.primaryColor.withOpacity(0.8),
-                              fontSize: 20 * textScaleFactor)),
+                      Text(Utils.clipStringTo(connectionListItem["pkgname"], 18), overflow: TextOverflow.clip, style: TextStyle(color: selectedTheme.primaryColor, fontSize: 21 * textScaleFactor, fontWeight: FontWeight.w600)),
+                      Text(connectionListItem["ip_addr"], style: TextStyle(color: selectedTheme.primaryColor.withOpacity(0.8), fontSize: 20 * textScaleFactor)),
                     ],
                   ),
                   SizedBox(height: 20),
-                  Text(connectionListItem["pkgdetail"],
-                      style: TextStyle(
-                          color: selectedTheme.primaryColor.withOpacity(0.8),
-                          fontSize: 20 * textScaleFactor))
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(connectionListItem["pkgdetail"], style: TextStyle(color: selectedTheme.primaryColor.withOpacity(0.8), fontSize: 20 * textScaleFactor)),
+                      Text(connectionListItem["status"], style: TextStyle(color: selectedTheme.primaryColor.withOpacity(0.8), fontSize: 20 * textScaleFactor)),
+                    ],
+                  ),
                 ],
               ))),
     );

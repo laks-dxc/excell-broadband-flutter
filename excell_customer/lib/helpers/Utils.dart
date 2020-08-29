@@ -6,17 +6,21 @@ class Utils {
     var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     String output = '';
 
-    if (bytesString == null || bytesString == '0.0') {
+    if (bytesString == null || bytesString == 'null' || bytesString == '0.0' || bytesString == '0') {
       output = '0.00 GB';
     } else {
       double bytesInDouble = double.parse(bytesString);
+      // print("bytesString " + bytesString);
+      // print("bytesInDouble " + bytesInDouble.toString());
 
-      if (bytesInDouble == 0.0) output = '';
+      if (bytesInDouble == 0.0)
+        output = '';
+      else {
+        var i = (Math.log(bytesInDouble) / Math.log(1024)).floor();
 
-      var i = (Math.log(bytesInDouble) / Math.log(1024)).floor();
-
-      if (i == 0) output = bytesInDouble.toString() + ' ' + sizes[i];
-      output = (bytesInDouble / Math.pow(1024, i)).toStringAsFixed(2) + ' ' + sizes[i];
+        if (i == 0) output = bytesInDouble.toString() + ' ' + sizes[i];
+        output = (bytesInDouble / Math.pow(1024, i)).toStringAsFixed(2) + ' ' + sizes[i];
+      }
     }
 
     return output;
@@ -31,26 +35,29 @@ class Utils {
   }
 
   static String mbToSize(String mbString) {
-    var sizes = ['MB', 'GB', 'TB'];
+    // var sizes = ['KB', 'MB', 'GB', 'TB'];
 
     String output = '';
-
+    // print("mbString s " + mbString);
     if (mbString == null) {
       output = '0.00';
     } else {
-      double mbDouble = double.parse(mbString);
-
-      if (mbDouble == 0)
-        output = '0.00';
-      else {
-        var i = (Math.log(mbDouble) / Math.log(1024)).floor();
-
-        if (i == 0) output = mbDouble.toString() + ' ' + sizes[i];
-
-        output = (mbDouble / Math.pow(1024, i)).toStringAsFixed(2) + ' ' + sizes[i];
-      }
+      double mbDouble = double.parse(mbString) * 1024 * 1024;
+      output = bytesToSize(mbDouble.toString());
     }
+
     return output;
+
+    // if (mbDouble == 0)
+    //   output = '0.00';
+    // else {
+    //   // if(mbDouble < 1) mbDouble =
+    //   var i = (Math.log(mbDouble) / Math.log(1024)).floor();
+
+    //   if (i == 0) output = mbDouble.toString() + ' ' + sizes[i];
+
+    //   output =
+    //       (mbDouble / Math.pow(1024, i)).toStringAsFixed(2) + ' ' + sizes[i];
   }
 
   static String showAsMoney(String money, {precision: 2}) {
@@ -64,6 +71,11 @@ class Utils {
 
   static String formatDateString(String unformaatedDate) {
     return formatDate(DateTime.parse(unformaatedDate), [dd, '-', M, '-', 'yyyy']);
+  }
+
+  static String formatDateTimeString(String unformaatedDate) {
+    if (unformaatedDate == null || unformaatedDate == "") return "";
+    return formatDate(DateTime.parse(unformaatedDate), [dd, '-', M, '-', 'yyyy', ' ', 'hh', ':', 'mm']);
   }
 
   static String getDueInDaysText(String _dueDate) {
@@ -101,7 +113,6 @@ class Utils {
     if (currentTextScaleFactor < 0) {
       //ignore: unused_local_variable
       double difference = 1.0 - currentTextScaleFactor;
-
     }
 
     return textScaleFactor;

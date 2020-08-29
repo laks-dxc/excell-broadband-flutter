@@ -58,14 +58,11 @@ class _EnquiryState extends State<Enquiry> {
   @override
   Widget build(BuildContext context) {
     displaySize = MediaQuery.of(context).size;
-    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0
-        ? 1.0
-        : 0.85 / MediaQuery.of(context).textScaleFactor;
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0 ? 1.0 : 0.85 / MediaQuery.of(context).textScaleFactor;
 
     return Scaffold(
         backgroundColor: selectedTheme.scaffoldBgColor,
-        appBar: AppBar(
-            title: Text("New Enquiry"), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
+        appBar: AppBar(title: Text("New Enquiry"), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
             ),
         body: Stack(children: [
           Align(
@@ -154,14 +151,10 @@ class _EnquiryState extends State<Enquiry> {
               Center(
                 child: Text(
                   "Your enquiry is registered. Thank you!!",
-                  style:
-                      TextStyle(fontSize: 20 * textScaleFactor, color: selectedTheme.primaryText),
+                  style: TextStyle(fontSize: 20 * textScaleFactor, color: selectedTheme.primaryText),
                 ),
               ),
-              Align(
-                  alignment: Alignment(1.1, 1.0),
-                  child: Icon(Icons.check_circle,
-                      size: 90, color: selectedTheme.activeBackground.withOpacity(0.3))),
+              Align(alignment: Alignment(1.1, 1.0), child: Icon(Icons.check_circle, size: 90, color: selectedTheme.activeBackground.withOpacity(0.3))),
             ]),
             padding: EdgeInsets.all(16.0),
             decoration: BoxDecoration(
@@ -213,9 +206,7 @@ class _EnquiryState extends State<Enquiry> {
             minLines: 5,
             maxLines: 10,
             decoration: InputDecoration(
-              border: UnderlineInputBorder(
-                  borderSide: BorderSide(width: 0.0),
-                  borderRadius: BorderRadius.all(Radius.circular(15))),
+              border: UnderlineInputBorder(borderSide: BorderSide(width: 0.0), borderRadius: BorderRadius.all(Radius.circular(15))),
               filled: true,
               fillColor: selectedTheme.enabledBackground.withOpacity(0.6),
               floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -228,10 +219,7 @@ class _EnquiryState extends State<Enquiry> {
                   size: 30 * textScaleFactor,
                 ),
               ),
-              labelStyle: TextStyle(
-                  fontSize: 22 * textScaleFactor,
-                  letterSpacing: 1.0,
-                  color: selectedTheme.primaryColor),
+              labelStyle: TextStyle(fontSize: 22 * textScaleFactor, letterSpacing: 1.0, color: selectedTheme.primaryColor),
             )),
         SizedBox(
           height: 15,
@@ -248,11 +236,7 @@ class _EnquiryState extends State<Enquiry> {
                 fillColor: selectedTheme.activeBackground.withOpacity(0.2),
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
                 labelText: "City",
-                labelStyle: TextStyle(
-                    height: 1.0,
-                    fontSize: 22 * textScaleFactor,
-                    letterSpacing: 1.0,
-                    color: Color(0xff112c75)),
+                labelStyle: TextStyle(height: 1.0, fontSize: 22 * textScaleFactor, letterSpacing: 1.0, color: Color(0xff112c75)),
               ),
             ),
             suggestionsCallback: (pattern) {
@@ -295,11 +279,7 @@ class _EnquiryState extends State<Enquiry> {
                     fillColor: selectedTheme.activeBackground.withOpacity(0.2),
                     floatingLabelBehavior: FloatingLabelBehavior.auto,
                     labelText: "Sub Area",
-                    labelStyle: TextStyle(
-                        height: 1.0,
-                        fontSize: 22 * textScaleFactor,
-                        letterSpacing: 1.0,
-                        color: Color(0xff112c75)),
+                    labelStyle: TextStyle(height: 1.0, fontSize: 22 * textScaleFactor, letterSpacing: 1.0, color: Color(0xff112c75)),
                   ),
                 ),
                 suggestionsCallback: (pattern) {
@@ -339,24 +319,21 @@ class _EnquiryState extends State<Enquiry> {
               });
             }),
             raisedButton("Continue", () {
-              Customer.createEnquiry(
-                      name: _nameController.text.trim(),
-                      mobile: _mobileController.text.trim(),
-                      email: _emailController.text.trim(),
-                      address: _addressController.text.trim(),
-                      city: _cityController.text.trim(),
-                      areaId: areaId,
-                      subAreaId: subAreaId,
-                      purpose: selectedPurpose)
-                  .then((value) {
-                if (value == 200)
-                  setState(() {
-                    currentScreen = EnquiryScreenMode.ThankYou;
-                  });
-                else {
-                  print(value);
-                }
-              });
+              if (areaId == null) {
+                showErrorMessage("Please select a city from the list");
+              } else {
+                Customer.createEnquiry(
+                        name: _nameController.text.trim(), mobile: _mobileController.text.trim(), email: _emailController.text.trim(), address: _addressController.text.trim(), city: _cityController.text.trim(), areaId: areaId, subAreaId: subAreaId, purpose: selectedPurpose)
+                    .then((value) {
+                  if (value == 200)
+                    setState(() {
+                      currentScreen = EnquiryScreenMode.ThankYou;
+                    });
+                  else {
+                    print(value);
+                  }
+                });
+              }
             })
           ],
         )
@@ -458,8 +435,7 @@ class _EnquiryState extends State<Enquiry> {
                             SizedBox(width: 20.0),
                             Text(
                               purposeList[index]["messages"],
-                              style: TextStyle(
-                                  color: selectedTheme.primaryText, fontSize: 24 * textScaleFactor),
+                              style: TextStyle(color: selectedTheme.primaryText, fontSize: 24 * textScaleFactor),
                             )
                           ],
                         ),
@@ -484,9 +460,7 @@ class _EnquiryState extends State<Enquiry> {
               inputFormatters: [],
               style: TextStyle(fontSize: 22 * textScaleFactor),
               decoration: InputDecoration(
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide(width: 0.0),
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                border: UnderlineInputBorder(borderSide: BorderSide(width: 0.0), borderRadius: BorderRadius.all(Radius.circular(15))),
                 filled: true,
                 fillColor: selectedTheme.enabledBackground.withOpacity(0.6),
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -499,10 +473,7 @@ class _EnquiryState extends State<Enquiry> {
                     size: 30,
                   ),
                 ),
-                labelStyle: TextStyle(
-                    fontSize: 22 * textScaleFactor,
-                    letterSpacing: 1.0,
-                    color: selectedTheme.primaryColor),
+                labelStyle: TextStyle(fontSize: 22 * textScaleFactor, letterSpacing: 1.0, color: selectedTheme.primaryColor),
               )),
           SizedBox(
             height: 15,
@@ -521,18 +492,13 @@ class _EnquiryState extends State<Enquiry> {
                     size: 30,
                   ),
                 ),
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide(width: 0.0),
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                border: UnderlineInputBorder(borderSide: BorderSide(width: 0.0), borderRadius: BorderRadius.all(Radius.circular(15))),
                 filled: true,
                 fillColor: selectedTheme.enabledBackground.withOpacity(0.6),
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
                 labelText: "Mobile No.",
                 counterText: "",
-                labelStyle: TextStyle(
-                    fontSize: 22 * textScaleFactor,
-                    letterSpacing: 1.0,
-                    color: selectedTheme.primaryColor),
+                labelStyle: TextStyle(fontSize: 22 * textScaleFactor, letterSpacing: 1.0, color: selectedTheme.primaryColor),
               )),
           SizedBox(
             height: 15,
@@ -550,17 +516,12 @@ class _EnquiryState extends State<Enquiry> {
                     size: 30,
                   ),
                 ),
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide(width: 0.0),
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                border: UnderlineInputBorder(borderSide: BorderSide(width: 0.0), borderRadius: BorderRadius.all(Radius.circular(15))),
                 filled: true,
                 fillColor: selectedTheme.enabledBackground.withOpacity(0.6),
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
                 labelText: "Email",
-                labelStyle: TextStyle(
-                    fontSize: 22 * textScaleFactor,
-                    letterSpacing: 1.0,
-                    color: selectedTheme.primaryColor),
+                labelStyle: TextStyle(fontSize: 22 * textScaleFactor, letterSpacing: 1.0, color: selectedTheme.primaryColor),
               )),
           SizedBox(height: 25),
           Row(
@@ -696,8 +657,7 @@ class _EnquiryState extends State<Enquiry> {
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     text,
-                    style: TextStyle(
-                        fontSize: 15 * textScaleFactor, color: selectedTheme.primaryColor),
+                    style: TextStyle(fontSize: 15 * textScaleFactor, color: selectedTheme.primaryColor),
                   ),
                 ),
               ),
