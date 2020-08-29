@@ -6,6 +6,8 @@ class AppThemeData {
   final Color disabledBackground;
   final Color enabledBackground;
   final Color activeBackground;
+  final Color inActiveBackground;
+
   final Color primaryText;
   final Color disabledText;
   final Gradient radialGradient;
@@ -13,18 +15,7 @@ class AppThemeData {
   final Color appBarColor;
   final Color scaffoldBgColor;
 
-  AppThemeData(
-      {this.primaryGradientColors,
-      this.primaryColor,
-      this.disabledBackground,
-      this.enabledBackground,
-      this.activeBackground,
-      this.primaryText,
-      this.disabledText,
-      this.radialGradient,
-      this.textColor,
-      this.scaffoldBgColor,
-      this.appBarColor});
+  AppThemeData({this.primaryGradientColors, this.primaryColor, this.disabledBackground, this.enabledBackground, this.activeBackground, this.primaryText, this.disabledText, this.radialGradient, this.textColor, this.scaffoldBgColor, this.inActiveBackground, this.appBarColor});
 
   AppThemeData copyWith(
       {List<dynamic> primaryGradientColors,
@@ -32,6 +23,7 @@ class AppThemeData {
       Color disabledBackground,
       Color enabledBackground,
       Color activeBackground,
+      Color inActiveBackground,
       Color primaryText,
       Color disabledText,
       List<Color> radialGradient,
@@ -44,6 +36,7 @@ class AppThemeData {
         disabledBackground: disabledBackground ?? this.disabledBackground,
         enabledBackground: enabledBackground ?? this.enabledBackground,
         activeBackground: activeBackground ?? this.activeBackground,
+        inActiveBackground: inActiveBackground ?? this.inActiveBackground,
         primaryText: primaryText ?? this.primaryText,
         disabledText: disabledText ?? this.disabledText,
         radialGradient: radialGradient ?? this.radialGradient,
@@ -59,6 +52,7 @@ class AppThemeData {
       'disabledBackground': disabledBackground,
       'enabledBackground': enabledBackground,
       'activeBackground': activeBackground,
+      'inActiveBackground': inActiveBackground,
       'primaryText': primaryText,
       'disabledText': disabledText,
     };
@@ -73,6 +67,7 @@ class AppThemeData {
       disabledBackground: map['disabledBackground'],
       enabledBackground: map['enabledBackground'],
       activeBackground: map['activeBackground'],
+      inActiveBackground: map['inActiveBackground'],
       primaryText: map['primaryText'],
       disabledText: map['disabledText'],
     );

@@ -42,154 +42,193 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
     textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0 ? 1.0 : 0.85 / MediaQuery.of(context).textScaleFactor;
 
     displaySize = MediaQuery.of(context).size;
-    return ListView(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-          child: Container(
-            decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
-            child: Padding(
-              padding: EdgeInsets.all(8.0 * textScaleFactor),
-              child: Column(
-                children: <Widget>[
-                  tileItem("Package", Utils.clipStringTo(connectionDetailItem["pkgname"], 20)),
-                  tileItem("Plan", connectionDetailItem["pkgdetail"]),
-                ],
-              ),
-            ),
-          ),
-        ),
-        connectionDetailItem["datalimit"] != null
-            ? Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
+    return connectionDetailItem["status"].toString() == 'Suspend'
+        ? ListView(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                 child: Container(
-                  decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                  decoration: BoxDecoration(color: selectedTheme.inActiveBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0 * textScaleFactor),
                     child: Column(
                       children: <Widget>[
-                        tileItem("Plan Data", Utils.bytesToSize(connectionDetailItem["datalimit"])),
-                        connectionDetailItem["paybonus"] != null
-                            ? tileItem("Pay Bonus", Utils.bytesToSize(connectionDetailItem["paybonus"]))
-                            : SizedBox(
-                                width: 0,
-                              ),
-                        connectionDetailItem["topup_total_gb"] != "0"
-                            ? tileItem("Total Top Ups", double.parse(connectionDetailItem["topup_total_gb"].toString()).toStringAsFixed(2) + " GB")
-                            : SizedBox(
-                                width: 0,
-                              ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            : Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Container(
-                  decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: <Widget>[
-                        tileItem("Plan Type", "Unlimited"),
+                        tileItem("Package", Utils.clipStringTo(connectionDetailItem["pkgname"], 20), inactive: true),
+                        tileItem("Plan", connectionDetailItem["pkgdetail"], inactive: true),
+                        tileItem("IP Address", connectionDetailItem["ip_addr"], inactive: true),
+                        tileItem("Status", connectionDetailItem["status"], inactive: true),
                       ],
                     ),
                   ),
                 ),
               ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-            decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
-            child: utilizationTile(),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-            decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(12.0 * textScaleFactor),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    RaisedButton(
-                      textColor: Colors.white,
-                      color: selectedTheme.primaryGradientColors[1],
-                      child: Container(
-                          height: 40,
-                          width: displaySize.width * 0.35,
-                          child: Center(
-                              child: Text(
-                            "Buy Topup",
-                            style: TextStyle(fontSize: 18.0 * textScaleFactor),
-                          ))),
-                      onPressed: () {
-                        if (connectionDetailItem["topup_eligibility"] == 1) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => Scaffold(
-                                backgroundColor: selectedTheme.scaffoldBgColor,
-                                appBar: AppBar(title: Text("Select Topup"), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
-                                    ),
-                                body: TopupsList(connectionDetailItem["pkgnum"].toString()),
-                              ),
-                            ),
-                          );
-                        } else if (connectionDetailItem["topup_eligibility"] == 0) {
-                          // print("topupeligibility_note " + connectionDetailItem["topupeligibility_note"]);
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) => new Dialog(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Text(connectionDetailItem["topupeligibility_note"].toString().replaceAll("|", "\n")),
-                                    ),
-                                  ));
-                        }
-                      },
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0),
-                      ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  decoration: BoxDecoration(color: selectedTheme.inActiveBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0 * textScaleFactor),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[tileItem("Suspended Date", Utils.formatDateString(connectionDetailItem["suspend_date"]), inactive: true), tileText("Reason:  " + connectionDetailItem["suspend_reason"].toString(), inactive: true)],
                     ),
-                    RaisedButton(
-                      textColor: Colors.white,
-                      color: selectedTheme.primaryGradientColors[1],
+                  ),
+                ),
+              ),
+            ],
+          )
+        : ListView(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                child: Container(
+                  decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0 * textScaleFactor),
+                    child: Column(
+                      children: <Widget>[
+                        tileItem("Package", Utils.clipStringTo(connectionDetailItem["pkgname"], 20)),
+                        tileItem("Plan", connectionDetailItem["pkgdetail"]),
+                        tileItem(
+                          "IP Address",
+                          connectionDetailItem["ip_addr"],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              connectionDetailItem["datalimit"] != null
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
                       child: Container(
-                          height: 40,
-                          width: displaySize.width * 0.35,
-                          child: Center(
-                              child: Text(
-                            "Utilization",
-                            style: TextStyle(fontSize: 18.0 * textScaleFactor),
-                          ))),
-                      onPressed: () {
-                        setState(() {
-                          // showUtilization = true;
-                          // usedUtilzationContainer = UtilLineChart(connectionDetailItem["ip_addr"]);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => Utilization(connectionDetailItem),
-                            ),
-                          );
-                        });
-                      },
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0),
+                        decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              tileItem("Plan Data", Utils.bytesToSize(connectionDetailItem["datalimit"])),
+                              connectionDetailItem["paybonus"] != null
+                                  ? tileItem("Pay Bonus", Utils.bytesToSize(connectionDetailItem["paybonus"]))
+                                  : SizedBox(
+                                      width: 0,
+                                    ),
+                              connectionDetailItem["topup_total_gb"] != "0"
+                                  ? tileItem("Total Top Ups", double.parse(connectionDetailItem["topup_total_gb"].toString()).toStringAsFixed(2) + " GB")
+                                  : SizedBox(
+                                      width: 0,
+                                    ),
+                            ],
+                          ),
+                        ),
                       ),
                     )
-                  ],
+                  : Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Container(
+                        decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              tileItem("Plan Type", "Unlimited"),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                  child: utilizationTile(),
                 ),
               ),
-            ),
-          ),
-        ),
-      ],
-    );
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(12.0 * textScaleFactor),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          RaisedButton(
+                            textColor: Colors.white,
+                            color: selectedTheme.primaryGradientColors[1],
+                            child: Container(
+                                height: 40,
+                                width: displaySize.width * 0.35,
+                                child: Center(
+                                    child: Text(
+                                  "Buy Topup",
+                                  style: TextStyle(fontSize: 18.0 * textScaleFactor),
+                                ))),
+                            onPressed: () {
+                              if (connectionDetailItem["topup_eligibility"] == 1) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) => Scaffold(
+                                      backgroundColor: selectedTheme.scaffoldBgColor,
+                                      appBar: AppBar(title: Text("Select Topup"), backgroundColor: selectedTheme.appBarColor //(0xff112c75),
+                                          ),
+                                      body: TopupsList(connectionDetailItem["pkgnum"].toString()),
+                                    ),
+                                  ),
+                                );
+                              } else if (connectionDetailItem["topup_eligibility"] == 0) {
+                                // print("topupeligibility_note " + connectionDetailItem["topupeligibility_note"]);
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) => new Dialog(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: Text(connectionDetailItem["topupeligibility_note"].toString().replaceAll("|", "\n")),
+                                          ),
+                                        ));
+                              }
+                            },
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0),
+                            ),
+                          ),
+                          RaisedButton(
+                            textColor: Colors.white,
+                            color: selectedTheme.primaryGradientColors[1],
+                            child: Container(
+                                height: 40,
+                                width: displaySize.width * 0.35,
+                                child: Center(
+                                    child: Text(
+                                  "Utilization",
+                                  style: TextStyle(fontSize: 18.0 * textScaleFactor),
+                                ))),
+                            onPressed: () {
+                              setState(() {
+                                // showUtilization = true;
+                                // usedUtilzationContainer = UtilLineChart(connectionDetailItem["ip_addr"]);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) => Utilization(connectionDetailItem),
+                                  ),
+                                );
+                              });
+                            },
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
   }
 
   Widget utilizationTile() {
@@ -272,12 +311,12 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
     );
   }
 
-  Widget tileItem(label, value) {
+  Widget tileItem(label, value, {inactive: false}) {
     return Padding(
       padding: const EdgeInsets.only(top: 4.0, bottom: 8),
       child: Container(
           padding: EdgeInsets.all(16.0 * textScaleFactor),
-          decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.5), borderRadius: BorderRadius.circular(15)),
+          decoration: BoxDecoration(color: inactive ? selectedTheme.inActiveBackground.withOpacity(0.5) : selectedTheme.activeBackground.withOpacity(0.5), borderRadius: BorderRadius.circular(15)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -285,6 +324,27 @@ class _ConnectionDetailState extends State<ConnectionDetail> {
               Text(
                 value,
                 style: TextStyle(fontSize: 22 * textScaleFactor, color: selectedTheme.primaryColor, fontWeight: FontWeight.w500),
+              )
+            ],
+          )),
+    );
+  }
+
+  Widget tileText(text, {inactive: false}) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4.0, bottom: 8),
+      child: Container(
+          // height: text.toString().length * 2.0 * textScaleFactor,
+          padding: EdgeInsets.all(16.0 * textScaleFactor),
+          decoration: BoxDecoration(color: inactive ? selectedTheme.inActiveBackground.withOpacity(0.5) : selectedTheme.activeBackground.withOpacity(0.5), borderRadius: BorderRadius.circular(15)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              // Text(label, style: TextStyle(fontSize: 22 * textScaleFactor, color: selectedTheme.primaryColor.withOpacity(0.5), fontWeight: FontWeight.w200)),
+              Text(
+                text,
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 22 * textScaleFactor, color: selectedTheme.primaryColor.withOpacity(0.5), fontWeight: FontWeight.w500),
               )
             ],
           )),

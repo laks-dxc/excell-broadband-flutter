@@ -82,10 +82,7 @@ class _MyPackagesState extends State<MyPackages> {
               Align(alignment: Alignment(1.1, 1.0), child: Icon(Icons.cancel, size: 90, color: Colors.red.withOpacity(0.5))),
             ]),
             padding: EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-                color: Colors.red[200], //selectedTheme.activeBackground.withOpacity(0.4),
-                borderRadius: BorderRadius.circular(15.0),
-                border: Border.all(width: 1, color: selectedTheme.primaryGradientColors[0])),
+            decoration: BoxDecoration(color: selectedTheme.inActiveBackground, borderRadius: BorderRadius.circular(15.0), border: Border.all(width: 1, color: selectedTheme.primaryGradientColors[0])),
           ),
         ),
         // SizedBox(height: 50),
@@ -115,7 +112,12 @@ class _MyPackagesState extends State<MyPackages> {
         Padding(
           padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
           child: Container(
-            decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.2), borderRadius: BorderRadius.all(Radius.circular(15.0))),
+            decoration: BoxDecoration(
+              color: selectedTheme.activeBackground.withOpacity(0.2),
+              borderRadius: BorderRadius.all(
+                Radius.circular(15.0),
+              ),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -153,11 +155,12 @@ class _MyPackagesState extends State<MyPackages> {
   }
 
   connectionListItemContainer(connectionListItem) {
+    print('connectionListItem["status"]  ' + connectionListItem["status"].toString());
     return Container(
       width: displaySize.width,
       padding: EdgeInsets.all(8.0 * textScaleFactor),
       child: Container(
-          decoration: BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.5), borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          decoration: BoxDecoration(color: connectionListItem["status"].toString() == 'Active' ? selectedTheme.activeBackground : selectedTheme.inActiveBackground, borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: Padding(
               padding: EdgeInsets.all(16.0 * textScaleFactor),
               child: Column(
@@ -171,7 +174,13 @@ class _MyPackagesState extends State<MyPackages> {
                     ],
                   ),
                   SizedBox(height: 20),
-                  Text(connectionListItem["pkgdetail"], style: TextStyle(color: selectedTheme.primaryColor.withOpacity(0.8), fontSize: 20 * textScaleFactor))
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(connectionListItem["pkgdetail"], style: TextStyle(color: selectedTheme.primaryColor.withOpacity(0.8), fontSize: 20 * textScaleFactor)),
+                      Text(connectionListItem["status"], style: TextStyle(color: selectedTheme.primaryColor.withOpacity(0.8), fontSize: 20 * textScaleFactor)),
+                    ],
+                  ),
                 ],
               ))),
     );
