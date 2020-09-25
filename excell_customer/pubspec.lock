@@ -97,7 +97,7 @@ packages:
     description:
       name: date_format
       url: "https://pub.dartlang.org"
-    source: hosted 
+    source: hosted
     version: "1.0.8"
   equatable:
     dependency: transitive
