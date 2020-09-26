@@ -49,8 +49,7 @@ class _HomeState extends State<Home> {
   }
 
   void iosPermission() {
-    _firebaseMessaging.requestNotificationPermissions(
-        IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.requestNotificationPermissions(IosNotificationSettings(sound: true, badge: true, alert: true));
     _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
       print("Settings registered: $settings");
     });
@@ -73,7 +72,14 @@ class _HomeState extends State<Home> {
         alignment: Alignment.topCenter,
         children: <Widget>[
           FadeIn(
-            Align(alignment: Alignment.topCenter, child: Image.asset('assets/blue_bg_full.png')),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Image.asset(
+                'assets/blue_bg_full.png',
+                // height: displaySize.height * 0.5,
+                // width: displaySize.width,
+              ),
+            ),
             0.5,
             direction: Direction.y,
             distance: -10,
@@ -83,8 +89,8 @@ class _HomeState extends State<Home> {
             child: Container(
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: displaySize.height * 0.1),
-                  SizedBox(height: displaySize.height * 0.235),
+                  SizedBox(height: displaySize.height * 0.37),
+                  // SizedBox(height: displaySize.height * 0.23),
                   Expanded(
                     child: ListView(
                       children: <Widget>[
@@ -96,15 +102,7 @@ class _HomeState extends State<Home> {
                                 GestureDetector(
                                   onTap: () async {
                                     bool isCustomerLoggedIn = await Customer.isLoggedIn();
-                                    isCustomerLoggedIn
-                                        ? Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (BuildContext context) => DrawerPage()))
-                                        : showDialog(
-                                            barrierDismissible: false,
-                                            context: context,
-                                            builder: (BuildContext context) => LoginModal());
+                                    isCustomerLoggedIn ? Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => DrawerPage())) : showDialog(barrierDismissible: false, context: context, builder: (BuildContext context) => LoginModal());
                                   },
                                   child: _homeTile(Image.asset('assets/11.png'), "Account"),
                                 ),
@@ -114,10 +112,7 @@ class _HomeState extends State<Home> {
                             FadeIn(
                                 GestureDetector(
                                     onTap: () {
-                                      showDialog(
-                                          barrierDismissible: false,
-                                          context: context,
-                                          builder: (BuildContext context) => QuickPayModal());
+                                      showDialog(barrierDismissible: false, context: context, builder: (BuildContext context) => QuickPayModal());
                                     },
                                     child: _homeTile(Image.asset('assets/22.png'), "Quick Pay")),
                                 1.0,
@@ -132,10 +127,7 @@ class _HomeState extends State<Home> {
                             FadeIn(
                                 GestureDetector(
                                     onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) => PackageList()));
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => PackageList()));
                                     },
                                     child: _homeTile(Image.asset('assets/33.png'), "Packages")),
                                 1.0,
@@ -144,10 +136,7 @@ class _HomeState extends State<Home> {
                             FadeIn(
                                 GestureDetector(
                                     onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) => Enquiry()));
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Enquiry()));
                                     },
                                     child: _homeTile(Image.asset('assets/44.png'), "Enquiry")),
                                 1.0,
