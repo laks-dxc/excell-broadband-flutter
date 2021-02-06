@@ -221,16 +221,21 @@ class Customer {
   }
 
   static Future<Map<String, dynamic>> issueTypes() async {
+    // final Map<String, dynamic> ticketsListResponse =
+    //     await NetUtils.apiPostWithToken({
+    //   "name": "getIssueTypes",
+    //   "param": {"issues": "all"}
+    // });
+
     final Map<String, dynamic> ticketsListResponse =
-        await NetUtils.apiPostWithToken({
-      "name": "getIssueTypes",
-      "param": {"issues": "all"}
-    });
+        await NetUtils.apiPostWithToken(
+            {"name": "getTicketTypes", "param": {}});
 
     Map<String, dynamic> issueTypes;
 
     if (ticketsListResponse["status"] == 200) {
-      List<dynamic> issueTypeList = ticketsListResponse["result"]["issuetypes"];
+      List<dynamic> issueTypeList =
+          ticketsListResponse["result"]["tickettypes"];
 
       issueTypes = {"issueTypes": issueTypeList};
     } else {
@@ -240,16 +245,29 @@ class Customer {
     return issueTypes;
   }
 
-  static Future<int> createTicket(int issueTypeId, String issueTypeDesc) async {
+  static Future<int> createTicket(
+      int issueTypeId, String issueTypeDesc, String issueDescription) async {
     final Map<dynamic, dynamic> ticketCreatedtResponse =
         await NetUtils.apiPostWithToken({
       "name": "addCustTicket",
       "param": {
         "customerId": await StorageUtils.getStorageItem(StorageKey.CustId),
         "messageId": issueTypeId.toString(),
-        "message": issueTypeDesc
+        "message": issueTypeDesc,
+        "issueDescription": issueDescription
       }
     });
+
+    print({
+      "name": "addCustTicket",
+      "param": {
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId),
+        "messageId": issueTypeId.toString(),
+        "message": issueTypeDesc,
+        "issueDescription": issueDescription
+      }
+    }.toString());
+
     return ticketCreatedtResponse["status"];
   }
 

@@ -26,6 +26,9 @@ class _SupportState extends State<Support> {
 
   bool showNewSupportRequestScreen = false;
 
+  TextEditingController issueDescriptionController = TextEditingController();
+  String issueDescription = "Issue Description";
+
   @override
   void initState() {
     getSupportState();
@@ -75,7 +78,8 @@ class _SupportState extends State<Support> {
 
           ticket = ticketsList["ticketsList"][0];
           supportText += "Your ticket Id. " + ticket["id"].toString() + " ";
-          supportText += ticket["problem"] != null ? " for " + ticket["problem"] : "";
+          supportText +=
+              ticket["problem"] != null ? " for " + ticket["problem"] : "";
           supportText += ticket["problem"] != null ? "" : "\n";
 
           supportText += " created on ";
@@ -105,109 +109,176 @@ class _SupportState extends State<Support> {
   }
 
   Widget newTicketScreen() {
-    return Container(
+    return SingleChildScrollView(
       padding: EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-          color: selectedTheme.enabledBackground.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(15)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "Create new support request for ",
-            style: TextStyle(fontSize: 24, color: selectedTheme.primaryText),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Column(
-            children: List.generate(issueTypes.length, (index) {
-              return FadeIn(
-                GestureDetector(
-                  onTap: () {
-
-                    setState(() {
-                      selectedIssueTypeId = issueTypes[index]["id"];
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      padding: EdgeInsets.all(8.0),
-                      decoration: selectedIssueTypeId == issueTypes[index]["id"]
-                          ? BoxDecoration(
-                              color: selectedTheme.activeBackground.withOpacity(0.4),
-                              borderRadius: BorderRadius.circular(15.0),
-                              border: Border.all(
-                                  width: 1, color: selectedTheme.primaryGradientColors[0]))
-                          : BoxDecoration(
-                              color: selectedTheme.activeBackground.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(15.0),
-                              border: Border.all(width: 1, color: Colors.grey[400])),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          AnimatedContainer(
-                            duration: Duration(milliseconds: 300),
-                            decoration: selectedIssueTypeId == issueTypes[index]["id"]
-                                ? BoxDecoration(
-                                    color: selectedTheme.activeBackground,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      width: 1.0,
-                                    ))
-                                : BoxDecoration(
-                                    color: selectedTheme.activeBackground.withOpacity(0.5),
-                                    shape: BoxShape.circle,
-                                  ),
-                            width: 60.0,
-                            height: 60.0,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Center(
-                                child: selectedIssueTypeId == issueTypes[index]["id"]
-                                    ? FadeIn(
-                                        Icon(
-                                          Icons.check,
-                                          size: 35,
-                                          color: selectedTheme.primaryColor,
+      child: Container(
+        decoration: BoxDecoration(
+            color: selectedTheme.enabledBackground.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(15)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "Create new support request for ",
+              style: TextStyle(fontSize: 20, color: selectedTheme.primaryText),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Column(
+              children: List.generate(issueTypes.length, (index) {
+                return FadeIn(
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedIssueTypeId = issueTypes[index]["id"];
+                        print(selectedIssueTypeId.toString() +
+                            " is the issue type id");
+                        issueDescription = issueTypes[index]["ticket_desc"];
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        padding: EdgeInsets.only(
+                            top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                        decoration: selectedIssueTypeId ==
+                                issueTypes[index]["id"]
+                            ? BoxDecoration(
+                                color: selectedTheme.activeBackground
+                                    .withOpacity(0.4),
+                                borderRadius: BorderRadius.circular(8.0),
+                                border: Border.all(
+                                    width: 1,
+                                    color:
+                                        selectedTheme.primaryGradientColors[0]))
+                            : BoxDecoration(
+                                color: selectedTheme.activeBackground
+                                    .withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8.0),
+                                border: Border.all(
+                                    width: 1, color: Colors.grey[400])),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
+                              decoration:
+                                  selectedIssueTypeId == issueTypes[index]["id"]
+                                      ? BoxDecoration(
+                                          color: selectedTheme.activeBackground,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            width: 1.0,
+                                          ))
+                                      : BoxDecoration(
+                                          color: selectedTheme.activeBackground
+                                              .withOpacity(0.5),
+                                          shape: BoxShape.circle,
                                         ),
-                                        0.2,
-                                        translate: false,
-                                      )
-                                    : null,
+                              width: 26.0,
+                              height: 26.0,
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: Center(
+                                  child: selectedIssueTypeId ==
+                                          issueTypes[index]["id"]
+                                      ? FadeIn(
+                                          Icon(
+                                            Icons.check,
+                                            size: 18,
+                                            color: selectedTheme.primaryColor,
+                                          ),
+                                          0.2,
+                                          translate: false,
+                                        )
+                                      : null,
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(width: 20.0),
-                          Text(
-                            issueTypes[index]["messages"],
-                            style: TextStyle(color: selectedTheme.primaryText, fontSize: 24),
-                          )
-                        ],
+                            SizedBox(width: 20.0),
+                            Text(
+                              issueTypes[index]["ticket_type"],
+                              style: TextStyle(
+                                  color: selectedTheme.primaryText,
+                                  fontSize: 18),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
+                  index * 0.2,
+                  direction: Direction.y,
+                  distance: -20,
+                );
+              }),
+            ),
+            SizedBox(height: 10),
+            // Text("Yo Buddy"),
+
+            TextFormField(
+              onChanged: (_customerId) {},
+              minLines: 5,
+              maxLines: 10,
+              // focusNode: focusCustomerId,
+              keyboardType: TextInputType.multiline,
+              controller: issueDescriptionController,
+              maxLength: 100,
+              autocorrect: false,
+              onSaved: (a) {
+                // _loginFormKey.
+              },
+              style: TextStyle(
+                  height: 1.0,
+
+                  // letterSpacing: 7.0,
+                  fontSize: 20.0,
+                  color: selectedTheme.primaryColor),
+              cursorColor: Colors.black38,
+              decoration: InputDecoration(
+                counterText: "",
+                // counterStyle: TextStyle(fontSize: 0),
+                // contentPadding:
+                //     new EdgeInsets.symmetric(vertical: 45.0, horizontal: 8.0),
+                filled: true,
+                fillColor: selectedTheme.activeBackground.withOpacity(0.2),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.blue[50],
+                  ),
                 ),
-                index * 0.5,
-                direction: Direction.y,
-                distance: -20,
-              );
-            }),
-          ),
-          SizedBox(height: 30),
-          FadeIn(
-              Center(
-                child: selectedIssueTypeId == null || isProcessing == true
-                    ? disabledButton()
-                    : enabledButton(),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.black,
+                  ),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                labelText: issueDescription,
+                labelStyle: TextStyle(
+                    height: 1.0,
+                    letterSpacing: 1.0,
+                    color: selectedTheme.primaryColor),
               ),
-              (issueTypes.length + 1.0),
-              direction: Direction.y,
-              distance: 10.0)
-        ],
+              enableInteractiveSelection: true,
+              onFieldSubmitted: (v) {
+                // FocusScope.of(context).requestFocus(focusMobileNo);
+              },
+            ),
+            SizedBox(height: 30),
+            FadeIn(
+                Center(
+                  child: selectedIssueTypeId == null || isProcessing == true
+                      ? disabledButton()
+                      : enabledButton(),
+                ),
+                (issueTypes.length + 0.1),
+                direction: Direction.y,
+                distance: 10.0)
+          ],
+        ),
       ),
     );
   }
@@ -265,19 +336,23 @@ class _SupportState extends State<Support> {
               Center(
                 child: Text(
                   "No active support requests found",
-                  style: TextStyle(fontSize: 20, color: selectedTheme.primaryText),
+                  style:
+                      TextStyle(fontSize: 20, color: selectedTheme.primaryText),
                 ),
               ),
               Align(
                   alignment: Alignment(1.1, 1.0),
                   child: Icon(Icons.check_circle,
-                      size: 90, color: selectedTheme.activeBackground.withOpacity(0.3))),
+                      size: 90,
+                      color: selectedTheme.activeBackground.withOpacity(0.3))),
             ]),
             padding: EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-                color: Colors.green[50], //selectedTheme.activeBackground.withOpacity(0.4),
+                color: Colors.green[
+                    50], //selectedTheme.activeBackground.withOpacity(0.4),
                 borderRadius: BorderRadius.circular(15.0),
-                border: Border.all(width: 1, color: selectedTheme.primaryGradientColors[0])),
+                border: Border.all(
+                    width: 1, color: selectedTheme.primaryGradientColors[0])),
           ),
         ),
         SizedBox(height: 50),
@@ -309,8 +384,16 @@ class _SupportState extends State<Support> {
     setState(() {
       isProcessing = true;
     });
-    Customer.createTicket(selectedIssueTypeId,
-            issueTypes.firstWhere((element) => element["id"] == selectedIssueTypeId)["messages"])
+
+    print(issueTypes
+        .firstWhere((element) => element["id"] == selectedIssueTypeId)
+        .toString());
+
+    Customer.createTicket(
+            selectedIssueTypeId,
+            issueTypes.firstWhere((element) =>
+                element["id"] == selectedIssueTypeId)["ticket_type"],
+            issueDescriptionController.text)
         .then((int ticketCreationStatus) {
       if (ticketCreationStatus == 200 || ticketCreationStatus == 108)
         getSupportState();
@@ -332,7 +415,8 @@ class _SupportState extends State<Support> {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   supportText,
-                  style: TextStyle(color: selectedTheme.primaryText, fontSize: 25),
+                  style:
+                      TextStyle(color: selectedTheme.primaryText, fontSize: 25),
                 ),
               ),
             ),
@@ -345,7 +429,8 @@ class _SupportState extends State<Support> {
               Align(
                   alignment: Alignment(1.0, -0.9),
                   child: Icon(Icons.check_circle,
-                      size: 200, color: selectedTheme.primaryText.withOpacity(0.1))),
+                      size: 200,
+                      color: selectedTheme.primaryText.withOpacity(0.1))),
               1.0,
               translate: false,
               duration: 1.5)
