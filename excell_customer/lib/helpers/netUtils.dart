@@ -12,6 +12,8 @@ import 'package:path_provider/path_provider.dart';
 class NetUtils {
   static String platform = Platform.isIOS ? "IOS" : "Android";
   static String _url = 'https://app.excellbroadband.com/api/index.php';
+  // static String _url =
+  // 'http://development.excellbroadband.com/api/beta/index.php';
 
   // static Future<Map<String, dynamic>> apiPostWithTokenv1(body, {String resultField = 'result', String token}) async {
   //   Map<String, dynamic> apiResponse = {};
@@ -84,7 +86,8 @@ class NetUtils {
   //   return response;
   // }
 
-  static Future<Map<String, dynamic>> apiPostWithToken(body, {String resultField = 'result', String token}) async {
+  static Future<Map<String, dynamic>> apiPostWithToken(body,
+      {String resultField = 'result', String token}) async {
     Map<String, dynamic> apiResponse = {};
     Map<String, dynamic> response = {};
 
@@ -95,14 +98,17 @@ class NetUtils {
     request.headers.set('content-type', 'application/json');
     request.headers.set('Source', platform);
 
-    String _token = await StorageUtils.hasKey(StorageKey.UserToken) ? await StorageUtils.getStorageItem(StorageKey.UserToken) : token;
+    String _token = await StorageUtils.hasKey(StorageKey.UserToken)
+        ? await StorageUtils.getStorageItem(StorageKey.UserToken)
+        : token;
 
     try {
       request.headers.set('Authorization', 'Excell ' + _token);
 
       request.add(convert.utf8.encode(convert.jsonEncode(body)));
       HttpClientResponse httpCientResponse = await request.close();
-      String transformedValue = await httpCientResponse.transform(convert.utf8.decoder).join();
+      String transformedValue =
+          await httpCientResponse.transform(convert.utf8.decoder).join();
 
       apiResponse = await convert.jsonDecode(transformedValue);
       status = apiResponse['resonse']['status'];
@@ -117,12 +123,21 @@ class NetUtils {
     return response;
   }
 
-  static Future<String> apiPostWithTokenReturnPDF(body, {String resultField = 'result', String token}) async {
+  static Future<String> apiPostWithTokenReturnPDF(body,
+      {String resultField = 'result', String token}) async {
     var uri = Uri.parse(_url);
 
-    String _token = await StorageUtils.hasKey(StorageKey.UserToken) ? await StorageUtils.getStorageItem(StorageKey.UserToken) : token;
+    String _token = await StorageUtils.hasKey(StorageKey.UserToken)
+        ? await StorageUtils.getStorageItem(StorageKey.UserToken)
+        : token;
 
-    final response = await http.post(uri, headers: {"Content-Type": "application/json", 'Source': platform, 'Authorization': 'Excell ' + _token}, body: convert.utf8.encode(json.encode(body)));
+    final response = await http.post(uri,
+        headers: {
+          "Content-Type": "application/json",
+          'Source': platform,
+          'Authorization': 'Excell ' + _token
+        },
+        body: convert.utf8.encode(json.encode(body)));
 
     Directory appsDir = await getApplicationDocumentsDirectory();
     String appsDirPath = appsDir.path;
@@ -156,7 +171,8 @@ class NetUtils {
       request.headers.set('Ios_Version', '1');
       request.add(convert.utf8.encode(convert.jsonEncode(body)));
       HttpClientResponse httpCientResponse = await request.close();
-      String transformedValue = await httpCientResponse.transform(convert.utf8.decoder).join();
+      String transformedValue =
+          await httpCientResponse.transform(convert.utf8.decoder).join();
       apiResponse = await convert.jsonDecode(transformedValue);
 
       if (apiResponse['resonse'] == null) {
@@ -164,7 +180,10 @@ class NetUtils {
         response = {"status": status, "result": null};
       } else {
         status = apiResponse['resonse']['status'];
-        response = {"status": status, "result": apiResponse['resonse']['result']};
+        response = {
+          "status": status,
+          "result": apiResponse['resonse']['result']
+        };
       }
     } catch (ex) {
       status = -1;

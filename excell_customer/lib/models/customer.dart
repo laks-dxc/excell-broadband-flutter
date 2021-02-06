@@ -9,7 +9,10 @@ class Customer {
   static Future<String> getInvoice(String invoiceNo) async {
     dynamic getInvoiceBody = {
       "name": "getPdfInvoice",
-      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "invoiceNo": invoiceNo}
+      "param": {
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId),
+        "invoiceNo": invoiceNo
+      }
     };
 
     // return await NetUtilsDev.apiPostWithTokenReturnPDF(getInvoiceBody);
@@ -19,11 +22,14 @@ class Customer {
   static Future<Map<String, dynamic>> getInvoices() async {
     dynamic getInvoiceBody = {
       "name": "getAllInvoices",
-      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId)}
+      "param": {
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId)
+      }
     };
 
     // Map<String, dynamic> invoicesResponse = await NetUtilsDev.apiPostWithToken(getInvoiceBody);
-    Map<String, dynamic> invoicesResponse = await NetUtils.apiPostWithToken(getInvoiceBody);
+    Map<String, dynamic> invoicesResponse =
+        await NetUtils.apiPostWithToken(getInvoiceBody);
 
     return invoicesResponse;
   }
@@ -31,9 +37,12 @@ class Customer {
   static Future<Map<String, dynamic>> getReceipts() async {
     dynamic getReceiptBody = {
       "name": "getAllPayreceipts",
-      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId)}
+      "param": {
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId)
+      }
     };
-    Map<String, dynamic> invoicesResponse = await NetUtils.apiPostWithToken(getReceiptBody);
+    Map<String, dynamic> invoicesResponse =
+        await NetUtils.apiPostWithToken(getReceiptBody);
 
     // Map<String, dynamic> invoicesResponse = await NetUtilsDev.apiPostWithToken(getReceiptBody);
     return invoicesResponse;
@@ -42,9 +51,13 @@ class Customer {
   static Future<List<dynamic>> getConnectionLogs(pkgnum) async {
     dynamic connectionDataLogsBody = {
       "name": "getConnectionDataLogs",
-      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "pkgnum": pkgnum}
+      "param": {
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId),
+        "pkgnum": pkgnum
+      }
     };
-    Map<String, dynamic> connectionDataLogs = await NetUtils.apiPostWithToken(connectionDataLogsBody);
+    Map<String, dynamic> connectionDataLogs =
+        await NetUtils.apiPostWithToken(connectionDataLogsBody);
     // Map<String, dynamic> connectionDataLogs = await NetUtilsDev.apiPostWithToken(connectionDataLogsBody);
     if (connectionDataLogs["status"] == 200)
       return connectionDataLogs["result"]["connectiondatalogs"];
@@ -53,7 +66,8 @@ class Customer {
   }
 
   static Future<List> banners() async {
-    Map<String, dynamic> cmsBannersResponse = await NetUtils.apiPostWithToken({"name": "getCMSBanners", "param": {}});
+    Map<String, dynamic> cmsBannersResponse =
+        await NetUtils.apiPostWithToken({"name": "getCMSBanners", "param": {}});
 
     if (cmsBannersResponse["status"] == 200)
       return cmsBannersResponse["result"]["banners"];
@@ -64,10 +78,14 @@ class Customer {
   static Future<String> invoice(String invoiceNo) async {
     dynamic invoiceBody = {
       "name": "getPdfInvoice",
-      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "invoiceNo": invoiceNo}
+      "param": {
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId),
+        "invoiceNo": invoiceNo
+      }
     };
 
-    Map<String, dynamic> pdfResponse = await NetUtils.apiPostWithToken(invoiceBody);
+    Map<String, dynamic> pdfResponse =
+        await NetUtils.apiPostWithToken(invoiceBody);
 
     if (pdfResponse["status"] == 200)
       return pdfResponse["result"]["filecontent"];
@@ -75,26 +93,38 @@ class Customer {
       return "File Not Found";
   }
 
-  static Future<Map<String, dynamic>> authenticate(String custId, String mobileNo) async {
-    Map<String, dynamic> authenticatedResponse = await NetUtils.apiPostWithoutToken({
+  static Future<Map<String, dynamic>> authenticate(
+      String custId, String mobileNo) async {
+    Map<String, dynamic> authenticatedResponse =
+        await NetUtils.apiPostWithoutToken({
       "name": "generateToken",
       "param": {"custId": custId, "mobileNum": mobileNo, "mobilOTP": "1"}
     });
 
-    Map<String, dynamic> authResponse = {"status": -1, "token": "", "otp": "otp"};
+    Map<String, dynamic> authResponse = {
+      "status": -1,
+      "token": "",
+      "otp": "otp"
+    };
 
     if (authenticatedResponse["status"] == 200) {
       String token = authenticatedResponse["result"]["token"];
 
-      authResponse = {"status": 200, "token": token, "otp": authenticatedResponse['result']['otp']};
+      authResponse = {
+        "status": 200,
+        "token": token,
+        "otp": authenticatedResponse['result']['otp']
+      };
       await StorageUtils.setStorageItem(StorageKey.UserToken, token);
     } else {}
 
     return authResponse;
   }
 
-  static Future<Map<String, dynamic>> authenticateWithoutOTP(String custId, String mobileNo) async {
-    Map<String, dynamic> authenticatedResponse = await NetUtils.apiPostWithoutToken({
+  static Future<Map<String, dynamic>> authenticateWithoutOTP(
+      String custId, String mobileNo) async {
+    Map<String, dynamic> authenticatedResponse =
+        await NetUtils.apiPostWithoutToken({
       "name": "generateToken",
       "param": {"custId": custId, "mobileNum": mobileNo, "mobilOTP": "0"}
     });
@@ -104,6 +134,7 @@ class Customer {
     if (authenticatedResponse["status"] == 200) {
       String token = authenticatedResponse["result"]["token"];
       await StorageUtils.setStorageItem(StorageKey.UserToken, token);
+      print("token " + token);
 
       authResponse = {"status": 200, "token": token};
     } else {}
@@ -120,7 +151,13 @@ class Customer {
 
     dynamic body = {
       "name": "saveFBToken",
-      "param": {"customerId": custId, "mobileNo": mobileNo, "fbToken": await StorageUtils.getStorageItem(StorageKey.FBToken), "appVersion": "1.0", "mobileOs": "Android"}
+      "param": {
+        "customerId": custId,
+        "mobileNo": mobileNo,
+        "fbToken": await StorageUtils.getStorageItem(StorageKey.FBToken),
+        "appVersion": "1.0",
+        "mobileOs": "Android"
+      }
     };
 
     await NetUtils.apiPostWithToken(body);
@@ -128,7 +165,8 @@ class Customer {
   }
 
   static Future<bool> details(String custId, String mobileNo) async {
-    Map<String, dynamic> customerDetailsResponse = await NetUtils.apiPostWithToken({
+    Map<String, dynamic> customerDetailsResponse =
+        await NetUtils.apiPostWithToken({
       "name": "getCustomerDetails",
       "param": {"customerId": custId}
     });
@@ -161,9 +199,12 @@ class Customer {
   }
 
   static Future<Map<String, dynamic>> ticketsList() async {
-    final Map<String, dynamic> ticketsListResponse = await NetUtils.apiPostWithToken({
+    final Map<String, dynamic> ticketsListResponse =
+        await NetUtils.apiPostWithToken({
       "name": "getCustTickets",
-      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId)}
+      "param": {
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId)
+      }
     });
 
     Map<String, dynamic> tickets;
@@ -180,7 +221,8 @@ class Customer {
   }
 
   static Future<Map<String, dynamic>> issueTypes() async {
-    final Map<String, dynamic> ticketsListResponse = await NetUtils.apiPostWithToken({
+    final Map<String, dynamic> ticketsListResponse =
+        await NetUtils.apiPostWithToken({
       "name": "getIssueTypes",
       "param": {"issues": "all"}
     });
@@ -199,9 +241,14 @@ class Customer {
   }
 
   static Future<int> createTicket(int issueTypeId, String issueTypeDesc) async {
-    final Map<dynamic, dynamic> ticketCreatedtResponse = await NetUtils.apiPostWithToken({
+    final Map<dynamic, dynamic> ticketCreatedtResponse =
+        await NetUtils.apiPostWithToken({
       "name": "addCustTicket",
-      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "messageId": issueTypeId.toString(), "message": issueTypeDesc}
+      "param": {
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId),
+        "messageId": issueTypeId.toString(),
+        "message": issueTypeDesc
+      }
     });
     return ticketCreatedtResponse["status"];
   }
@@ -210,9 +257,12 @@ class Customer {
     List<dynamic> connectionsList;
 
     // final Map<String, dynamic> connectionsListResponse = await NetUtilsDev.apiPostWithToken({
-    final Map<String, dynamic> connectionsListResponse = await NetUtils.apiPostWithToken({
+    final Map<String, dynamic> connectionsListResponse =
+        await NetUtils.apiPostWithToken({
       "name": "getConnectionsList",
-      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId)}
+      "param": {
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId)
+      }
     });
 
     if (connectionsListResponse["status"] == 200) {
@@ -226,9 +276,13 @@ class Customer {
     List<dynamic> topupList;
 
     // final Map<String, dynamic> connectionsListResponse = await NetUtilsDev.apiPostWithToken({
-    final Map<String, dynamic> connectionsListResponse = await NetUtils.apiPostWithToken({
+    final Map<String, dynamic> connectionsListResponse =
+        await NetUtils.apiPostWithToken({
       "name": "gettopupPackages",
-      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "pkgnum": pkgnum}
+      "param": {
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId),
+        "pkgnum": pkgnum
+      }
     });
 
     if (connectionsListResponse["status"] == 200) {
@@ -241,9 +295,12 @@ class Customer {
   static Future<dynamic> paymentDue() async {
     dynamic paymentDue;
 
-    final Map<String, dynamic> paymentDueResponse = await NetUtils.apiPostWithToken({
+    final Map<String, dynamic> paymentDueResponse =
+        await NetUtils.apiPostWithToken({
       "name": "getCustomerDue",
-      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId)}
+      "param": {
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId)
+      }
     });
 
     if (paymentDueResponse["status"] == 200) {
@@ -253,10 +310,12 @@ class Customer {
     return paymentDue;
   }
 
-  static Future<dynamic> paymentDueWithToken(String token, String custId) async {
+  static Future<dynamic> paymentDueWithToken(
+      String token, String custId) async {
     dynamic paymentDue;
 
-    final Map<String, dynamic> paymentDueResponse = await NetUtils.apiPostWithToken({
+    final Map<String, dynamic> paymentDueResponse =
+        await NetUtils.apiPostWithToken({
       "name": "getCustomerDue",
       "param": {"customerId": custId}
     }, token: token);
@@ -270,9 +329,13 @@ class Customer {
 
   static Future<List<dynamic>> getSmartUtilData(ipAddr) async {
     // final Map<String, dynamic> utilizationResponse = await NetUtilsDev.apiPostWithToken({
-    final Map<String, dynamic> utilizationResponse = await NetUtils.apiPostWithToken({
+    final Map<String, dynamic> utilizationResponse =
+        await NetUtils.apiPostWithToken({
       "name": "getUsageReport",
-      "param": {"customerId": await StorageUtils.getStorageItem(StorageKey.CustId), "ip": ipAddr}
+      "param": {
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId),
+        "ip": ipAddr
+      }
     });
 
     // List<dynamic> a = ;
@@ -283,7 +346,8 @@ class Customer {
   }
 
   static Future<List<dynamic>> getBBPlans(String locationId) async {
-    final Map<String, dynamic> bbPlanDetails = await NetUtils.apiPostWithoutToken({
+    final Map<String, dynamic> bbPlanDetails =
+        await NetUtils.apiPostWithoutToken({
       "name": "getBbplanDetails",
       "param": {"locationId": locationId}
     });
@@ -302,14 +366,63 @@ class Customer {
     return getLocationsResponse["result"]["locations"];
   }
 
-  static Future<int> createEnquiry({String name, String mobile, String email, String address, int areaId, String city, int subAreaId, String purpose = ""}) async {
+  static Future<int> createEnquiry(
+      {String name,
+      String mobile,
+      String email,
+      String address,
+      int areaId,
+      String city,
+      int subAreaId,
+      String purpose = ""}) async {
     dynamic enquiryCreateResponse;
 
     enquiryCreateResponse = await NetUtils.apiPostWithoutToken({
       "name": "addEnquiry",
-      "param": {"name": name, "mobile": mobile, "email": email, "address": address, "city": city, "area_id": areaId, "sub_area_id": subAreaId, "purpose": purpose, "source": "App"}
+      "param": {
+        "name": name,
+        "mobile": mobile,
+        "email": email,
+        "address": address,
+        "city": city,
+        "area_id": areaId,
+        "sub_area_id": subAreaId,
+        "purpose": purpose,
+        "source": "App"
+      }
     });
 
     return int.parse(enquiryCreateResponse["status"].toString());
+  }
+
+  static Future<int> createReferrel(
+      {String name,
+      String mobile,
+      String email,
+      String address,
+      int areaId,
+      String city,
+      int subAreaId,
+      String purpose = ""}) async {
+    dynamic createReferrelResponse;
+
+    createReferrelResponse = await NetUtils.apiPostWithoutToken({
+      "name": "addEnquiry",
+      "param": {
+        "name": name,
+        "mobile": mobile,
+        "email": email,
+        "address": address,
+        "city": city,
+        "area_id": areaId,
+        "sub_area_id": subAreaId,
+        "purpose": purpose,
+        "source": "App",
+        "referral": "12",
+        "customerId": await StorageUtils.getStorageItem(StorageKey.CustId),
+      }
+    });
+
+    return int.parse(createReferrelResponse["status"].toString());
   }
 }
