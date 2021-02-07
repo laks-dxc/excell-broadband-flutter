@@ -124,7 +124,9 @@ class NetUtils {
   }
 
   static Future<String> apiPostWithTokenReturnPDF(body,
-      {String resultField = 'result', String token}) async {
+      {String resultField = 'result',
+      String token,
+      String type = "invoice"}) async {
     var uri = Uri.parse(_url);
 
     String _token = await StorageUtils.hasKey(StorageKey.UserToken)
@@ -141,10 +143,13 @@ class NetUtils {
 
     Directory appsDir = await getApplicationDocumentsDirectory();
     String appsDirPath = appsDir.path;
-    File file = new File('$appsDirPath/invoice.pdf');
+    File file = new File('$appsDirPath/$type.pdf');
     await file.writeAsBytes(response.bodyBytes);
     String filePath = file.path;
+    // print('appsDirPath , ' + filePath);
+
     return filePath;
+
     // await OpenFile.open(filePath);
 
     // File myFile = await new File(filePath).create();

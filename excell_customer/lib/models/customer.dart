@@ -19,6 +19,17 @@ class Customer {
     return await NetUtils.apiPostWithTokenReturnPDF(getInvoiceBody);
   }
 
+  static Future<String> getReceipt(String receiptNo) async {
+    dynamic getReceiptBody = {
+      "name": "getPdfReceipt",
+      "param": {"receiptNo": receiptNo}
+    };
+
+    // return await NetUtilsDev.apiPostWithTokenReturnPDF(getInvoiceBody);
+    return await NetUtils.apiPostWithTokenReturnPDF(getReceiptBody,
+        type: 'receipt');
+  }
+
   static Future<Map<String, dynamic>> getInvoices() async {
     dynamic getInvoiceBody = {
       "name": "getAllInvoices",
@@ -86,6 +97,21 @@ class Customer {
 
     Map<String, dynamic> pdfResponse =
         await NetUtils.apiPostWithToken(invoiceBody);
+
+    if (pdfResponse["status"] == 200)
+      return pdfResponse["result"]["filecontent"];
+    else
+      return "File Not Found";
+  }
+
+  static Future<String> receipt(String receiptNo) async {
+    dynamic receiptBody = {
+      "name": "getPdfReceipt",
+      "param": {"receiptNo": receiptNo}
+    };
+
+    Map<String, dynamic> pdfResponse =
+        await NetUtils.apiPostWithToken(receiptBody);
 
     if (pdfResponse["status"] == 200)
       return pdfResponse["result"]["filecontent"];
