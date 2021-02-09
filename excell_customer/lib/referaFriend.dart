@@ -58,9 +58,7 @@ class _ReferAFriend extends State<ReferAFriend> {
   @override
   Widget build(BuildContext context) {
     displaySize = MediaQuery.of(context).size;
-    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0
-        ? 1.0
-        : 0.85 / MediaQuery.of(context).textScaleFactor;
+    textScaleFactor = MediaQuery.of(context).textScaleFactor == 1.0 ? 1.0 : 0.85 / MediaQuery.of(context).textScaleFactor;
 
     return Scaffold(
         backgroundColor: selectedTheme.scaffoldBgColor,
@@ -79,9 +77,7 @@ class _ReferAFriend extends State<ReferAFriend> {
           ),
           Positioned(
               child: Opacity(
-                  opacity: currentScreen == EnquiryScreenMode.ThankYou
-                      ? 1.0
-                      : 0.15, // logoOpacity,
+                  opacity: currentScreen == EnquiryScreenMode.ThankYou ? 1.0 : 0.15, // logoOpacity,
                   child: Image.asset(
                     'assets/logo_blue.png',
                     width: 200,
@@ -156,25 +152,17 @@ class _ReferAFriend extends State<ReferAFriend> {
             child: Stack(children: [
               Center(
                 child: Text(
-                  "Thank your for referring!! Details are saved",
-                  style: TextStyle(
-                      fontSize: 20 * textScaleFactor,
-                      color: selectedTheme.primaryText),
+                  "Thank your for referring!",
+                  style: TextStyle(fontSize: 20 * textScaleFactor, color: selectedTheme.primaryText),
                 ),
               ),
-              Align(
-                  alignment: Alignment(1.1, 1.0),
-                  child: Icon(Icons.check_circle,
-                      size: 90,
-                      color: selectedTheme.activeBackground.withOpacity(0.3))),
+              Align(alignment: Alignment(1.1, 1.0), child: Icon(Icons.check_circle, size: 90, color: selectedTheme.activeBackground.withOpacity(0.3))),
             ]),
             padding: EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-                color: Colors.green[
-                    50], //selectedTheme.activeBackground.withOpacity(0.4),
+                color: Colors.green[50], //selectedTheme.activeBackground.withOpacity(0.4),
                 borderRadius: BorderRadius.circular(15.0),
-                border: Border.all(
-                    width: 1, color: selectedTheme.primaryGradientColors[0])),
+                border: Border.all(width: 1, color: selectedTheme.primaryGradientColors[0])),
           ),
           1.0,
           direction: Direction.y,
@@ -220,9 +208,7 @@ class _ReferAFriend extends State<ReferAFriend> {
             minLines: 5,
             maxLines: 10,
             decoration: InputDecoration(
-              border: UnderlineInputBorder(
-                  borderSide: BorderSide(width: 0.0),
-                  borderRadius: BorderRadius.all(Radius.circular(15))),
+              border: UnderlineInputBorder(borderSide: BorderSide(width: 0.0), borderRadius: BorderRadius.all(Radius.circular(15))),
               filled: true,
               fillColor: selectedTheme.enabledBackground.withOpacity(0.6),
               floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -235,10 +221,7 @@ class _ReferAFriend extends State<ReferAFriend> {
                   size: 30 * textScaleFactor,
                 ),
               ),
-              labelStyle: TextStyle(
-                  fontSize: 22 * textScaleFactor,
-                  letterSpacing: 1.0,
-                  color: selectedTheme.primaryColor),
+              labelStyle: TextStyle(fontSize: 22 * textScaleFactor, letterSpacing: 1.0, color: selectedTheme.primaryColor),
             )),
         SizedBox(
           height: 15,
@@ -249,19 +232,13 @@ class _ReferAFriend extends State<ReferAFriend> {
               style: TextStyle(fontSize: 22 * textScaleFactor),
               controller: this._cityController,
               decoration: InputDecoration(
-                border: UnderlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0)),
-                contentPadding:
-                    new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
+                border: UnderlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+                contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
                 filled: true,
                 fillColor: selectedTheme.activeBackground.withOpacity(0.2),
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
                 labelText: "City",
-                labelStyle: TextStyle(
-                    height: 1.0,
-                    fontSize: 22 * textScaleFactor,
-                    letterSpacing: 1.0,
-                    color: Color(0xff112c75)),
+                labelStyle: TextStyle(height: 1.0, fontSize: 22 * textScaleFactor, letterSpacing: 1.0, color: Color(0xff112c75)),
               ),
             ),
             suggestionsCallback: (pattern) {
@@ -272,8 +249,7 @@ class _ReferAFriend extends State<ReferAFriend> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   suggestion,
-                  style: TextStyle(
-                      fontSize: 20 * textScaleFactor, color: Colors.grey[400]),
+                  style: TextStyle(fontSize: 20 * textScaleFactor, color: Colors.grey[400]),
                 ),
               );
             },
@@ -299,19 +275,13 @@ class _ReferAFriend extends State<ReferAFriend> {
                   style: TextStyle(fontSize: 22 * textScaleFactor),
                   controller: this._cityController,
                   decoration: InputDecoration(
-                    border: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0)),
-                    contentPadding: new EdgeInsets.symmetric(
-                        vertical: 25.0, horizontal: 10.0),
+                    border: UnderlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+                    contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
                     filled: true,
                     fillColor: selectedTheme.activeBackground.withOpacity(0.2),
                     floatingLabelBehavior: FloatingLabelBehavior.auto,
                     labelText: "Sub Area",
-                    labelStyle: TextStyle(
-                        height: 1.0,
-                        fontSize: 22 * textScaleFactor,
-                        letterSpacing: 1.0,
-                        color: Color(0xff112c75)),
+                    labelStyle: TextStyle(height: 1.0, fontSize: 22 * textScaleFactor, letterSpacing: 1.0, color: Color(0xff112c75)),
                   ),
                 ),
                 suggestionsCallback: (pattern) {
@@ -322,9 +292,7 @@ class _ReferAFriend extends State<ReferAFriend> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       suggestion,
-                      style: TextStyle(
-                          fontSize: 20 * textScaleFactor,
-                          color: Colors.grey[400]),
+                      style: TextStyle(fontSize: 20 * textScaleFactor, color: Colors.grey[400]),
                     ),
                   );
                 },
@@ -357,14 +325,7 @@ class _ReferAFriend extends State<ReferAFriend> {
                 showErrorMessage("Please select a city from the list");
               } else {
                 Customer.createReferrel(
-                        name: _nameController.text.trim(),
-                        mobile: _mobileController.text.trim(),
-                        email: _emailController.text.trim(),
-                        address: _addressController.text.trim(),
-                        city: _cityController.text.trim(),
-                        areaId: areaId,
-                        subAreaId: subAreaId,
-                        purpose: selectedPurpose)
+                        name: _nameController.text.trim(), mobile: _mobileController.text.trim(), email: _emailController.text.trim(), address: _addressController.text.trim(), city: _cityController.text.trim(), areaId: areaId, subAreaId: subAreaId, purpose: selectedPurpose)
                     .then((value) {
                   if (value == 200)
                     setState(() {
@@ -443,26 +404,23 @@ class _ReferAFriend extends State<ReferAFriend> {
                           children: <Widget>[
                             AnimatedContainer(
                               duration: Duration(milliseconds: 300),
-                              decoration:
-                                  selectedPurpose == purposeList[index]["id"]
-                                      ? BoxDecoration(
-                                          color: selectedTheme.activeBackground,
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            width: 1.0,
-                                          ))
-                                      : BoxDecoration(
-                                          color: selectedTheme.activeBackground
-                                              .withOpacity(0.5),
-                                          shape: BoxShape.circle,
-                                        ),
+                              decoration: selectedPurpose == purposeList[index]["id"]
+                                  ? BoxDecoration(
+                                      color: selectedTheme.activeBackground,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        width: 1.0,
+                                      ))
+                                  : BoxDecoration(
+                                      color: selectedTheme.activeBackground.withOpacity(0.5),
+                                      shape: BoxShape.circle,
+                                    ),
                               width: 40.0,
                               height: 40.0,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Center(
-                                  child: selectedPurpose ==
-                                          purposeList[index]["id"]
+                                  child: selectedPurpose == purposeList[index]["id"]
                                       ? FadeIn(
                                           Icon(
                                             Icons.check,
@@ -479,9 +437,7 @@ class _ReferAFriend extends State<ReferAFriend> {
                             SizedBox(width: 20.0),
                             Text(
                               purposeList[index]["messages"],
-                              style: TextStyle(
-                                  color: selectedTheme.primaryText,
-                                  fontSize: 24 * textScaleFactor),
+                              style: TextStyle(color: selectedTheme.primaryText, fontSize: 24 * textScaleFactor),
                             )
                           ],
                         ),
@@ -494,7 +450,7 @@ class _ReferAFriend extends State<ReferAFriend> {
             height: 15,
           ),
           Text(
-            "Friend's Contact Info:",
+            "Contact Details:",
             style: TextStyle(fontSize: 22 * textScaleFactor),
           ),
           SizedBox(
@@ -506,9 +462,7 @@ class _ReferAFriend extends State<ReferAFriend> {
               inputFormatters: [],
               style: TextStyle(fontSize: 22 * textScaleFactor),
               decoration: InputDecoration(
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide(width: 0.0),
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                border: UnderlineInputBorder(borderSide: BorderSide(width: 0.0), borderRadius: BorderRadius.all(Radius.circular(15))),
                 filled: true,
                 fillColor: selectedTheme.enabledBackground.withOpacity(0.6),
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -521,10 +475,7 @@ class _ReferAFriend extends State<ReferAFriend> {
                     size: 30,
                   ),
                 ),
-                labelStyle: TextStyle(
-                    fontSize: 22 * textScaleFactor,
-                    letterSpacing: 1.0,
-                    color: selectedTheme.primaryColor),
+                labelStyle: TextStyle(fontSize: 22 * textScaleFactor, letterSpacing: 1.0, color: selectedTheme.primaryColor),
               )),
           SizedBox(
             height: 15,
@@ -543,18 +494,13 @@ class _ReferAFriend extends State<ReferAFriend> {
                     size: 30,
                   ),
                 ),
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide(width: 0.0),
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                border: UnderlineInputBorder(borderSide: BorderSide(width: 0.0), borderRadius: BorderRadius.all(Radius.circular(15))),
                 filled: true,
                 fillColor: selectedTheme.enabledBackground.withOpacity(0.6),
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
                 labelText: "Mobile No.*",
                 counterText: "",
-                labelStyle: TextStyle(
-                    fontSize: 22 * textScaleFactor,
-                    letterSpacing: 1.0,
-                    color: selectedTheme.primaryColor),
+                labelStyle: TextStyle(fontSize: 22 * textScaleFactor, letterSpacing: 1.0, color: selectedTheme.primaryColor),
               )),
           SizedBox(
             height: 15,
@@ -572,17 +518,12 @@ class _ReferAFriend extends State<ReferAFriend> {
                     size: 30,
                   ),
                 ),
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide(width: 0.0),
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                border: UnderlineInputBorder(borderSide: BorderSide(width: 0.0), borderRadius: BorderRadius.all(Radius.circular(15))),
                 filled: true,
                 fillColor: selectedTheme.enabledBackground.withOpacity(0.6),
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
                 labelText: "Email",
-                labelStyle: TextStyle(
-                    fontSize: 22 * textScaleFactor,
-                    letterSpacing: 1.0,
-                    color: selectedTheme.primaryColor),
+                labelStyle: TextStyle(fontSize: 22 * textScaleFactor, letterSpacing: 1.0, color: selectedTheme.primaryColor),
               )),
           SizedBox(height: 25),
           Row(
@@ -641,12 +582,12 @@ class _ReferAFriend extends State<ReferAFriend> {
           ),
           SizedBox(height: 25),
           Text(
-            "Thank you for your interest in Excell Broadband.",
+            "Refer a new subscriber to Excell Broadband and earn.",
             style: TextStyle(fontSize: 24 * textScaleFactor),
           ),
           SizedBox(height: 25),
           Text(
-            "Refer your friend and earn when they subscribe for Excell Media.",
+            "The rewards will be credited once the referral completes a successful subscription.",
             textAlign: TextAlign.start,
             style: TextStyle(
               fontSize: 24 * textScaleFactor,
@@ -654,7 +595,7 @@ class _ReferAFriend extends State<ReferAFriend> {
           ),
           SizedBox(height: 25),
           Text(
-            "Please provide as much of this information as you can.",
+            "",
             style: TextStyle(fontSize: 24 * textScaleFactor),
           ),
           SizedBox(height: 25),
@@ -718,9 +659,7 @@ class _ReferAFriend extends State<ReferAFriend> {
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     text,
-                    style: TextStyle(
-                        fontSize: 15 * textScaleFactor,
-                        color: selectedTheme.primaryColor),
+                    style: TextStyle(fontSize: 15 * textScaleFactor, color: selectedTheme.primaryColor),
                   ),
                 ),
               ),

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>651142371681-t9osclj6qr6h8r40bo14tovjt5mnu7o8.apps.googleusercontent.com</string>
+	<string>651142371681-m9ik16n1c30dhg0esdkmh2gqa6dl87ks.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.651142371681-t9osclj6qr6h8r40bo14tovjt5mnu7o8</string>
+	<string>com.googleusercontent.apps.651142371681-m9ik16n1c30dhg0esdkmh2gqa6dl87ks</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAMVodle_9bjalepBi3Z1xRnmN6V_LWSTY</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>excell.broadband</string>
+	<string>excell.excellCustomer</string>
 	<key>PROJECT_ID</key>
 	<string>excell-customer</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:651142371681:ios:9bf87542a148de7e044d20</string>
+	<string>1:651142371681:ios:26d3dfdce5416afc044d20</string>
 	<key>DATABASE_URL</key>
 	<string>https://excell-customer.firebaseio.com</string>
 </dict>

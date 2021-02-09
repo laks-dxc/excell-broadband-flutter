@@ -66,7 +66,7 @@ class _MakePaymentState extends State<MakePayment> {
 
   @override
   Widget build(BuildContext context) {
-    print("souce " + source);
+    // print("souce " + source);
     if (isResumed) {
       Timer(Duration(milliseconds: 100), () {
         Navigator.pushReplacement(

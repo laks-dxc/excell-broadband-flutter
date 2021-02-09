@@ -1,15 +1,15 @@
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:ExcellCustomer/enquiry.dart';
 import 'package:ExcellCustomer/packageList.dart';
 import 'package:ExcellCustomer/widgets/quickPayModel.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'animation/fadeIn.dart';
 import 'drawer.dart';
 import 'helpers/appStyles.dart';
-import 'helpers/storageUtils.dart';
+// import 'helpers/storageUtils.dart';
 import 'models/AppTheme.dart';
 import 'models/customer.dart';
 import 'models/enum.dart';
@@ -23,37 +23,37 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   Size displaySize;
   double textScaleFactor;
-  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  // FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   static AppThemeData selectedTheme = AppStyles.getTheme(AppTheme.Light);
 
   void firebaseCloudMessagingListeners() {
-    if (Platform.isIOS) iosPermission();
+    // if (Platform.isIOS) iosPermission();
 
-    _firebaseMessaging.getToken().then((token) {
-      StorageUtils.setStorageItem(StorageKey.FBToken, token);
-      print('FBToken ' + token);
-    });
+    // _firebaseMessaging.getToken().then((token) {
+    //   StorageUtils.setStorageItem(StorageKey.FBToken, token);
+    //   print('FBToken ' + token);
+    // });
 
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print('on message $message');
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print('on resume $message');
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print('on launch $message');
-      },
-    );
+    // _firebaseMessaging.configure(
+    //   onMessage: (Map<String, dynamic> message) async {
+    //     print('on message $message');
+    //   },
+    //   onResume: (Map<String, dynamic> message) async {
+    //     print('on resume $message');
+    //   },
+    //   onLaunch: (Map<String, dynamic> message) async {
+    //     print('on launch $message');
+    //   },
+    // );
   }
 
-  void iosPermission() {
-    _firebaseMessaging.requestNotificationPermissions(IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
-  }
+  // void iosPermission() {
+  //   _firebaseMessaging.requestNotificationPermissions(IosNotificationSettings(sound: true, badge: true, alert: true));
+  //   _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
+  //     print("Settings registered: $settings");
+  //   });
+  // }
 
   @override
   void initState() {

@@ -25,8 +25,7 @@ class _DrawerPageState extends State<DrawerPage> {
         ItemHiddenMenu(
           name: "Home",
           colorLineSelected: selectedTheme.appBarColor,
-          baseStyle: TextStyle(
-              color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Dashboard()),
@@ -34,17 +33,15 @@ class _DrawerPageState extends State<DrawerPage> {
         ItemHiddenMenu(
           name: "Payment",
           colorLineSelected: selectedTheme.appBarColor,
-          baseStyle: TextStyle(
-              color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Payment()),
     ScreenHiddenDrawer(
         ItemHiddenMenu(
-          name: "Refer & Earn",
+          name: "Refer & Rewards",
           colorLineSelected: selectedTheme.appBarColor,
-          baseStyle: TextStyle(
-              color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         ReferAFriend()),
@@ -52,8 +49,7 @@ class _DrawerPageState extends State<DrawerPage> {
         ItemHiddenMenu(
           name: "Packages",
           colorLineSelected: selectedTheme.appBarColor,
-          baseStyle: TextStyle(
-              color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         MyPackages()),
@@ -61,8 +57,7 @@ class _DrawerPageState extends State<DrawerPage> {
         ItemHiddenMenu(
           name: "Support",
           colorLineSelected: selectedTheme.appBarColor,
-          baseStyle: TextStyle(
-              color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Support()),
@@ -70,8 +65,7 @@ class _DrawerPageState extends State<DrawerPage> {
         ItemHiddenMenu(
           name: "Profile",
           colorLineSelected: selectedTheme.appBarColor,
-          baseStyle: TextStyle(
-              color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
+          baseStyle: TextStyle(color: selectedTheme.textColor.withOpacity(0.6), fontSize: 25.0),
           selectedStyle: TextStyle(color: selectedTheme.textColor),
         ),
         Profile())
@@ -102,10 +96,7 @@ class _DrawerPageState extends State<DrawerPage> {
       elevationAppBar: 8.0,
       //    tittleAppBar: Center(child: Icon(Icons.ac_unit),),
       //    enableShadowItensMenu: true,
-      backgroundMenu: DecorationImage(
-          alignment: Alignment.topCenter,
-          image: ExactAssetImage('assets/login_bg.png'),
-          fit: BoxFit.fitWidth),
+      backgroundMenu: DecorationImage(alignment: Alignment.topCenter, image: ExactAssetImage('assets/login_bg.png'), fit: BoxFit.fitWidth),
     );
   }
 }

@@ -22,7 +22,6 @@ dependencies:
   date_format: ^1.0.8
   bot_toast: ^3.0.0
   flutter_typeahead: ^1.8.3
-  firebase_messaging: ^6.0.16
   carousel_slider: ^2.2.1
   cached_network_image: ^2.2.0+1
   path_provider: ^1.6.11
@@ -30,6 +29,9 @@ dependencies:
   permission_handler: ^5.0.1+1
   timeline_tile: ^0.1.2
   launch_review: ^2.0.0
+  flutter_keyboard_visibility: ^4.0.0
+  
+  
   
 
 dev_dependencies:

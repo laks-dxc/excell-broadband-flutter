@@ -593,7 +593,7 @@ class _EnquiryState extends State<Enquiry> {
           ),
           SizedBox(height: 25),
           Text(
-            "Please provide as much of this information as you can.",
+            "",
             style: TextStyle(fontSize: 24 * textScaleFactor),
           ),
           SizedBox(height: 25),
