@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>excell_customer.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>7E55E9329309B312161F7F298D7B8C5E67C28134</string>
+				<key>dateExpires</key>
+				<string>30/08/21</string>
+				<key>type</key>
+				<string>Apple Distribution</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>7E55E9329309B312161F7F298D7B8C5E67C28134</string>
+						<key>dateExpires</key>
+						<string>30/08/21</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>App.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>V287AYXX79</string>
+						<key>name</key>
+						<string>Excell Media Private Limited</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>7E55E9329309B312161F7F298D7B8C5E67C28134</string>
+						<key>dateExpires</key>
+						<string>30/08/21</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>FMDB.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>V287AYXX79</string>
+						<key>name</key>
+						<string>Excell Media Private Limited</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>7E55E9329309B312161F7F298D7B8C5E67C28134</string>
+						<key>dateExpires</key>
+						<string>30/08/21</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>Flutter.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>V287AYXX79</string>
+						<key>name</key>
+						<string>Excell Media Private Limited</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>7E55E9329309B312161F7F298D7B8C5E67C28134</string>
+						<key>dateExpires</key>
+						<string>30/08/21</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>flutter_keyboard_visibility.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>V287AYXX79</string>
+						<key>name</key>
+						<string>Excell Media Private Limited</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>7E55E9329309B312161F7F298D7B8C5E67C28134</string>
+						<key>dateExpires</key>
+						<string>30/08/21</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>launch_review.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>V287AYXX79</string>
+						<key>name</key>
+						<string>Excell Media Private Limited</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>7E55E9329309B312161F7F298D7B8C5E67C28134</string>
+						<key>dateExpires</key>
+						<string>30/08/21</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>open_file.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>V287AYXX79</string>
+						<key>name</key>
+						<string>Excell Media Private Limited</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>7E55E9329309B312161F7F298D7B8C5E67C28134</string>
+						<key>dateExpires</key>
+						<string>30/08/21</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>path_provider.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>V287AYXX79</string>
+						<key>name</key>
+						<string>Excell Media Private Limited</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>7E55E9329309B312161F7F298D7B8C5E67C28134</string>
+						<key>dateExpires</key>
+						<string>30/08/21</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>shared_preferences.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>V287AYXX79</string>
+						<key>name</key>
+						<string>Excell Media Private Limited</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>7E55E9329309B312161F7F298D7B8C5E67C28134</string>
+						<key>dateExpires</key>
+						<string>30/08/21</string>
+						<key>type</key>
+						<string>Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>sqflite.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>V287AYXX79</string>
+						<key>name</key>
+						<string>Excell Media Private Limited</string>
+					</dict>
+				</dict>
+			</array>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>V287AYXX79.excell.excellCustomer</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>V287AYXX79</string>
+				<key>get-task-allow</key>
+				<false/>
+				<key>keychain-access-groups</key>
+				<array>
+					<string>V287AYXX79.excell.excellCustomer</string>
+				</array>
+			</dict>
+			<key>name</key>
+			<string>Runner.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>57a32373-3e66-4e7f-9c3f-3f8050216e56</string>
+				<key>name</key>
+				<string>iOS Team Ad Hoc Provisioning Profile: excell.excellCustomer</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>V287AYXX79</string>
+				<key>name</key>
+				<string>Excell Media Private Limited</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
