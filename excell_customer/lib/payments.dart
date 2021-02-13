@@ -218,7 +218,7 @@ class _PaymentState extends State<Payment> {
           width: displaySize.width * 0.3,
           child: Center(
               child: Text(
-            "My Invoices",
+            "Invoices",
             style: TextStyle(fontSize: 22.0 * textScaleFactor),
           ))),
       onPressed: () {

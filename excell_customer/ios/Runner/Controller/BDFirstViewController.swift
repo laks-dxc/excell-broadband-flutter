@@ -3,19 +3,10 @@ import UIKit
 
 class BDFirstViewController: UIViewController, UITextFieldDelegate, LibraryPaymentStatusProtocol {
 
-    //    func popTipViewWasDismissed(byUser popTipView: CMPopTipView!) {
-//
-//    }
-    
-    
-//    @IBOutlet var amountField: UITextField!
-//    @IBOutlet var emailField: UITextField!
-//    @IBOutlet var txtPayCategory: UITextField!
     
     var bdvc: BDViewController!
     
     var keyboardDoneButtonView = UIToolbar()
-//    var popTipView = CMPopTipView()
     var msg = [Any]()
     var pmtOptArr = [Any]()
     var blnShowingFilterPopUp = false
@@ -33,17 +24,11 @@ class BDFirstViewController: UIViewController, UITextFieldDelegate, LibraryPayme
 
         keyboardDoneButtonView.items = [doneButton]
         
-//        amountField.delegate = self
-//        amountField.inputAccessoryView = keyboardDoneButtonView
-//        emailField.delegate = self
-//        //Just for testing
-//        amountField.text = "1.0"
-//        emailField.text = "qwww@abc.com"
+
     }
    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-//        NotificationCenter.default.removeObserver(self, name: .UIDeviceOrientationDidChange, object: nil)
     }
     
     

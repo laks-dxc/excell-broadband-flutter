@@ -7,29 +7,29 @@
 		<key>header_bg</key>
 		<dict>
 			<key>R</key>
-			<integer>255</integer>
+			<integer>0</integer>
 			<key>G</key>
-			<integer>255</integer>
+			<integer>0</integer>
 			<key>B</key>
-			<integer>255</integer>
+			<integer>128</integer>
 		</dict>
 		<key>body_bg</key>
 		<dict>
 			<key>R</key>
-			<integer>242</integer>
+			<integer>222</integer>
 			<key>G</key>
-			<integer>242</integer>
+			<integer>222</integer>
 			<key>B</key>
-			<integer>242</integer>
+			<integer>222</integer>
 		</dict>
 		<key>header_text</key>
 		<dict>
 			<key>R</key>
-			<integer>100</integer>
+			<integer>0</integer>
 			<key>G</key>
-			<integer>50</integer>
+			<integer>0</integer>
 			<key>B</key>
-			<integer>100</integer>
+			<integer>128</integer>
 		</dict>
 		<key>body_text</key>
 		<dict>
@@ -43,9 +43,9 @@
 		<key>button_bg</key>
 		<dict>
 			<key>R</key>
-			<real>255</real>
+			<integer>0</integer>
 			<key>G</key>
-			<integer>255</integer>
+			<integer>0</integer>
 			<key>B</key>
 			<integer>255</integer>
 		</dict>

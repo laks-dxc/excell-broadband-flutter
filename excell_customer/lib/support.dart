@@ -16,6 +16,7 @@ class Support extends StatefulWidget {
 class _SupportState extends State<Support> {
   static AppThemeData selectedTheme = AppStyles.getTheme(AppTheme.Light);
   Size displaySize;
+  double textScaleFactor;
   bool isProcessing = false;
 
   TicketsScreenMode screenMode = TicketsScreenMode.Loading;
@@ -38,6 +39,9 @@ class _SupportState extends State<Support> {
   @override
   Widget build(BuildContext context) {
     displaySize = MediaQuery.of(context).size;
+    textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    print(textScaleFactor.toString() + " is the textscalfactor");
+
     Widget ticketScreen;
     if (screenMode != null)
       switch (screenMode) {
@@ -78,14 +82,12 @@ class _SupportState extends State<Support> {
 
           ticket = ticketsList["ticketsList"][0];
           supportText += "Your ticket Id. " + ticket["id"].toString() + " ";
-          supportText +=
-              ticket["problem"] != null ? " for " + ticket["problem"] : "";
+          supportText += ticket["problem"] != null ? " for " + ticket["problem"] : "";
           supportText += ticket["problem"] != null ? "" : "\n";
 
           supportText += " created on ";
           supportText += Utils.formatDateString(ticket["created"]);
-          supportText +=
-              ", is registered with us. \n\nOur support team will get in touch with you shortly.\n\nThank You.";
+          supportText += ", is registered with us. \n\nOur support team will get in touch with you shortly.\n\nThank You.";
           getIssueTypes();
         } else if (ticketsList["ticketCount"] == 0) {
           screenMode = TicketsScreenMode.CreateTicket;
@@ -99,7 +101,7 @@ class _SupportState extends State<Support> {
     Customer.issueTypes().then((_issueTypes) {
       setState(() {
         issueTypes = _issueTypes["issueTypes"];
-        print(issueTypes.toString());
+        // print(issueTypes.toString());
       });
     });
   }
@@ -112,9 +114,7 @@ class _SupportState extends State<Support> {
     return SingleChildScrollView(
       padding: EdgeInsets.all(16.0),
       child: Container(
-        decoration: BoxDecoration(
-            color: selectedTheme.enabledBackground.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(15)),
+        decoration: BoxDecoration(color: selectedTheme.enabledBackground.withOpacity(0.1), borderRadius: BorderRadius.circular(15)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,8 +133,7 @@ class _SupportState extends State<Support> {
                     onTap: () {
                       setState(() {
                         selectedIssueTypeId = issueTypes[index]["id"];
-                        print(selectedIssueTypeId.toString() +
-                            " is the issue type id");
+                        // print(selectedIssueTypeId.toString() + " is the issue type id");
                         issueDescription = issueTypes[index]["ticket_desc"];
                       });
                     },
@@ -142,49 +141,32 @@ class _SupportState extends State<Support> {
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 300),
-                        padding: EdgeInsets.only(
-                            top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
-                        decoration: selectedIssueTypeId ==
-                                issueTypes[index]["id"]
-                            ? BoxDecoration(
-                                color: selectedTheme.activeBackground
-                                    .withOpacity(0.4),
-                                borderRadius: BorderRadius.circular(8.0),
-                                border: Border.all(
-                                    width: 1,
-                                    color:
-                                        selectedTheme.primaryGradientColors[0]))
-                            : BoxDecoration(
-                                color: selectedTheme.activeBackground
-                                    .withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8.0),
-                                border: Border.all(
-                                    width: 1, color: Colors.grey[400])),
+                        padding: EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                        decoration: selectedIssueTypeId == issueTypes[index]["id"]
+                            ? BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.4), borderRadius: BorderRadius.circular(8.0), border: Border.all(width: 1, color: selectedTheme.primaryGradientColors[0]))
+                            : BoxDecoration(color: selectedTheme.activeBackground.withOpacity(0.1), borderRadius: BorderRadius.circular(8.0), border: Border.all(width: 1, color: Colors.grey[400])),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             AnimatedContainer(
                               duration: Duration(milliseconds: 300),
-                              decoration:
-                                  selectedIssueTypeId == issueTypes[index]["id"]
-                                      ? BoxDecoration(
-                                          color: selectedTheme.activeBackground,
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            width: 1.0,
-                                          ))
-                                      : BoxDecoration(
-                                          color: selectedTheme.activeBackground
-                                              .withOpacity(0.5),
-                                          shape: BoxShape.circle,
-                                        ),
+                              decoration: selectedIssueTypeId == issueTypes[index]["id"]
+                                  ? BoxDecoration(
+                                      color: selectedTheme.activeBackground,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        width: 1.0,
+                                      ))
+                                  : BoxDecoration(
+                                      color: selectedTheme.activeBackground.withOpacity(0.5),
+                                      shape: BoxShape.circle,
+                                    ),
                               width: 26.0,
                               height: 26.0,
                               child: Padding(
                                 padding: const EdgeInsets.all(0.0),
                                 child: Center(
-                                  child: selectedIssueTypeId ==
-                                          issueTypes[index]["id"]
+                                  child: selectedIssueTypeId == issueTypes[index]["id"]
                                       ? FadeIn(
                                           Icon(
                                             Icons.check,
@@ -199,11 +181,9 @@ class _SupportState extends State<Support> {
                               ),
                             ),
                             SizedBox(width: 20.0),
-                            Text(
-                              issueTypes[index]["ticket_type"],
-                              style: TextStyle(
-                                  color: selectedTheme.primaryText,
-                                  fontSize: 18),
+                            Container(
+                              width: displaySize.width * .70,
+                              child: Text(issueTypes[index]["ticket_type"], style: TextStyle(fontSize: 18, color: selectedTheme.primaryText)),
                             )
                           ],
                         ),
@@ -257,10 +237,7 @@ class _SupportState extends State<Support> {
                 ),
                 floatingLabelBehavior: FloatingLabelBehavior.always,
                 labelText: issueDescription,
-                labelStyle: TextStyle(
-                    height: 1.0,
-                    letterSpacing: 1.0,
-                    color: selectedTheme.primaryColor),
+                labelStyle: TextStyle(height: 1.0, letterSpacing: 1.0, color: selectedTheme.primaryColor),
               ),
               enableInteractiveSelection: true,
               onFieldSubmitted: (v) {
@@ -270,9 +247,7 @@ class _SupportState extends State<Support> {
             SizedBox(height: 30),
             FadeIn(
                 Center(
-                  child: selectedIssueTypeId == null || isProcessing == true
-                      ? disabledButton()
-                      : enabledButton(),
+                  child: selectedIssueTypeId == null || isProcessing == true ? disabledButton() : enabledButton(),
                 ),
                 (issueTypes.length + 0.1),
                 direction: Direction.y,
@@ -331,28 +306,21 @@ class _SupportState extends State<Support> {
           padding: const EdgeInsets.all(16.0),
           child: Container(
             width: displaySize.width,
-            height: 80.0,
+            height: 85 * textScaleFactor,
             child: Stack(children: [
               Center(
                 child: Text(
                   "No active support requests found",
-                  style:
-                      TextStyle(fontSize: 20, color: selectedTheme.primaryText),
+                  style: TextStyle(fontSize: 20, color: selectedTheme.primaryText),
                 ),
               ),
-              Align(
-                  alignment: Alignment(1.1, 1.0),
-                  child: Icon(Icons.check_circle,
-                      size: 90,
-                      color: selectedTheme.activeBackground.withOpacity(0.3))),
+              Align(alignment: Alignment(1.1, 1.0), child: Icon(Icons.check_circle, size: 90, color: selectedTheme.activeBackground.withOpacity(0.3))),
             ]),
             padding: EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-                color: Colors.green[
-                    50], //selectedTheme.activeBackground.withOpacity(0.4),
+                color: Colors.green[50], //selectedTheme.activeBackground.withOpacity(0.4),
                 borderRadius: BorderRadius.circular(15.0),
-                border: Border.all(
-                    width: 1, color: selectedTheme.primaryGradientColors[0])),
+                border: Border.all(width: 1, color: selectedTheme.primaryGradientColors[0])),
           ),
         ),
         SizedBox(height: 50),
@@ -385,16 +353,9 @@ class _SupportState extends State<Support> {
       isProcessing = true;
     });
 
-    print(issueTypes
-        .firstWhere((element) => element["id"] == selectedIssueTypeId)
-        .toString());
+    print(issueTypes.firstWhere((element) => element["id"] == selectedIssueTypeId).toString());
 
-    Customer.createTicket(
-            selectedIssueTypeId,
-            issueTypes.firstWhere((element) =>
-                element["id"] == selectedIssueTypeId)["ticket_type"],
-            issueDescriptionController.text)
-        .then((int ticketCreationStatus) {
+    Customer.createTicket(selectedIssueTypeId, issueTypes.firstWhere((element) => element["id"] == selectedIssueTypeId)["ticket_type"], issueDescriptionController.text).then((int ticketCreationStatus) {
       if (ticketCreationStatus == 200 || ticketCreationStatus == 108)
         getSupportState();
       else
@@ -415,8 +376,7 @@ class _SupportState extends State<Support> {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   supportText,
-                  style:
-                      TextStyle(color: selectedTheme.primaryText, fontSize: 25),
+                  style: TextStyle(color: selectedTheme.primaryText, fontSize: 25),
                 ),
               ),
             ),
@@ -425,15 +385,7 @@ class _SupportState extends State<Support> {
             duration: 1.5,
             distance: 10.0,
           ),
-          FadeIn(
-              Align(
-                  alignment: Alignment(1.0, -0.9),
-                  child: Icon(Icons.check_circle,
-                      size: 200,
-                      color: selectedTheme.primaryText.withOpacity(0.1))),
-              1.0,
-              translate: false,
-              duration: 1.5)
+          FadeIn(Align(alignment: Alignment(1.0, -0.9), child: Icon(Icons.check_circle, size: 200, color: selectedTheme.primaryText.withOpacity(0.1))), 1.0, translate: false, duration: 1.5)
         ],
       ),
     );
