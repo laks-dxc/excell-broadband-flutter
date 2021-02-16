@@ -130,18 +130,23 @@ class Customer {
     Map<String, dynamic> authResponse = {
       "status": -1,
       "token": "",
-      "otp": "otp"
+      "otp": "otp",
+      "cmsid": "cmsid"
     };
 
     if (authenticatedResponse["status"] == 200) {
       String token = authenticatedResponse["result"]["token"];
+      String cmsId = authenticatedResponse["result"]["cmsid"];
 
       authResponse = {
         "status": 200,
         "token": token,
-        "otp": authenticatedResponse['result']['otp']
+        "otp": authenticatedResponse['result']['otp'],
+        "cmsid": authenticatedResponse['result']['cmsid']
       };
+
       await StorageUtils.setStorageItem(StorageKey.UserToken, token);
+      await StorageUtils.setStorageItem(StorageKey.CMSId, cmsId);
     } else {}
 
     return authResponse;
@@ -464,6 +469,7 @@ class Customer {
         "source": "App",
         "referral": "12",
         "customerId": await StorageUtils.getStorageItem(StorageKey.CustId),
+        "cmsid": await StorageUtils.getStorageItem(StorageKey.CMSId),
       }
     });
 

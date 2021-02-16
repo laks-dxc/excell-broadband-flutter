@@ -27,7 +27,8 @@ enum StorageKey {
   State,
   Emailid,
   Locations,
-  FBToken
+  FBToken,
+  CMSId
 }
 
 enum TicketsScreenMode { CreateTicket, ViewTickets, Loading }
