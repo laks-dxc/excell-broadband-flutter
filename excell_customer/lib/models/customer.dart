@@ -165,7 +165,7 @@ class Customer {
     if (authenticatedResponse["status"] == 200) {
       String token = authenticatedResponse["result"]["token"];
       await StorageUtils.setStorageItem(StorageKey.UserToken, token);
-      print("token " + token);
+      // print("token " + token);
 
       authResponse = {"status": 200, "token": token};
     } else {}
@@ -437,7 +437,8 @@ class Customer {
         "area_id": areaId,
         "sub_area_id": subAreaId,
         "purpose": purpose,
-        "source": "App"
+        "source": "App",
+        "cmsid": "0"
       }
     });
 
