@@ -47,7 +47,7 @@ class LSItemList {
   List<LSItem> items;
 
   LSItemList() {
-    items = new List();
+    items = new List<LSItem>.empty();
   }
 
   toJSONEncodable() {
